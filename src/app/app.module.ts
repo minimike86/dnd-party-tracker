@@ -1,6 +1,6 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Routes } from '@angular/router';
 const appRoutes: Routes = [
   { path: '',           component: HomeComponent },
@@ -20,6 +20,11 @@ import { CharacterComponent } from './components/character/character.component';
 import { PartyComponent } from './components/party/party.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { HomeComponent } from './components/home/home.component';
+import { AbilityScoresComponent } from './components/character/ability-scores/ability-scores.component';
+import { CombatOptionsComponent } from './components/character/combat-options/combat-options.component';
+import { SavingThrowsComponent } from './components/character/saving-throws/saving-throws.component';
+import { ArmorClassComponent } from './components/character/armor-class/armor-class.component';
+import { HitPointsComponent } from './components/character/hit-points/hit-points.component';
 
 
 @NgModule({
@@ -30,7 +35,12 @@ import { HomeComponent } from './components/home/home.component';
     CharacterComponent,
     PartyComponent,
     PageNotFoundComponent,
-    HomeComponent
+    HomeComponent,
+    AbilityScoresComponent,
+    CombatOptionsComponent,
+    SavingThrowsComponent,
+    ArmorClassComponent,
+    HitPointsComponent
   ],
   imports: [
     BrowserModule,
