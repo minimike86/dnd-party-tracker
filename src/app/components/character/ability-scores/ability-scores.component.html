@@ -1,0 +1,54 @@
+<h3 class="mt-3">Ability Scores</h3>
+<div class="row mt-1" *ngFor="let abbr of abilityScores.abbreviation.keys()">
+
+  <div class="col">
+    <h4 class="pt-1 pb-0 mb-0">{{ abbr }}</h4>
+    <small class="text-black-50 xx-small">{{ abilityScores.abbreviation.get(abbr) }}</small>
+  </div>
+
+  <div class="col">
+    <input class="form-control form-control pt-2 pb-2 mb-0">
+    <small class="text-black-50 xx-small">Total</small>
+  </div>
+
+  <div class="col pt-2 pb-2 pl-0 pr-0 mb-0">
+    <span class="badge badge-pill badge-secondary" title="{{ abilityScores.abbreviation.get(abbr) }} Modifier">+0</span>
+  </div>
+
+  <div class="col-1 math-sign">
+    <h6 class="pt-2 pb-2 mb-0">=</h6>
+  </div>
+
+  <div class="col">
+    <input class="form-control form-control pt-2 pb-2 mb-0">
+    <small class="text-black-50 xx-small">Base Score + Racial</small>
+  </div>
+
+  <div class="col-1 math-sign">
+    <h6 class="pt-2 pb-2 mb-0">+</h6>
+  </div>
+
+  <div class="col">
+    <input class="form-control form-control pt-2 pb-2 mb-0">
+    <small class="text-black-50 xx-small">Enhancement Bonuses</small>
+  </div>
+
+  <div class="col-1 math-sign">
+    <h6 class="pt-2 pb-2 mb-0">+</h6>
+  </div>
+
+  <div class="col">
+    <input class="form-control form-control pt-2 pb-2 mb-0">
+    <small class="text-black-50 xx-small">Misc Bonuses</small>
+  </div>
+
+  <div class="col-1 math-sign">
+    <h6 class="pt-2 pb-2 mb-0">-</h6>
+  </div>
+
+  <div class="col">
+    <input class="form-control form-control pt-2 pb-2 mb-0">
+    <small class="text-black-50 xx-small">Misc Penalties</small>
+  </div>
+
+</div>
