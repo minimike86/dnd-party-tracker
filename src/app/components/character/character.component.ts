@@ -26,7 +26,7 @@ export class CharacterComponent implements OnInit {
     religion: 'Pelor',
     height: [5, 10], // feet, inches
     weight: 220, // lbs.
-    abilityScores: new AbilityScores(10, 10, 10, 10, 10, 10)
+    abilityScores: new AbilityScores(10, 11, 12, 13, 14, 15)
   };
 
   constructor() { }

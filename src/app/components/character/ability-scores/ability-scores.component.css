@@ -4,6 +4,10 @@
   margin: 0;
 }
 
+input{
+  text-align: center;
+}
+
 .ability-stat {
   border-bottom: 1px solid black;
 }
