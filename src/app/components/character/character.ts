@@ -1,7 +1,7 @@
 import { Race } from './enum-race';
 import { Size } from './enum-size';
 import { Alignment } from './enum-alignment';
-import {AbilityScores} from './ability-scores/ability-scores';
+import { AbilityScore } from './ability-scores/ability-scores';
 
 export class Character {
 
@@ -22,6 +22,6 @@ export class Character {
   looks?: string;
 
   // Ability Scores
-  abilityScores: AbilityScores;
+  abilityScores: AbilityScore;
 
 }

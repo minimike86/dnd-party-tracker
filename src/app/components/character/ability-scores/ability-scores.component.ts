@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import { AbilityScores } from './ability-scores';
+import { AbilityScore, AbilityScoreAbbreviation } from './ability-scores';
 
 @Component({
   selector: 'app-ability-scores',
@@ -8,18 +8,26 @@ import { AbilityScores } from './ability-scores';
 })
 export class AbilityScoresComponent implements OnInit {
 
-  @Input() abilityScores: AbilityScores;
+  @Input() baseAbilityScores: AbilityScore;
+  totalAbilityScores: AbilityScore;
+  abilityScoreAbbr: AbilityScoreAbbreviation;
   bindedAbbreviationKeys: Array<string>;
 
-  constructor() {
-  }
+  constructor() {}
 
   ngOnInit() {
-    this.bindedAbbreviationKeys = Array.from(this.abilityScores.abbreviation.keys()); // Fix "Expression changed after it was checked."
+    this.totalAbilityScores = this.baseAbilityScores;
+    this.abilityScoreAbbr = new AbilityScoreAbbreviation();
+    this.bindedAbbreviationKeys = Array.from(this.abilityScoreAbbr.abbreviation.keys()); // Fix "Expression changed after it was checked."
   }
 
-  getRandomModifier() {
-    return Math.floor(Math.random() * Math.floor(100));
+  getAbilityModifier(abilityScore: number): string {
+    const modifier = Math.floor(abilityScore / 2) - 5;
+    if (modifier < 0) {
+      return '' + modifier; // '-' is already present in negative number
+    } else {
+      return '+' + modifier;
+    }
   }
 
 }
