@@ -4,7 +4,7 @@ import { Race } from './enum-race';
 import { Size } from './enum-size';
 import { Gender } from './enum-gender';
 import { Alignment } from './enum-alignment';
-import { AbilityScores } from '../character/ability-scores/ability-scores';
+import { AbilityScore } from '../character/ability-scores/ability-scores';
 
 @Component({
   selector: 'app-character',
@@ -26,7 +26,7 @@ export class CharacterComponent implements OnInit {
     religion: 'Pelor',
     height: [5, 10], // feet, inches
     weight: 220, // lbs.
-    abilityScores: new AbilityScores(10, 11, 12, 13, 14, 15)
+    abilityScores: new AbilityScore(8, 16, 12, 18, 6, 17)
   };
 
   constructor() { }

@@ -1,4 +1,18 @@
-export class AbilityScores {
+export class AbilityScoreAbbreviation {
+  abbreviation: Map<string, string>;
+  constructor() {
+    // define Ability Score abbreviations and long form names
+    this.abbreviation = new Map;
+    this.abbreviation.set('STR', 'Strength');
+    this.abbreviation.set('DEX', 'Dexterity');
+    this.abbreviation.set('CON', 'Constitution');
+    this.abbreviation.set('INT', 'Intelligence');
+    this.abbreviation.set('WIS', 'Wisdom');
+    this.abbreviation.set('CHA', 'Charisma');
+  }
+}
+
+export class AbilityScore {
 
   strength: number;
   dexterity: number;
@@ -6,8 +20,6 @@ export class AbilityScores {
   intelligence: number;
   wisdom: number;
   charisma: number;
-
-  abbreviation: Map<string, string>;
 
   constructor(strength: number,
               dexterity: number,
@@ -22,16 +34,15 @@ export class AbilityScores {
     this.intelligence = intelligence;
     this.wisdom = wisdom;
     this.charisma = charisma;
+  }
 
-    // define Ability Score abbreviations and long form names
-    this.abbreviation = new Map;
-    this.abbreviation.set('STR', 'Strength');
-    this.abbreviation.set('DEX', 'Dexterity');
-    this.abbreviation.set('CON', 'Constitution');
-    this.abbreviation.set('INT', 'Intelligence');
-    this.abbreviation.set('WIS', 'Wisdom');
-    this.abbreviation.set('CHA', 'Charisma');
-
+  getAbilityModifier(abilityScore: number): string {
+    const modifier = Math.floor(abilityScore / 2) - 5;
+    if (modifier < 0) {
+      return '' + modifier; // '-' is already present in negative number
+    } else {
+      return '+' + modifier;
+    }
   }
 
 }
