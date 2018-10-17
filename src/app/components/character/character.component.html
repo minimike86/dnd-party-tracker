@@ -1,72 +1,72 @@
-<div class="container">
+<div class="container pb-3">
 
   <h2 class="mt-3">Character Sheet</h2>
 
   <div class="row">
-    <div class="col-6">
+    <div class="character-attribute col-md-6 col-sm-6 mb-1">
       <input class="form-control form-control-sm" type="text" id="characterName" value="{{ mockCharacter.characterName }}" placeholder="Character Name">
-      <small>Character Name</small>
+      <small class="text-black-50 x-small">Character Name</small>
     </div>
-    <div class="col-6">
+    <div class="character-attribute col-md-6 col-sm-6 mb-1">
       <input class="form-control form-control-sm" type="text" id="playerName" value="{{ mockCharacter.playerName }}" placeholder="Player Name">
-      <small>Player Name</small>
+      <small class="text-black-50 x-small">Player Name</small>
     </div>
   </div>
 
   <div class="row">
-    <div class="col-5">
+    <div class="character-attribute col-md-5 col-sm-10 mb-1">
       <input class="form-control form-control-sm" type="text" id="class" value="{{ getCharClassAndLevelString() }}" placeholder="Class">
-      <small>Class &amp; Level</small>
+      <small class="text-black-50 x-small">Class &amp; Level</small>
     </div>
-    <div class="col-1">
+    <div class="character-attribute col-md-1 col-sm-2 mb-1">
       <input class="form-control form-control-sm" type="text" id="ecl" value="{{ mockCharacter.ecl }}" placeholder="ECL">
-      <small>ECL</small>
+      <small class="text-black-50 x-small">ECL</small>
     </div>
-    <div class="col-2">
+    <div class="character-attribute col-md-2 col-sm-4 mb-1">
       <input class="form-control form-control-sm" type="text" id="raceTemplate" value="{{ mockCharacter.race }}" placeholder="Race/Template">
-      <small>Race/Template</small>
+      <small class="text-black-50 x-small">Race/Template</small>
     </div>
-    <div class="col-2">
+    <div class="character-attribute col-md-2 col-sm-4 mb-1">
       <input class="form-control form-control-sm" type="text" id="size" value="{{ mockCharacter.size }}" placeholder="Size">
-      <small>Size</small>
+      <small class="text-black-50 x-small">Size</small>
     </div>
-    <div class="col-2">
+    <div class="character-attribute col-md-2 col-sm-4 mb-1">
       <input class="form-control form-control-sm" type="text" id="gender" value="{{ mockCharacter.gender }}" placeholder="Gender">
-      <small>Gender</small>
+      <small class="text-black-50 x-small">Gender</small>
     </div>
   </div>
 
   <div class="row">
-    <div class="col-2">
+    <div class="character-attribute col-md-3 col-sm-6 mb-1">
       <input class="form-control form-control-sm" type="text" id="alignment" value="{{ mockCharacter.alignment }}" placeholder="Alignment">
-      <small>Alignment</small>
+      <small class="text-black-50 x-small">Alignment</small>
     </div>
-    <div class="col-4">
+    <div class="character-attribute col-md-3 col-sm-6 mb-1">
       <input class="form-control form-control-sm" type="text" id="religionPatronDeity" value="{{ mockCharacter.religion }}" placeholder="Religion/Patron Deity">
-      <small>Religion/Patron Deity</small>
+      <small class="text-black-50 x-small">Religion/Patron Deity</small>
     </div>
-    <div class="col-1">
+    <div class="character-attribute col-lg-1 col-md-2 col-sm-6 mb-1">
       <input class="form-control form-control-sm" type="text" id="height" value="{{ mockCharacter.height[0] }}&#39; {{ mockCharacter.height[1] }}&quot;" placeholder="Height">
-      <small>Height</small>
+      <small class="text-black-50 x-small">Height</small>
     </div>
-    <div class="col-1">
+    <div class="character-attribute col-lg-1 col-md-2 col-sm-6 mb-1">
       <input class="form-control form-control-sm" type="text" id="weight" value="{{ mockCharacter.weight }}" placeholder="Weight">
-      <small>Weight</small>
+      <small class="text-black-50 x-small">Weight</small>
     </div>
-    <div class="col-4">
+    <div class="character-attribute col-lg-4 col-md-12 mb-1">
       <input class="form-control form-control-sm" type="text" id="looks" value="{{ mockCharacter.looks }}" placeholder="">
-      <small>Looks</small>
+      <small class="text-black-50 x-small">Looks</small>
     </div>
   </div>
 
   <div class="row">
-    <div class="col-6">
+    <div class="col-lg-6 col-md-12 mb-1">
       <app-ability-scores [abilityScores]="mockCharacter.abilityScores"></app-ability-scores>
     </div>
-    <div class="col-4">
+    <div class="col-lg-4 col-md-8 mb-1">
       <app-combat-options></app-combat-options>
     </div>
-    <div class="col-2">
+    <div class="col-lg-2 col-md-4 mb-1">
       <app-hit-points></app-hit-points>
     </div>
   </div>

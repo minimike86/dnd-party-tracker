@@ -9,10 +9,17 @@ import { AbilityScores } from './ability-scores';
 export class AbilityScoresComponent implements OnInit {
 
   @Input() abilityScores: AbilityScores;
+  bindedAbbreviationKeys: Array<string>;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
+    this.bindedAbbreviationKeys = Array.from(this.abilityScores.abbreviation.keys()); // Fix "Expression changed after it was checked."
+  }
+
+  getRandomModifier() {
+    return Math.floor(Math.random() * Math.floor(100));
   }
 
 }
