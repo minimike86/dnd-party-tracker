@@ -1,10 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import { Character } from './character';
-import { Race } from './enum-race';
-import { Size } from './enum-size';
-import { Gender } from './enum-gender';
-import { Alignment } from './enum-alignment';
-import { AbilityScore } from '../character/ability-scores/ability-scores';
+import {Character} from '../../models/character/character';
+import {Race} from '../../enums/enum-race';
+import {Size} from '../../enums/enum-size';
+import {Gender} from '../../enums/enum-gender';
+import {Alignment} from '../../enums/enum-alignment';
+import {AbilityScore} from '../../models/character/ability-scores';
+import {CombatStyle, DamageType, Weapon, WeaponCategory, WeaponType} from '../../models/item/weapon';
 
 @Component({
   selector: 'app-character',
@@ -17,7 +18,11 @@ export class CharacterComponent implements OnInit {
     id: 1,
     characterName: 'Floon Blagmaar',
     playerName: 'Mike Warner',
-    classes: [['Fighter', 1], ['Sorcerer', 1], ['Rogue', 1]],
+    classes: Array(
+            {className: 'Fighter', level: 1},
+                  {className: 'Sorcerer', level: 1},
+                  {className: 'Rogue', level: 1}
+            ),
     ecl: 3,
     race: Race.HUMAN,
     size: Size.MEDIUM,
@@ -26,21 +31,43 @@ export class CharacterComponent implements OnInit {
     religion: 'Pelor',
     height: [5, 10], // feet, inches
     weight: 220, // lbs.
-    abilityScores: new AbilityScore(8, 16, 12, 18, 6, 17)
+    baseAbilityScores: new AbilityScore(
+                                        8,
+                                        16,
+                                        12,
+                                        18,
+                                        6,
+                                        17),
+    hitPoints: Math.floor(((Math.random() * 6) + 1) * 3 + (1 * 3)),
+    hitDie: Array({hitDie: 'd6', dieValue: 6},
+                        {hitDie: 'd6', dieValue: 4},
+                        {hitDie: 'd4', dieValue: 2}
+            ),
+    baseAttackBonus: +3,
+    inventory: null,
+    weapons: Array(
+      new Weapon(1, 'Longsword', '', {platinum: 0, gold: 15, electrum: 0, silver: 0, copper: 0}, 4,
+        WeaponCategory.MARTIAL, CombatStyle.MELEE, WeaponType.ONE_HANDED, Size.MEDIUM, false, false, false,
+        false, null, '1d8', Array(DamageType.SLASHING), '19-20/x2', null,
+        null, false),
+      new Weapon(2, 'Longbow, composite', '', {platinum: 0, gold: 100, electrum: 0, silver: 0, copper: 0},
+        4, WeaponCategory.MARTIAL, CombatStyle.RANGED, null, Size.MEDIUM, false, false, false,
+        true, Array({ammoType: 'Arrows', quantity: 20}), '1d8', Array(DamageType.PIERCING), 'x3',
+        110, null, false))
   };
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
   }
 
   getCharClassAndLevelString(): string {
     let tempStr = '';
-    for (let i = 0, len = this.mockCharacter.classes.length; i < len; i++) {
-      if ( i === 0 ) {
-        tempStr += this.mockCharacter.classes[i][0] + ' ' + this.mockCharacter.classes[i][1];
+    for (const charClass of this.mockCharacter.classes) {
+      if (tempStr === '') {
+        tempStr += charClass.className + charClass.level;
       } else {
-        tempStr += ' / ' + this.mockCharacter.classes[i][0] + ' ' + this.mockCharacter.classes[i][1];
+        tempStr += ' / ' + charClass.className + charClass.level;
       }
     }
     return tempStr;

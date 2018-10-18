@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-hit-points',
@@ -7,9 +7,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HitPointsComponent implements OnInit {
 
-  constructor() { }
+  @Input() totalHitPoints: number;
+  @Input() currentHitPoints: number;
+
+  constructor() {}
 
   ngOnInit() {
+    this.currentHitPoints = Math.floor((Math.random() * this.totalHitPoints) + 1);
+  }
+
+  getHitPointPercentage(): number {
+    return Math.floor((this.currentHitPoints / this.totalHitPoints) * 100);
   }
 
 }

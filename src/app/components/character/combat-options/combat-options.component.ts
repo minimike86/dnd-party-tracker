@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {Item} from '../../../models/item/item';
 
 @Component({
   selector: 'app-combat-options',
@@ -6,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./combat-options.component.css']
 })
 export class CombatOptionsComponent implements OnInit {
+
+  @Input() weapons: Array<[Item]>;
 
   constructor() { }
 
