@@ -25,6 +25,7 @@ import { CombatOptionsComponent } from './components/character/combat-options/co
 import { SavingThrowsComponent } from './components/character/saving-throws/saving-throws.component';
 import { ArmorClassComponent } from './components/character/armor-class/armor-class.component';
 import { HitPointsComponent } from './components/character/hit-points/hit-points.component';
+import { WeaponsComponent } from './components/weapons/weapons.component';
 
 
 @NgModule({
@@ -40,7 +41,8 @@ import { HitPointsComponent } from './components/character/hit-points/hit-points
     CombatOptionsComponent,
     SavingThrowsComponent,
     ArmorClassComponent,
-    HitPointsComponent
+    HitPointsComponent,
+    WeaponsComponent
   ],
   imports: [
     BrowserModule,

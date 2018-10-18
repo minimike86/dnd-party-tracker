@@ -61,13 +61,11 @@
 
   <div class="row">
     <div class="col-lg-6 col-md-12 mb-1">
-      <app-ability-scores [baseAbilityScores]="mockCharacter.abilityScores"></app-ability-scores>
+      <app-ability-scores [baseAbilityScores]="mockCharacter.baseAbilityScores"></app-ability-scores>
     </div>
-    <div class="col-lg-4 col-md-8 mb-1">
-      <app-combat-options></app-combat-options>
-    </div>
-    <div class="col-lg-2 col-md-4 mb-1">
-      <app-hit-points></app-hit-points>
+    <div class="col-lg-6 col-md-12 mb-1">
+      <app-hit-points [totalHitPoints]="mockCharacter.hitPoints"></app-hit-points>
+      <app-combat-options [weapons]="mockCharacter.weapons"></app-combat-options>
     </div>
   </div>
 

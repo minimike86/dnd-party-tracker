@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import { AbilityScore, AbilityScoreAbbreviation } from './ability-scores';
+import { AbilityScore, AbilityScoreAbbreviation } from '../../../models/character/ability-scores';
 
 @Component({
   selector: 'app-ability-scores',
