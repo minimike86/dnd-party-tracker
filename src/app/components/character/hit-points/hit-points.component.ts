@@ -1,4 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-hit-points',
@@ -9,6 +10,7 @@ export class HitPointsComponent implements OnInit {
 
   @Input() totalHitPoints: number;
   @Input() currentHitPoints: number;
+  @Input() healthStatus: string;
 
   constructor() {}
 
@@ -17,7 +19,23 @@ export class HitPointsComponent implements OnInit {
   }
 
   getHitPointPercentage(): number {
-    return Math.floor((this.currentHitPoints / this.totalHitPoints) * 100);
+    if (this.currentHitPoints > 0) {
+      return Math.floor((this.currentHitPoints / this.totalHitPoints) * 100);
+    } else {
+      return Math.floor((this.currentHitPoints + 10 / 10) * 100);
+    }
+  }
+
+  subtractHitPoints(): number {
+    if (this.currentHitPoints > -10) {
+      return this.currentHitPoints -= 1;
+    }
+  }
+
+  addHitPoints(): number {
+    if (this.currentHitPoints < this.totalHitPoints) {
+      return this.currentHitPoints += 1;
+    }
   }
 
 }
