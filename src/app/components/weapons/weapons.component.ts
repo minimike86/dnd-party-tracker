@@ -8,6 +8,7 @@ import { Weapon } from '../../models/item/weapon';
 })
 export class WeaponsComponent implements OnInit {
 
+  @Input() bab: number;
   @Input() weapons: Array<Weapon>;
 
   constructor() { }
@@ -27,6 +28,28 @@ export class WeaponsComponent implements OnInit {
           } else {
             tempStr += ', ' + ammoType.ammoType + ' (' + ammoType.quantity + ')';
           }
+        }
+      }
+    }
+    return tempStr;
+  }
+
+  getAttackString(weaponBonus: number): string {
+    let tempStr =  '';
+    if (this.bab >= 0) {
+      for (let i = 0; i <= Math.round(this.bab / 6); i++) {
+        if (tempStr ===  '') {
+          tempStr = '+' + (this.bab + weaponBonus);
+        } else {
+          tempStr += '/+' + ((this.bab + weaponBonus) - (5 * i));
+        }
+      }
+    } else {
+      for (let i = 0; i >= Math.round(this.bab / 6); i--) {
+        if (tempStr ===  '') {
+          tempStr = '' + (this.bab + weaponBonus);
+        } else {
+          tempStr += '/' + ((this.bab + weaponBonus) - (5 * i));
         }
       }
     }

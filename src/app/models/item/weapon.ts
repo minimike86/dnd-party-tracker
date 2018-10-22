@@ -5,6 +5,7 @@ export class Weapon extends Item {
   category: WeaponCategory;
   combatStyle: CombatStyle;
   weaponType?: WeaponType;
+  weaponBonus?: number;
   size: Size;
   reach: boolean;
   double: boolean;
@@ -19,14 +20,15 @@ export class Weapon extends Item {
   masterwork: boolean;
 
   constructor(id: number, name: string, description: string, cost: Cost, weight: number, category: WeaponCategory,
-              combatStyle: CombatStyle, weaponType: WeaponType, size: Size, reach: boolean, double: boolean, thrown: boolean,
-              projectile: boolean, ammunition: Array<AmmunitionType>, damage: string, damageType: Array<DamageType>, critical: string,
-              rangeIncrement: number, special: string, masterwork: boolean) {
+              combatStyle: CombatStyle, weaponType: WeaponType, weaponBonus: number, size: Size, reach: boolean, double: boolean,
+              thrown: boolean, projectile: boolean, ammunition: Array<AmmunitionType>, damage: string, damageType: Array<DamageType>,
+              critical: string, rangeIncrement: number, special: string, masterwork: boolean) {
 
     super(id, name, description, ItemType.WEAPON, cost, weight);
     this.category = category;
     this.combatStyle = combatStyle;
     this.weaponType = weaponType;
+    this.weaponBonus = weaponBonus;
     this.size = size;
     this.reach = reach;
     this.double = double;

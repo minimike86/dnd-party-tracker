@@ -28,12 +28,14 @@ export class HitPointsComponent implements OnInit {
 
   subtractHitPoints(): number {
     if (this.currentHitPoints > -10) {
+      console.log('decreasing health by 1.');
       return this.currentHitPoints -= 1;
     }
   }
 
   addHitPoints(): number {
     if (this.currentHitPoints < this.totalHitPoints) {
+      console.log('increasing health by 1.');
       return this.currentHitPoints += 1;
     }
   }
