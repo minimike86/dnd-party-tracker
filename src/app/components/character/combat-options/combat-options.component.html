@@ -4,8 +4,8 @@
     <h4 class="pt-1 pb-0 mb-0">BAB</h4>
   </div>
   <div class="d-flex align-items-center flex-column w-100 ml-3 mr-3">
-    <input class="form-control" type="text"/>
+    <input class="form-control" type="text" [value]="getBabString()"/>
     <small class="text-black-50 xx-small">Base Attack Bonus</small>
   </div>
 </div>
-<app-weapons [weapons]="weapons"></app-weapons>
+<app-weapons [bab]="bab" [weapons]="weapons"></app-weapons>

@@ -43,15 +43,15 @@ export class CharacterComponent implements OnInit {
                         {hitDie: 'd6', dieValue: 4},
                         {hitDie: 'd4', dieValue: 2}
             ),
-    baseAttackBonus: +3,
+    baseAttackBonus: 20,
     inventory: null,
     weapons: Array(
-      new Weapon(1, 'Longsword', '', {platinum: 0, gold: 15, electrum: 0, silver: 0, copper: 0}, 4,
-        WeaponCategory.MARTIAL, CombatStyle.MELEE, WeaponType.ONE_HANDED, Size.MEDIUM, false, false, false,
+      new Weapon(1, 'Longsword +2', '', {platinum: 0, gold: 15, electrum: 0, silver: 0, copper: 0}, 4,
+        WeaponCategory.MARTIAL, CombatStyle.MELEE, WeaponType.ONE_HANDED, 2, Size.MEDIUM, false, false, false,
         false, null, '1d8', Array(DamageType.SLASHING), '19-20/x2', null,
         null, false),
       new Weapon(2, 'Longbow, composite', '', {platinum: 0, gold: 100, electrum: 0, silver: 0, copper: 0},
-        4, WeaponCategory.MARTIAL, CombatStyle.RANGED, null, Size.MEDIUM, false, false, false,
+        4, WeaponCategory.MARTIAL, CombatStyle.RANGED, null, 0, Size.MEDIUM, false, false, false,
         true, Array({ammoType: 'Arrows', quantity: 20}), '1d8', Array(DamageType.PIERCING), 'x3',
         110, null, false))
   };
