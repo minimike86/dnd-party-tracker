@@ -1,11 +1,13 @@
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 const appRoutes: Routes = [
-  { path: '',           component: HomeComponent },
-  { path: 'party',      component: PartyComponent },
-  { path: 'character',  component: CharacterComponent },
+  { path: '',               component: HomeComponent },
+  { path: 'party',          component: PartyComponent },
+  { path: 'character',      component: CharacterComponent },
+  { path: 'character/new',  component: NewCharacterComponent },
   { path: '',
     redirectTo: '/',
     pathMatch: 'full'
@@ -26,6 +28,7 @@ import { SavingThrowsComponent } from './components/character/saving-throws/savi
 import { ArmorClassComponent } from './components/character/armor-class/armor-class.component';
 import { HitPointsComponent } from './components/character/hit-points/hit-points.component';
 import { WeaponsComponent } from './components/weapons/weapons.component';
+import { NewCharacterComponent } from './components/character/new-character/new-character.component';
 
 
 @NgModule({
@@ -42,10 +45,12 @@ import { WeaponsComponent } from './components/weapons/weapons.component';
     SavingThrowsComponent,
     ArmorClassComponent,
     HitPointsComponent,
-    WeaponsComponent
+    WeaponsComponent,
+    NewCharacterComponent
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     NgbModule,
     RouterModule.forRoot(
       appRoutes,

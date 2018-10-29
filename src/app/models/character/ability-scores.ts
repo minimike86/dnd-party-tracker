@@ -2,7 +2,7 @@ export class AbilityScoreAbbreviation {
   abbreviation: Map<string, string>;
   constructor() {
     // define Ability Score abbreviations and long form names
-    this.abbreviation = new Map;
+    this.abbreviation = new Map();
     this.abbreviation.set('STR', 'Strength');
     this.abbreviation.set('DEX', 'Dexterity');
     this.abbreviation.set('CON', 'Constitution');

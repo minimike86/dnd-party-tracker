@@ -31,13 +31,7 @@ export class CharacterComponent implements OnInit {
     religion: 'Pelor',
     height: [5, 10], // feet, inches
     weight: 220, // lbs.
-    baseAbilityScores: new AbilityScore(
-                                        8,
-                                        16,
-                                        12,
-                                        18,
-                                        6,
-                                        17),
+    baseAbilityScores: new AbilityScore(8, 16, 12, 18, 6, 17),
     hitPoints: Math.floor(((Math.random() * 6) + 1) * 3 + (1 * 3)),
     hitDie: Array({hitDie: 'd6', dieValue: 6},
                         {hitDie: 'd6', dieValue: 4},
