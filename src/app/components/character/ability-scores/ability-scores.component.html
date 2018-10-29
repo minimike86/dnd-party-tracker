@@ -1,78 +1,204 @@
 <h3 class="mt-3">Ability Scores</h3>
-<div class="d-flex flex-nowrap row mt-1" *ngFor="let abbr of bindedAbbreviationKeys">
+<div class="container">
+  <div class="row">
 
-  <div class="d-flex align-items-start flex-column ml-3" style="width: 3.5em; flex: 0 0 auto;">
-    <h4 class="pt-1 pb-0 mb-0">{{ abbr }}</h4>
-    <small class="text-black-50 xx-small">{{ abilityScoreAbbr.abbreviation.get(abbr) }}</small>
-  </div>
+    <!-- NEW CHARACTER -->
+    <div class="col-8 p-0" *ngIf="charIsNew==true">
 
-  <div class="d-flex align-items-center flex-column ml-1">
-    <div [ngSwitch]="abbr">
-      <input class="form-control form-control pt-2 pb-2 mb-0" *ngSwitchCase="'STR'" [value]="totalAbilityScores.strength" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Total" readonly>
-      <input class="form-control form-control pt-2 pb-2 mb-0" *ngSwitchCase="'DEX'" [value]="totalAbilityScores.dexterity" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Total" readonly>
-      <input class="form-control form-control pt-2 pb-2 mb-0" *ngSwitchCase="'CON'" [value]="totalAbilityScores.constitution" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Total" readonly>
-      <input class="form-control form-control pt-2 pb-2 mb-0" *ngSwitchCase="'INT'" [value]="totalAbilityScores.intelligence" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Total" readonly>
-      <input class="form-control form-control pt-2 pb-2 mb-0" *ngSwitchCase="'WIS'" [value]="totalAbilityScores.wisdom" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Total" readonly>
-      <input class="form-control form-control pt-2 pb-2 mb-0" *ngSwitchCase="'CHA'" [value]="totalAbilityScores.charisma" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Total" readonly>
-      <input class="form-control form-control pt-2 pb-2 mb-0" *ngSwitchDefault [value]="">
+      <div class="d-flex flex-nowrap row mt-1" *ngFor="let abbr of bindedAbbreviationKeys">
+
+        <div class="d-flex align-items-start flex-column ml-3" style="width: 3.5em; flex: 0 0 auto;">
+          <h4 class="pt-1 pb-0 mb-0">{{ abbr }}</h4>
+          <small class="text-black-50 xx-small">{{ abilityScoreAbbr.abbreviation.get(abbr) }}</small>
+        </div>
+
+        <div [ngSwitch]="abbr" class="d-flex align-items-center flex-column ml-1">
+          <div>
+            <input class="form-control form-control pt-2 pb-2 mb-0" *ngSwitchCase="'STR'" [value]="totalAbilityScores.strength" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Total" readonly>
+            <input class="form-control form-control pt-2 pb-2 mb-0" *ngSwitchCase="'DEX'" [value]="totalAbilityScores.dexterity" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Total" readonly>
+            <input class="form-control form-control pt-2 pb-2 mb-0" *ngSwitchCase="'CON'" [value]="totalAbilityScores.constitution" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Total" readonly>
+            <input class="form-control form-control pt-2 pb-2 mb-0" *ngSwitchCase="'INT'" [value]="totalAbilityScores.intelligence" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Total" readonly>
+            <input class="form-control form-control pt-2 pb-2 mb-0" *ngSwitchCase="'WIS'" [value]="totalAbilityScores.wisdom" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Total" readonly>
+            <input class="form-control form-control pt-2 pb-2 mb-0" *ngSwitchCase="'CHA'" [value]="totalAbilityScores.charisma" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Total" readonly>
+            <input class="form-control form-control pt-2 pb-2 mb-0" *ngSwitchDefault [value]="">
+          </div>
+          <div class="xx-small" *ngSwitchCase="'INT'"><small *ngIf="totalAbilityScores.intelligence !== 0 && totalAbilityScores.intelligence <= 9" class="text-danger xx-small">{{ abilityScoreAbbr.abbreviation.get(abbr) }} is too low to cast spells tied to this ability</small></div>
+          <div class="xx-small" *ngSwitchCase="'WIS'"><small *ngIf="totalAbilityScores.wisdom !== 0 && totalAbilityScores.wisdom <= 9" class="text-danger xx-small">{{ abilityScoreAbbr.abbreviation.get(abbr) }} is too low to cast spells tied to this ability</small></div>
+          <div class="xx-small" *ngSwitchCase="'CHA'"><small *ngIf="totalAbilityScores.charisma !== 0 && totalAbilityScores.charisma <= 9" class="text-danger xx-small">{{ abilityScoreAbbr.abbreviation.get(abbr) }} is too low to cast spells tied to this ability</small></div>
+          <small *ngSwitchDefault class="text-black-50 xx-small">Total</small>
+        </div>
+
+        <div class="d-flex align-items-center flex-column ml-1" style="margin-top: 0.35em; width: 2.5em; flex: 0 0 auto;">
+          <div [ngSwitch]="abbr">
+            <span class="badge badge-pill badge-secondary" *ngSwitchCase="'STR'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Modifier">{{ getAbilityModifier(totalAbilityScores.strength) }}</span>
+            <span class="badge badge-pill badge-secondary" *ngSwitchCase="'DEX'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Modifier">{{ getAbilityModifier(totalAbilityScores.dexterity) }}</span>
+            <span class="badge badge-pill badge-secondary" *ngSwitchCase="'CON'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Modifier">{{ getAbilityModifier(totalAbilityScores.constitution) }}</span>
+            <span class="badge badge-pill badge-secondary" *ngSwitchCase="'INT'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Modifier">{{ getAbilityModifier(totalAbilityScores.intelligence) }}</span>
+            <span class="badge badge-pill badge-secondary" *ngSwitchCase="'WIS'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Modifier">{{ getAbilityModifier(totalAbilityScores.wisdom) }}</span>
+            <span class="badge badge-pill badge-secondary" *ngSwitchCase="'CHA'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Modifier">{{ getAbilityModifier(totalAbilityScores.charisma) }}</span>
+            <span class="badge badge-pill badge-secondary" *ngSwitchDefault title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Modifier"></span>
+          </div>
+        </div>
+
+        <div class="d-flex align-items-center flex-column ml-1 math-sign">
+          <h6 class="pt-2 pb-2 mb-0">=</h6>
+        </div>
+
+        <div class="d-flex align-items-center flex-column ml-1">
+          <div [ngSwitch]="abbr">
+            <input class="form-control pt-2 pb-2 mb-0" *ngSwitchCase="'STR'" [value]="baseAbilityScores.strength" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Base Score" readonly>
+            <input class="form-control pt-2 pb-2 mb-0" *ngSwitchCase="'DEX'" [value]="baseAbilityScores.dexterity" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Base Score" readonly>
+            <input class="form-control pt-2 pb-2 mb-0" *ngSwitchCase="'CON'" [value]="baseAbilityScores.constitution" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Base Score" readonly>
+            <input class="form-control pt-2 pb-2 mb-0" *ngSwitchCase="'INT'" [value]="baseAbilityScores.intelligence" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Base Score" readonly>
+            <input class="form-control pt-2 pb-2 mb-0" *ngSwitchCase="'WIS'" [value]="baseAbilityScores.wisdom" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Base Score" readonly>
+            <input class="form-control pt-2 pb-2 mb-0" *ngSwitchCase="'CHA'" [value]="baseAbilityScores.charisma" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Base Score" readonly>
+            <input class="form-control pt-2 pb-2 mb-0" *ngSwitchDefault [value]="">
+          </div>
+          <small class="text-black-50 xx-small">Base Score</small>
+        </div>
+
+        <div class="d-flex align-items-center flex-column ml-1">
+          <div [ngSwitch]="abbr">
+            <input class="form-control pt-2 pb-2 mb-0" type="number" [(ngModel)]="racialAbilityAdjustment.strength" (change)="updateRacialAbilityAdjustment(abbr, $event.target.value)" *ngSwitchCase="'STR'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Racial Bonuses">
+            <input class="form-control pt-2 pb-2 mb-0" type="number" [(ngModel)]="racialAbilityAdjustment.dexterity" (change)="updateRacialAbilityAdjustment(abbr, $event.target.value)" *ngSwitchCase="'DEX'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Racial Bonuses">
+            <input class="form-control pt-2 pb-2 mb-0" type="number" [(ngModel)]="racialAbilityAdjustment.constitution" (change)="updateRacialAbilityAdjustment(abbr, $event.target.value)" *ngSwitchCase="'CON'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Racial Bonuses">
+            <input class="form-control pt-2 pb-2 mb-0" type="number" [(ngModel)]="racialAbilityAdjustment.intelligence" (change)="updateRacialAbilityAdjustment(abbr, $event.target.value)" *ngSwitchCase="'INT'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Racial Bonuses">
+            <input class="form-control pt-2 pb-2 mb-0" type="number" [(ngModel)]="racialAbilityAdjustment.wisdom" (change)="updateRacialAbilityAdjustment(abbr, $event.target.value)" *ngSwitchCase="'WIS'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Racial Bonuses">
+            <input class="form-control pt-2 pb-2 mb-0" type="number" [(ngModel)]="racialAbilityAdjustment.charisma" (change)="updateRacialAbilityAdjustment(abbr, $event.target.value)" *ngSwitchCase="'CHA'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Racial Bonuses">
+            <input class="form-control pt-2 pb-2 mb-0" type="number" *ngSwitchDefault>
+          </div>
+          <small class="text-black-50 xx-small">Racial</small>
+        </div>
+
+        <div class="d-flex mr-3">
+
+          <div class="d-flex align-items-start flex-column ml-1">
+            <input class="btn btn-outline-dark" style="width: 180px;" type="button" (click)="rollNewAbilityScore(abbr)" value="Roll {{ abilityScoreAbbr.abbreviation.get(abbr) }} (4d6)">
+          </div>
+
+          <div class="d-flex align-items-start flex-shrink-0 ml-1">
+            <input class="btn btn-outline-dark" style="" type="button" (click)="lowerAbilityScore(abbr)" value="-">
+          </div>
+
+          <div class="d-flex align-items-start flex-shrink-0 ml-1">
+            <input class="btn btn-outline-dark" style="" type="button" (click)="raiseAbilityScore(abbr)" value="+">
+          </div>
+
+        </div>
+
+      </div>
+
     </div>
-    <small class="text-black-50 xx-small">Total</small>
-  </div>
 
-  <div class="d-flex align-items-center flex-column ml-1" style="margin-top: 0.35em; width: 2.5em; flex: 0 0 auto;">
-    <div [ngSwitch]="abbr">
-      <span class="badge badge-pill badge-secondary" *ngSwitchCase="'STR'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Modifier">{{ getAbilityModifier(totalAbilityScores.strength) }}</span>
-      <span class="badge badge-pill badge-secondary" *ngSwitchCase="'DEX'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Modifier">{{ getAbilityModifier(totalAbilityScores.dexterity) }}</span>
-      <span class="badge badge-pill badge-secondary" *ngSwitchCase="'CON'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Modifier">{{ getAbilityModifier(totalAbilityScores.constitution) }}</span>
-      <span class="badge badge-pill badge-secondary" *ngSwitchCase="'INT'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Modifier">{{ getAbilityModifier(totalAbilityScores.intelligence) }}</span>
-      <span class="badge badge-pill badge-secondary" *ngSwitchCase="'WIS'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Modifier">{{ getAbilityModifier(totalAbilityScores.wisdom) }}</span>
-      <span class="badge badge-pill badge-secondary" *ngSwitchCase="'CHA'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Modifier">{{ getAbilityModifier(totalAbilityScores.charisma) }}</span>
-      <span class="badge badge-pill badge-secondary" *ngSwitchDefault title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Modifier"></span>
+    <div class="col-4 pr-0" *ngIf="charIsNew==true">
+
+      <div class="jumbotron p-3 mb-1" style="text-align: center;">
+        <h1 class="display-1">{{ pointBuy }}</h1>
+        <p class="lead">Point Buy Total</p>
+        <p *ngIf="pointBuy < 0" class="text-danger">Low-powered</p>
+        <p *ngIf="pointBuy === 0" class="text-muted">&nbsp;</p>
+        <p *ngIf="pointBuy >= 1 && pointBuy <= 15" class="text-danger">Low-powered</p>
+        <p *ngIf="pointBuy >= 16 && pointBuy <= 22" class="text-warning">Challenging</p>
+        <p *ngIf="pointBuy >= 23 && pointBuy <= 28" class="text-info">Normal</p>
+        <p *ngIf="pointBuy >= 29 && pointBuy <= 32" class="text-warning">High-powered</p>
+        <p *ngIf="pointBuy >= 33" class="text-danger">God Tier</p>
+      </div>
+
+      <div>
+        <label for="typeahead-basic">Race</label>
+        <input id="typeahead-basic" type="text" class="form-control" [(ngModel)]="raceModel" [ngbTypeahead]="search"/>
+      </div>
+
     </div>
-  </div>
 
-  <div class="d-flex align-items-center flex-column ml-1 math-sign">
-    <h6 class="pt-2 pb-2 mb-0">=</h6>
-  </div>
 
-  <div class="d-flex align-items-center flex-column ml-1">
-    <div [ngSwitch]="abbr">
-      <input class="form-control form-control pt-2 pb-2 mb-0" *ngSwitchCase="'STR'" [value]="baseAbilityScores.strength" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Base Score + Racial Bonuses" readonly>
-      <input class="form-control form-control pt-2 pb-2 mb-0" *ngSwitchCase="'DEX'" [value]="baseAbilityScores.dexterity" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Base Score + Racial Bonuses" readonly>
-      <input class="form-control form-control pt-2 pb-2 mb-0" *ngSwitchCase="'CON'" [value]="baseAbilityScores.constitution" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Base Score + Racial Bonuses" readonly>
-      <input class="form-control form-control pt-2 pb-2 mb-0" *ngSwitchCase="'INT'" [value]="baseAbilityScores.intelligence" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Base Score + Racial Bonuses" readonly>
-      <input class="form-control form-control pt-2 pb-2 mb-0" *ngSwitchCase="'WIS'" [value]="baseAbilityScores.wisdom" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Base Score + Racial Bonuses" readonly>
-      <input class="form-control form-control pt-2 pb-2 mb-0" *ngSwitchCase="'CHA'" [value]="baseAbilityScores.charisma" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Base Score + Racial Bonuses" readonly>
-      <input class="form-control form-control pt-2 pb-2 mb-0" *ngSwitchDefault [value]="">
+    <!-- EXISTING CHARACTER -->
+    <div class="" *ngIf="charIsNew==false">
+
+      <div class="d-flex flex-nowrap row mt-1" *ngFor="let abbr of bindedAbbreviationKeys">
+
+        <div class="d-flex align-items-start flex-column ml-3" style="width: 3.5em; flex: 0 0 auto;">
+          <h4 class="pt-1 pb-0 mb-0">{{ abbr }}</h4>
+          <small class="text-black-50 xx-small">{{ abilityScoreAbbr.abbreviation.get(abbr) }}</small>
+        </div>
+
+        <div class="d-flex align-items-center flex-column ml-1">
+          <div [ngSwitch]="abbr">
+            <input class="form-control form-control pt-2 pb-2 mb-0" *ngSwitchCase="'STR'" [value]="totalAbilityScores.strength" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Total" readonly>
+            <input class="form-control form-control pt-2 pb-2 mb-0" *ngSwitchCase="'DEX'" [value]="totalAbilityScores.dexterity" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Total" readonly>
+            <input class="form-control form-control pt-2 pb-2 mb-0" *ngSwitchCase="'CON'" [value]="totalAbilityScores.constitution" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Total" readonly>
+            <input class="form-control form-control pt-2 pb-2 mb-0" *ngSwitchCase="'INT'" [value]="totalAbilityScores.intelligence" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Total" readonly>
+            <input class="form-control form-control pt-2 pb-2 mb-0" *ngSwitchCase="'WIS'" [value]="totalAbilityScores.wisdom" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Total" readonly>
+            <input class="form-control form-control pt-2 pb-2 mb-0" *ngSwitchCase="'CHA'" [value]="totalAbilityScores.charisma" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Total" readonly>
+            <input class="form-control form-control pt-2 pb-2 mb-0" *ngSwitchDefault [value]="">
+          </div>
+          <small class="text-black-50 xx-small">Total</small>
+        </div>
+
+        <div class="d-flex align-items-center flex-column ml-1" style="margin-top: 0.35em; width: 2.5em; flex: 0 0 auto;">
+          <div [ngSwitch]="abbr">
+            <span class="badge badge-pill badge-secondary" *ngSwitchCase="'STR'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Modifier">{{ getAbilityModifier(totalAbilityScores.strength) }}</span>
+            <span class="badge badge-pill badge-secondary" *ngSwitchCase="'DEX'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Modifier">{{ getAbilityModifier(totalAbilityScores.dexterity) }}</span>
+            <span class="badge badge-pill badge-secondary" *ngSwitchCase="'CON'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Modifier">{{ getAbilityModifier(totalAbilityScores.constitution) }}</span>
+            <span class="badge badge-pill badge-secondary" *ngSwitchCase="'INT'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Modifier">{{ getAbilityModifier(totalAbilityScores.intelligence) }}</span>
+            <span class="badge badge-pill badge-secondary" *ngSwitchCase="'WIS'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Modifier">{{ getAbilityModifier(totalAbilityScores.wisdom) }}</span>
+            <span class="badge badge-pill badge-secondary" *ngSwitchCase="'CHA'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Modifier">{{ getAbilityModifier(totalAbilityScores.charisma) }}</span>
+            <span class="badge badge-pill badge-secondary" *ngSwitchDefault title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Modifier"></span>
+          </div>
+        </div>
+
+        <div class="d-flex align-items-center flex-column ml-1 math-sign">
+          <h6 class="pt-2 pb-2 mb-0">=</h6>
+        </div>
+
+        <div class="d-flex align-items-center flex-column ml-1">
+          <div [ngSwitch]="abbr">
+            <input class="form-control pt-2 pb-2 mb-0" *ngSwitchCase="'STR'" [value]="baseAbilityScores.strength" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Base Score + Racial Bonuses" readonly>
+            <input class="form-control pt-2 pb-2 mb-0" *ngSwitchCase="'DEX'" [value]="baseAbilityScores.dexterity" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Base Score + Racial Bonuses" readonly>
+            <input class="form-control pt-2 pb-2 mb-0" *ngSwitchCase="'CON'" [value]="baseAbilityScores.constitution" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Base Score + Racial Bonuses" readonly>
+            <input class="form-control pt-2 pb-2 mb-0" *ngSwitchCase="'INT'" [value]="baseAbilityScores.intelligence" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Base Score + Racial Bonuses" readonly>
+            <input class="form-control pt-2 pb-2 mb-0" *ngSwitchCase="'WIS'" [value]="baseAbilityScores.wisdom" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Base Score + Racial Bonuses" readonly>
+            <input class="form-control pt-2 pb-2 mb-0" *ngSwitchCase="'CHA'" [value]="baseAbilityScores.charisma" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Base Score + Racial Bonuses" readonly>
+            <input class="form-control pt-2 pb-2 mb-0" *ngSwitchDefault [value]="">
+          </div>
+          <small class="text-black-50 xx-small">Base Score + Racial</small>
+        </div>
+
+        <div class="d-flex">
+
+          <div class="d-flex align-items-center flex-column ml-1 math-sign">
+            <h6 class="pt-2 pb-2 mb-0">+</h6>
+          </div>
+
+          <div class="d-flex align-items-center flex-column ml-1">
+            <input class="form-control pt-2 pb-2 mb-0" title="Enhancement Bonuses">
+            <small class="text-black-50 xx-small">Enhancement Bonuses</small>
+          </div>
+
+          <div class="d-flex align-items-center flex-column ml-1 math-sign">
+            <h6 class="pt-2 pb-2 mb-0">+</h6>
+          </div>
+
+          <div class="d-flex align-items-center flex-column ml-1">
+            <input class="form-control pt-2 pb-2 mb-0" title="Misc Bonuses">
+            <small class="text-black-50 xx-small">Misc Bonuses</small>
+          </div>
+
+          <div class="d-flex align-items-center flex-column ml-1 math-sign">
+            <h6 class="pt-2 pb-2 mb-0">-</h6>
+          </div>
+
+          <div class="d-flex align-items-center flex-column ml-1 mr-3">
+            <input class="form-control pt-2 pb-2 mb-0" title="Misc Penalties">
+            <small class="text-black-50 xx-small">Misc Penalties</small>
+          </div>
+
+        </div>
+
+      </div>
+
     </div>
-    <small class="text-black-50 xx-small">Base Score + Racial</small>
-  </div>
 
-  <div class="d-flex align-items-center flex-column ml-1 math-sign">
-    <h6 class="pt-2 pb-2 mb-0">+</h6>
   </div>
-
-  <div class="d-flex align-items-center flex-column ml-1">
-    <input class="form-control form-control pt-2 pb-2 mb-0" title="Enhancement Bonuses">
-    <small class="text-black-50 xx-small">Enhancement Bonuses</small>
-  </div>
-
-  <div class="d-flex align-items-center flex-column ml-1 math-sign">
-    <h6 class="pt-2 pb-2 mb-0">+</h6>
-  </div>
-
-  <div class="d-flex align-items-center flex-column ml-1">
-    <input class="form-control form-control pt-2 pb-2 mb-0" title="Misc Bonuses">
-    <small class="text-black-50 xx-small">Misc Bonuses</small>
-  </div>
-
-  <div class="d-flex align-items-center flex-column ml-1 math-sign">
-    <h6 class="pt-2 pb-2 mb-0">-</h6>
-  </div>
-
-  <div class="d-flex align-items-center flex-column ml-1 mr-3">
-    <input class="form-control form-control pt-2 pb-2 mb-0" title="Misc Penalties">
-    <small class="text-black-50 xx-small">Misc Penalties</small>
-  </div>
-
 </div>
+
