@@ -1,22 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
-import { AbilityScore, AbilityScoreAbbreviation } from '../../../models/character/ability-scores';
 import { isUndefined } from 'util';
+import { AbilityScore, AbilityScoreAbbreviation } from '../../../models/character/ability-scores';
+import { Race } from '../../../models/character/race';
 
-export class Race {
-  public race: string;
-  public abilityAdjustment: AbilityScore;
-  public favoredClass: string;
-  constructor(race, abilityAdjustment, favoredClass) {
-    this.race = race;
-    this.abilityAdjustment = abilityAdjustment;
-    this.favoredClass = favoredClass;
-  }
-  toString() {
-    return this.race;
-  }
-}
 
 @Component({
   selector: 'app-ability-scores',
