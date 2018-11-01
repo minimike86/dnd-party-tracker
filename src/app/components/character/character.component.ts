@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Character} from '../../models/character/character';
-import {Race} from '../../enums/enum-race';
+import {RaceName} from '../../enums/enum-race';
 import {Size} from '../../enums/enum-size';
 import {Gender} from '../../enums/enum-gender';
 import {Alignment} from '../../enums/enum-alignment';
@@ -24,7 +24,7 @@ export class CharacterComponent implements OnInit {
                   {className: 'Rogue', level: 1}
             ),
     ecl: 3,
-    race: Race.HUMAN,
+    race: RaceName.HUMAN,
     size: Size.MEDIUM,
     gender: Gender.MALE,
     alignment: Alignment.CN,
