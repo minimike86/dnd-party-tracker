@@ -1,4 +1,4 @@
-import { Race } from '../../enums/enum-race';
+import { RaceName } from '../../enums/enum-race';
 import { Size } from '../../enums/enum-size';
 import { Alignment } from '../../enums/enum-alignment';
 import { AbilityScore } from './ability-scores';
@@ -14,7 +14,7 @@ export class Character {
   playerName: string;
   classes: Array<{className: string, level: number}>;
   ecl?: number;
-  race: Race;
+  race: RaceName;
   size: Size;
   gender: string;
   alignment: Alignment;

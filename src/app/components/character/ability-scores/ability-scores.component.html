@@ -59,13 +59,13 @@
 
         <div class="d-flex align-items-center flex-column ml-1">
           <div [ngSwitch]="abbr">
-            <input class="form-control pt-2 pb-2 mb-0" type="number" [(ngModel)]="racialAbilityAdjustment.strength" (change)="updateRacialAbilityAdjustment(abbr, $event.target.value)" *ngSwitchCase="'STR'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Racial Bonuses">
-            <input class="form-control pt-2 pb-2 mb-0" type="number" [(ngModel)]="racialAbilityAdjustment.dexterity" (change)="updateRacialAbilityAdjustment(abbr, $event.target.value)" *ngSwitchCase="'DEX'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Racial Bonuses">
-            <input class="form-control pt-2 pb-2 mb-0" type="number" [(ngModel)]="racialAbilityAdjustment.constitution" (change)="updateRacialAbilityAdjustment(abbr, $event.target.value)" *ngSwitchCase="'CON'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Racial Bonuses">
-            <input class="form-control pt-2 pb-2 mb-0" type="number" [(ngModel)]="racialAbilityAdjustment.intelligence" (change)="updateRacialAbilityAdjustment(abbr, $event.target.value)" *ngSwitchCase="'INT'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Racial Bonuses">
-            <input class="form-control pt-2 pb-2 mb-0" type="number" [(ngModel)]="racialAbilityAdjustment.wisdom" (change)="updateRacialAbilityAdjustment(abbr, $event.target.value)" *ngSwitchCase="'WIS'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Racial Bonuses">
-            <input class="form-control pt-2 pb-2 mb-0" type="number" [(ngModel)]="racialAbilityAdjustment.charisma" (change)="updateRacialAbilityAdjustment(abbr, $event.target.value)" *ngSwitchCase="'CHA'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Racial Bonuses">
-            <input class="form-control pt-2 pb-2 mb-0" type="number" *ngSwitchDefault>
+            <input class="form-control pt-2 pb-2 mb-0" [(ngModel)]="selectedRace.getAbilityAdjustment().strength" *ngSwitchCase="'STR'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Racial Bonuses" readonly>
+            <input class="form-control pt-2 pb-2 mb-0" [(ngModel)]="selectedRace.getAbilityAdjustment().dexterity" *ngSwitchCase="'DEX'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Racial Bonuses" readonly>
+            <input class="form-control pt-2 pb-2 mb-0" [(ngModel)]="selectedRace.getAbilityAdjustment().constitution" *ngSwitchCase="'CON'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Racial Bonuses" readonly>
+            <input class="form-control pt-2 pb-2 mb-0" [(ngModel)]="selectedRace.getAbilityAdjustment().intelligence" *ngSwitchCase="'INT'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Racial Bonuses" readonly>
+            <input class="form-control pt-2 pb-2 mb-0" [(ngModel)]="selectedRace.getAbilityAdjustment().wisdom" *ngSwitchCase="'WIS'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Racial Bonuses" readonly>
+            <input class="form-control pt-2 pb-2 mb-0" [(ngModel)]="selectedRace.getAbilityAdjustment().charisma" *ngSwitchCase="'CHA'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Racial Bonuses" readonly>
+            <input class="form-control pt-2 pb-2 mb-0" *ngSwitchDefault>
           </div>
           <small class="text-black-50 xx-small">Racial</small>
         </div>
@@ -106,7 +106,7 @@
 
       <div>
         <label for="typeahead-basic">Race</label>
-        <input id="typeahead-basic" type="text" class="form-control" [(ngModel)]="raceModel" [ngbTypeahead]="search"/>
+        <input id="typeahead-basic" type="text" class="form-control" (selectItem)="updateRacialAbilityAdjustmentRace($event.item)" [(ngModel)]="typeAheadRace" [ngbTypeahead]="search"/>
       </div>
 
     </div>
@@ -201,4 +201,6 @@
 
   </div>
 </div>
-
+<div class="d-flex flex-row-reverse mt-3" *ngIf="charIsNew==true">
+  <a routerLink="/character/new/class" class="btn" [ngClass]="readyToPickClass ? 'btn-primary' : 'btn-dark disabled'">Next: Character Class <i class="fas fa-hat-wizard"></i></a>
+</div>

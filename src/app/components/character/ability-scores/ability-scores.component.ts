@@ -1,9 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
-import { isUndefined } from 'util';
-import { AbilityScore, AbilityScoreAbbreviation } from '../../../models/character/ability-scores';
-import { Race } from '../../../models/character/race';
+import {Component, Input, OnInit} from '@angular/core';
+import {Observable} from 'rxjs';
+import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
+import {AbilityScore, AbilityScoreAbbreviation} from '../../../models/character/ability-scores';
+import {RaceService} from '../../../services/character/race.service';
+import {Race} from '../../../models/character/race';
+import {RaceName} from '../../../enums/enum-race';
 
 
 @Component({
@@ -20,41 +21,37 @@ export class AbilityScoresComponent implements OnInit {
   public bindedAbbreviationKeys: Array<string>;
   public pointBuy: number;
   public charIsNew: boolean;
-  public raceModel: Race;
-  races: Array<Race>;
+  public readyToPickClass: boolean;
+  public races: Array<Race>;
+  public selectedRace: Race;
+  public typeAheadRace: string;
 
-  constructor() {}
+  constructor(raceService: RaceService) {
+    this.races = raceService.getRaceList().sort();
+    this.selectedRace = this.races.find(race => race.name === RaceName.NULL);
+  }
 
   ngOnInit() {
     this.charIsNew = true;
-    if (isUndefined(this.baseAbilityScores)) {
+    this.readyToPickClass = false;
+    if (this.baseAbilityScores === undefined) {
       this.baseAbilityScores = new AbilityScore(0, 0, 0, 0, 0, 0);
       this.racialAbilityAdjustment = new AbilityScore(0, 0, 0, 0, 0, 0);
       this.totalAbilityScores = new AbilityScore(0, 0, 0, 0, 0, 0);
+      this.pointBuy = this.getPointBuyPoints(this.baseAbilityScores);
     } else {
       this.totalAbilityScores = this.baseAbilityScores;
       this.charIsNew = false;
     }
-    this.pointBuy = this.getPointBuyPoints(this.baseAbilityScores);
     this.abilityScoreAbbr = new AbilityScoreAbbreviation();
     this.bindedAbbreviationKeys = Array.from(this.abilityScoreAbbr.abbreviation.keys()); // Fix "Expression changed after it was checked."
 
-    this.races = [
-      new Race('Human', new AbilityScore(0, 0, 0, 0, 0, 0), 'Any'),
-      new Race('Dwarf', new AbilityScore(0, 0, 2, 0, 0, -2), 'Fighter'),
-      new Race('Elf', new AbilityScore(0, 2, -2, 0, 0, 0), 'Wizard'),
-      new Race('Gnome', new AbilityScore(-2, 0, 2, 0, 0, 0), 'Bard'),
-      new Race('Half-elf', new AbilityScore(0, 0, 0, 0, 0, 0), 'Any'),
-      new Race('Half-orc', new AbilityScore(2, 0, 0, -2, 0, -2), 'Barbarian'),
-      new Race('Halfling', new AbilityScore(-2, 2, 0, 0, 0, 0), 'Rogue')
-    ];
   }
 
-  search = (text$: Observable<string>) =>
-    text$.pipe(
+  search = (text$: Observable<string>) => text$.pipe(
       debounceTime(200),
       distinctUntilChanged(),
-      map(term => term.length < 1 ? [] : this.races.filter(v => v.race.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
+      map(term => term.length < 1 ? [] : this.races.filter(v => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
     )
 
 
@@ -67,31 +64,22 @@ export class AbilityScoresComponent implements OnInit {
     }
   }
 
-  updateRacialAbilityAdjustment(abbr: string, bonus: number): void {
-    switch (abbr) {
-      case 'STR':
-        this.racialAbilityAdjustment.strength = bonus;
-        break;
-      case 'DEX':
-        this.racialAbilityAdjustment.dexterity = bonus;
-        break;
-      case 'CON':
-        this.racialAbilityAdjustment.constitution = bonus;
-        break;
-      case 'INT':
-        this.racialAbilityAdjustment.intelligence = bonus;
-        break;
-      case 'WIS':
-        this.racialAbilityAdjustment.wisdom = bonus;
-        break;
-      case 'CHA':
-        this.racialAbilityAdjustment.charisma = bonus;
-        break;
+  isRaceType(race: any): boolean {
+    if (race !== undefined) {
+      return race.constructor.name === 'Race';
+    } else {
+      return false;
     }
-    this.updateTotalAbilityScores();
-    this.pointBuy = this.getPointBuyPoints(this.baseAbilityScores);
   }
 
+  updateRacialAbilityAdjustmentRace(race: Race): void {
+    console.log('race: ' + race.name);
+    if (this.isRaceType(race)) {
+      console.log('selectedRace: ' + race.getAbilityAdjustment().strength);
+      this.selectedRace = race;
+    }
+    this.updateTotalAbilityScores();
+  }
 
   rollNewAbilityScore(abbr: string): void {
     switch (abbr) {
@@ -115,7 +103,6 @@ export class AbilityScoresComponent implements OnInit {
         break;
     }
     this.updateTotalAbilityScores();
-    this.pointBuy = this.getPointBuyPoints(this.baseAbilityScores);
   }
 
 
@@ -153,7 +140,6 @@ export class AbilityScoresComponent implements OnInit {
         break;
     }
     this.updateTotalAbilityScores();
-    this.pointBuy = this.getPointBuyPoints(this.baseAbilityScores);
   }
 
 
@@ -179,17 +165,35 @@ export class AbilityScoresComponent implements OnInit {
         break;
     }
     this.updateTotalAbilityScores();
-    this.pointBuy = this.getPointBuyPoints(this.baseAbilityScores);
   }
 
 
   updateTotalAbilityScores(): void {
-    this.totalAbilityScores.strength = this.baseAbilityScores.strength + this.racialAbilityAdjustment.strength;
-    this.totalAbilityScores.dexterity = this.baseAbilityScores.dexterity + this.racialAbilityAdjustment.dexterity;
-    this.totalAbilityScores.constitution = this.baseAbilityScores.constitution + this.racialAbilityAdjustment.constitution;
-    this.totalAbilityScores.intelligence = this.baseAbilityScores.intelligence + this.racialAbilityAdjustment.intelligence;
-    this.totalAbilityScores.wisdom = this.baseAbilityScores.wisdom + this.racialAbilityAdjustment.wisdom;
-    this.totalAbilityScores.charisma = this.baseAbilityScores.charisma + this.racialAbilityAdjustment.charisma;
+    this.totalAbilityScores.strength = this.baseAbilityScores.strength + this.selectedRace.abilityAdjustment.strength;
+    this.totalAbilityScores.dexterity = this.baseAbilityScores.dexterity + this.selectedRace.abilityAdjustment.dexterity;
+    this.totalAbilityScores.constitution = this.baseAbilityScores.constitution + this.selectedRace.abilityAdjustment.constitution;
+    this.totalAbilityScores.intelligence = this.baseAbilityScores.intelligence + this.selectedRace.abilityAdjustment.intelligence;
+    this.totalAbilityScores.wisdom = this.baseAbilityScores.wisdom + this.selectedRace.abilityAdjustment.wisdom;
+    this.totalAbilityScores.charisma = this.baseAbilityScores.charisma + this.selectedRace.abilityAdjustment.charisma;
+
+    this.pointBuy = this.getPointBuyPoints(this.baseAbilityScores);
+    this.checkPlayerIsReadyToPickClass();
+  }
+
+  checkPlayerIsReadyToPickClass(): void {
+    if ( this.totalAbilityScores.strength >= 3
+      && this.totalAbilityScores.dexterity >= 3
+      && this.totalAbilityScores.constitution >= 3
+      && this.totalAbilityScores.intelligence >= 3
+      && this.totalAbilityScores.wisdom >= 3
+      && this.totalAbilityScores.charisma >= 3
+      && this.isRaceType(this.selectedRace)
+      && this.selectedRace.name !== ''
+    ) {
+      this.readyToPickClass = true;
+    } else {
+      this.readyToPickClass = false;
+    }
   }
 
 
