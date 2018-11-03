@@ -1,10 +1,10 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {Observable} from 'rxjs';
-import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
-import {AbilityScore, AbilityScoreAbbreviation} from '../../../models/character/ability-scores';
-import {RaceService} from '../../../services/character/race.service';
-import {Race} from '../../../models/character/race';
-import {RaceName} from '../../../enums/enum-race';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Observable, Subject, merge } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
+import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { AbilityScore, AbilityScoreAbbreviation  } from '../../../models/character/ability-scores';
+import { Race } from '../../../models/character/race';
 
 
 @Component({
@@ -15,20 +15,30 @@ import {RaceName} from '../../../enums/enum-race';
 export class AbilityScoresComponent implements OnInit {
 
   @Input() baseAbilityScores: AbilityScore;
-  public racialAbilityAdjustment: AbilityScore;
   public totalAbilityScores: AbilityScore;
   public abilityScoreAbbr: AbilityScoreAbbreviation;
   public bindedAbbreviationKeys: Array<string>;
   public pointBuy: number;
   public charIsNew: boolean;
   public readyToPickClass: boolean;
-  public races: Array<Race>;
-  public selectedRace: Race;
-  public typeAheadRace: string;
+  public races: any;
+  public typeAheadRace: any;
+  public selectedRace: Object;
 
-  constructor(raceService: RaceService) {
-    this.races = raceService.getRaceList().sort();
-    this.selectedRace = this.races.find(race => race.name === RaceName.NULL);
+  @ViewChild('instance') instance: NgbTypeahead;
+  focus$ = new Subject<string>();
+  click$ = new Subject<string>();
+
+  constructor(db: AngularFirestore) {
+    db.collection('races').valueChanges().subscribe(
+      races => {
+        this.races = races;
+        console.log('races: ', races);
+        console.log('this.races: ', this.races);
+        this.selectedRace = this.races.find(race => race.name === 'Human');
+        console.log('this.selectedRace: ', this.selectedRace);
+      }
+    );
   }
 
   ngOnInit() {
@@ -36,7 +46,6 @@ export class AbilityScoresComponent implements OnInit {
     this.readyToPickClass = false;
     if (this.baseAbilityScores === undefined) {
       this.baseAbilityScores = new AbilityScore(0, 0, 0, 0, 0, 0);
-      this.racialAbilityAdjustment = new AbilityScore(0, 0, 0, 0, 0, 0);
       this.totalAbilityScores = new AbilityScore(0, 0, 0, 0, 0, 0);
       this.pointBuy = this.getPointBuyPoints(this.baseAbilityScores);
     } else {
@@ -45,15 +54,7 @@ export class AbilityScoresComponent implements OnInit {
     }
     this.abilityScoreAbbr = new AbilityScoreAbbreviation();
     this.bindedAbbreviationKeys = Array.from(this.abilityScoreAbbr.abbreviation.keys()); // Fix "Expression changed after it was checked."
-
   }
-
-  search = (text$: Observable<string>) => text$.pipe(
-      debounceTime(200),
-      distinctUntilChanged(),
-      map(term => term.length < 1 ? [] : this.races.filter(v => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
-    )
-
 
   getAbilityModifier(abilityScore: number): string {
     const modifier = Math.floor(abilityScore / 2) - 5;
@@ -72,13 +73,16 @@ export class AbilityScoresComponent implements OnInit {
     }
   }
 
-  updateRacialAbilityAdjustmentRace(race: Race): void {
-    console.log('race: ' + race.name);
-    if (this.isRaceType(race)) {
-      console.log('selectedRace: ' + race.getAbilityAdjustment().strength);
-      this.selectedRace = race;
-    }
-    this.updateTotalAbilityScores();
+  formatMatches = (value: any) => value.name || '';
+  search = (text$: Observable<string>) => {
+    const debouncedText$ = text$.pipe(debounceTime(200), distinctUntilChanged());
+    const clicksWithClosedPopup$ = this.click$.pipe(filter(() => !this.instance.isPopupOpen()));
+    const inputFocus$ = this.focus$;
+    return merge(debouncedText$, inputFocus$, clicksWithClosedPopup$).pipe(
+      map(term => (
+        term === '' ? this.races
+          : this.races.filter(v => v.name.toString().toLowerCase().indexOf(term.toLowerCase()) > -1)).slice(0, 10))
+    );
   }
 
   rollNewAbilityScore(abbr: string): void {
@@ -169,12 +173,12 @@ export class AbilityScoresComponent implements OnInit {
 
 
   updateTotalAbilityScores(): void {
-    this.totalAbilityScores.strength = this.baseAbilityScores.strength + this.selectedRace.abilityAdjustment.strength;
-    this.totalAbilityScores.dexterity = this.baseAbilityScores.dexterity + this.selectedRace.abilityAdjustment.dexterity;
-    this.totalAbilityScores.constitution = this.baseAbilityScores.constitution + this.selectedRace.abilityAdjustment.constitution;
-    this.totalAbilityScores.intelligence = this.baseAbilityScores.intelligence + this.selectedRace.abilityAdjustment.intelligence;
-    this.totalAbilityScores.wisdom = this.baseAbilityScores.wisdom + this.selectedRace.abilityAdjustment.wisdom;
-    this.totalAbilityScores.charisma = this.baseAbilityScores.charisma + this.selectedRace.abilityAdjustment.charisma;
+    this.totalAbilityScores.strength = this.baseAbilityScores.strength;
+    this.totalAbilityScores.dexterity = this.baseAbilityScores.dexterity;
+    this.totalAbilityScores.constitution = this.baseAbilityScores.constitution;
+    this.totalAbilityScores.intelligence = this.baseAbilityScores.intelligence;
+    this.totalAbilityScores.wisdom = this.baseAbilityScores.wisdom;
+    this.totalAbilityScores.charisma = this.baseAbilityScores.charisma;
 
     this.pointBuy = this.getPointBuyPoints(this.baseAbilityScores);
     this.checkPlayerIsReadyToPickClass();
@@ -188,7 +192,6 @@ export class AbilityScoresComponent implements OnInit {
       && this.totalAbilityScores.wisdom >= 3
       && this.totalAbilityScores.charisma >= 3
       && this.isRaceType(this.selectedRace)
-      && this.selectedRace.name !== ''
     ) {
       this.readyToPickClass = true;
     } else {
