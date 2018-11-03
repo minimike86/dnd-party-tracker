@@ -17,13 +17,13 @@ export class AbilityScoresComponent implements OnInit {
   @Input() baseAbilityScores: AbilityScore;
   public totalAbilityScores: AbilityScore;
   public abilityScoreAbbr: AbilityScoreAbbreviation;
-  public bindedAbbreviationKeys: Array<string>;
+  public boundAbbreviationKeys: Array<string>;
   public pointBuy: number;
   public charIsNew: boolean;
   public readyToPickClass: boolean;
   public races: any;
   public typeAheadRace: any;
-  public selectedRace: Object;
+  public selectedRace: any;
 
   @ViewChild('instance') instance: NgbTypeahead;
   focus$ = new Subject<string>();
@@ -31,9 +31,9 @@ export class AbilityScoresComponent implements OnInit {
 
   constructor(db: AngularFirestore) {
     db.collection('races').valueChanges().subscribe(
-      races => {
-        this.races = races;
-        console.log('races: ', races);
+      value => {
+        this.races = value;
+        console.log('races: ', value);
         console.log('this.races: ', this.races);
         this.selectedRace = this.races.find(race => race.name === 'Human');
         console.log('this.selectedRace: ', this.selectedRace);
@@ -53,7 +53,7 @@ export class AbilityScoresComponent implements OnInit {
       this.charIsNew = false;
     }
     this.abilityScoreAbbr = new AbilityScoreAbbreviation();
-    this.bindedAbbreviationKeys = Array.from(this.abilityScoreAbbr.abbreviation.keys()); // Fix "Expression changed after it was checked."
+    this.boundAbbreviationKeys = Array.from(this.abilityScoreAbbr.abbreviation.keys()); // Fix "Expression changed after it was checked."
   }
 
   getAbilityModifier(abilityScore: number): string {
