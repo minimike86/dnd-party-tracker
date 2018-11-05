@@ -27,13 +27,10 @@ import { environment } from '../environments/environment';
 import { RouterModule, Routes } from '@angular/router';
 const appRoutes: Routes = [
   { path: '',               component: HomeComponent },
+  { path: '',               redirectTo: '/', pathMatch: 'full' },
   { path: 'party',          component: PartyComponent },
   { path: 'character',      component: CharacterComponent },
   { path: 'character/new',  component: NewCharacterComponent },
-  { path: '',
-    redirectTo: '/',
-    pathMatch: 'full'
-  },
   { path: '**', component: PageNotFoundComponent }
 ];
 

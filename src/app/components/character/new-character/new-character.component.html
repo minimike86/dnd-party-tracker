@@ -16,11 +16,13 @@
   <div>
     <div class="form-group">
       <label for="playerName">Player Name</label>
-      <input type="text" class="form-control" id="playerName" placeholder="What is your name?">
+      <input type="text" class="form-control" id="playerName" placeholder="What is your name?"
+             [(ngModel)]="playerName" (ngModelChange)="checkPlayerIsReadyToPickClass()" required>
     </div>
     <div class="form-group">
       <label for="characterName">Character Name</label>
-      <input type="text" class="form-control" id="characterName" placeholder="What is your characters name?" required="true">
+      <input type="text" class="form-control" id="characterName" placeholder="What is your characters name?"
+             [(ngModel)]="characterName" (ngModelChange)="checkPlayerIsReadyToPickClass()" required>
     </div>
   </div>
 
@@ -29,8 +31,15 @@
     <h6 class="text-muted" style="font-family: 'Special Elite', cursive;">Tell us more about your character&apos;s abilities and race, and we will pre-populate what we can.</h6>
   </div>
 
-  <app-ability-scores></app-ability-scores>
+  <app-ability-scores (playerHasRolledAllStatsChanged)="playerHasRolledAllStatsChanged($event)"
+                      (selectedRaceChanged)="selectedRaceChangedHandler($event)"
+                      (playerHasSelectedRaceChanged)="playerHasSelectedRaceChangedHandler($event)"
+                      (totalAbilityScoresChanged)="totalAbilityScoresChangedHandler($event)" ></app-ability-scores>
 
-
+  <div class="d-flex flex-row-reverse mt-3">
+    <button class="btn" [ngClass]="readyToPickClass ? 'btn-primary' : 'btn-dark disabled'">
+      Next: Select Character Class <i class="fas fa-hat-wizard"></i>
+    </button>
+  </div>
 
 </div>
