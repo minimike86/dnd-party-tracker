@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AbilityScore } from './ability-scores';
 import { RaceName } from '../../enums/enum-race';
 
 @NgModule({
@@ -12,12 +11,12 @@ import { RaceName } from '../../enums/enum-race';
 export class Race {
 
   public name: RaceName;
-  public abilityAdjustment: AbilityScore;
+  public abilityScoreAdjustments: Map<string, number>;
   public favoredClass: string;
 
   constructor(name, abilityAdjustment, favoredClass) {
     this.name = name;
-    this.abilityAdjustment = abilityAdjustment;
+    this.abilityScoreAdjustments = abilityAdjustment;
     this.favoredClass = favoredClass;
   }
 
@@ -25,32 +24,32 @@ export class Race {
     return this.name;
   }
 
-  getAbilityAdjustment(): AbilityScore {
-    return this.abilityAdjustment;
+  getAbilityAdjustment(): Map<string, number> {
+    return this.abilityScoreAdjustments;
   }
 
   getStrength(): number {
-    return this.abilityAdjustment.strength;
+    return this.abilityScoreAdjustments.get('strength');
   }
 
   getDexterity(): number {
-    return this.abilityAdjustment.dexterity;
+    return this.abilityScoreAdjustments.get('dexterity');
   }
 
   getConstitution(): number {
-    return this.abilityAdjustment.constitution;
+    return this.abilityScoreAdjustments.get('constitution');
   }
 
   getIntelligence(): number {
-    return this.abilityAdjustment.intelligence;
+    return this.abilityScoreAdjustments.get('intelligence');
   }
 
   getWisdom(): number {
-    return this.abilityAdjustment.wisdom;
+    return this.abilityScoreAdjustments.get('wisdom');
   }
 
   getCharisma(): number {
-    return this.abilityAdjustment.charisma;
+    return this.abilityScoreAdjustments.get('charisma');
   }
 
   getFavoredClass(): string {

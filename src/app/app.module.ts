@@ -1,20 +1,12 @@
+// Modules
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
-import { RouterModule, Routes } from '@angular/router';
-const appRoutes: Routes = [
-  { path: '',               component: HomeComponent },
-  { path: 'party',          component: PartyComponent },
-  { path: 'character',      component: CharacterComponent },
-  { path: 'character/new',  component: NewCharacterComponent },
-  { path: '',
-    redirectTo: '/',
-    pathMatch: 'full'
-  },
-  { path: '**', component: PageNotFoundComponent }
-];
-
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+// Components
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { FooterComponent } from './components/footer/footer.component';
@@ -29,6 +21,18 @@ import { ArmorClassComponent } from './components/character/armor-class/armor-cl
 import { HitPointsComponent } from './components/character/hit-points/hit-points.component';
 import { WeaponsComponent } from './components/weapons/weapons.component';
 import { NewCharacterComponent } from './components/character/new-character/new-character.component';
+// Environment Variables
+import { environment } from '../environments/environment';
+// Routes
+import { RouterModule, Routes } from '@angular/router';
+const appRoutes: Routes = [
+  { path: '',               component: HomeComponent },
+  { path: '',               redirectTo: '/', pathMatch: 'full' },
+  { path: 'party',          component: PartyComponent },
+  { path: 'character',      component: CharacterComponent },
+  { path: 'character/new',  component: NewCharacterComponent },
+  { path: '**', component: PageNotFoundComponent }
+];
 
 
 @NgModule({
@@ -52,9 +56,12 @@ import { NewCharacterComponent } from './components/character/new-character/new-
     BrowserModule,
     FormsModule,
     NgbModule,
+    AngularFireModule.initializeApp(environment.firebase, 'dnd-party-tracker'),
+    AngularFireAuthModule,
+    AngularFirestoreModule,
     RouterModule.forRoot(
       appRoutes,
-      { enableTracing: true } // <-- debugging purposes only
+      { enableTracing: false } // <-- debugging purposes only
     )
   ],
   providers: [],
