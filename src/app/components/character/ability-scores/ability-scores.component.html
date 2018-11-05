@@ -1,8 +1,29 @@
-<h3 class="d-inline mt-3">Ability Scores</h3>
-<div class="d-inline ml-3">
-  <div class="custom-control custom-checkbox d-inline">
-    <input type="checkbox" class="custom-control-input" id="customCheck1" [(ngModel)]="allowCheating" (ngModelChange)="toggleAllowCheating($event)" >
-    <label class="custom-control-label text-black-50" for="customCheck1"><small>Allow ability increases beyond die roll limits</small></label>
+<div class="d-flex align-items-center">
+  <h3 class="d-flex d-inline-flex flex-grow-1 mt-3 mr-3">Ability Scores</h3>
+  <div class="d-flex d-inline-flex">
+    <div class="custom-control custom-checkbox mt-1">
+      <input type="checkbox" class="custom-control-input" id="customCheck1" [(ngModel)]="allowCheating" (ngModelChange)="toggleAllowCheating($event)" >
+      <label class="custom-control-label text-black-50" for="customCheck1"><small>Allow ability scores greater than 18</small></label>
+    </div>
+    <div ngbDropdown class="d-flex flex-row-reverse">
+      <button ngbDropdownToggle class="btn btn-sm btn-dark ml-3" id="dropdownBasic1" [title]="statRollRules.name"><i class="fas fa-dice-d6"></i> Rolling Rules</button>
+      <div ngbDropdownMenu aria-labelledby="dropdownBasic1" style="width: 17em;">
+        <button class="dropdown-item" (click)="selectStatRollingRule({ 'id': 0, 'name': '4d6 drop lowest' })">
+          <div class="fa-layers fa-fw d-flex d-inline-flex">
+            <i class="fas fa-circle d-flex" style="font-size: 1.75em;" [ngClass]="statRollRules.id === 0 ? 'text-success' : 'text-white'"></i>
+            <i class="fas fa-check text-white d-flex align-items-center" style="margin-left: -1.4em;"></i>
+            <span class="d-flex d-inline-flex ml-3 align-items-center">4d6 drop lowest</span>
+          </div>
+        </button>
+        <button class="dropdown-item" (click)="selectStatRollingRule({ 'id': 1, 'name': '4d6 drop lowest, re-roll 1\'s' })">
+          <div class="fa-layers fa-fw d-flex d-inline-flex">
+            <i class="fas fa-circle d-flex" style="font-size: 1.75em;" [ngClass]="statRollRules.id === 1 ? 'text-success' : 'text-white'"></i>
+            <i class="fas fa-check text-white d-flex align-items-center" style="margin-left: -1.4em;"></i>
+            <span class="d-flex d-inline-flex ml-3 align-items-center">4d6 drop lowest, re-roll 1&apos;s</span>
+          </div>
+        </button>
+      </div>
+    </div>
   </div>
 </div>
 <div class="container">
@@ -52,12 +73,12 @@
 
         <div class="d-flex align-items-center flex-column ml-1">
           <div [ngSwitch]="abbr">
-            <input class="form-control pt-2 pb-2 mb-0" *ngSwitchCase="'STR'" [value]="baseAbilityScores.strength" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Base Score" readonly>
-            <input class="form-control pt-2 pb-2 mb-0" *ngSwitchCase="'DEX'" [value]="baseAbilityScores.dexterity" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Base Score" readonly>
-            <input class="form-control pt-2 pb-2 mb-0" *ngSwitchCase="'CON'" [value]="baseAbilityScores.constitution" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Base Score" readonly>
-            <input class="form-control pt-2 pb-2 mb-0" *ngSwitchCase="'INT'" [value]="baseAbilityScores.intelligence" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Base Score" readonly>
-            <input class="form-control pt-2 pb-2 mb-0" *ngSwitchCase="'WIS'" [value]="baseAbilityScores.wisdom" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Base Score" readonly>
-            <input class="form-control pt-2 pb-2 mb-0" *ngSwitchCase="'CHA'" [value]="baseAbilityScores.charisma" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Base Score" readonly>
+            <input class="form-control pt-2 pb-2 mb-0" [ngClass]="baseAbilityScores.strength >= 17 ? 'is-valid' : hasRolledStr && baseAbilityScores.strength <= 7 ? 'is-invalid' : ''" *ngSwitchCase="'STR'" [value]="baseAbilityScores.strength" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Base Score" readonly>
+            <input class="form-control pt-2 pb-2 mb-0" [ngClass]="baseAbilityScores.dexterity >= 17 ? 'is-valid' : hasRolledDex && baseAbilityScores.dexterity <= 7 ? 'is-invalid' : ''" *ngSwitchCase="'DEX'" [value]="baseAbilityScores.dexterity" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Base Score" readonly>
+            <input class="form-control pt-2 pb-2 mb-0" [ngClass]="baseAbilityScores.constitution >= 17 ? 'is-valid' : hasRolledCon && baseAbilityScores.constitution <= 7 ? 'is-invalid' : ''" *ngSwitchCase="'CON'" [value]="baseAbilityScores.constitution" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Base Score" readonly>
+            <input class="form-control pt-2 pb-2 mb-0" [ngClass]="baseAbilityScores.intelligence >= 17 ? 'is-valid' : hasRolledInt && baseAbilityScores.intelligence <= 9 ? 'is-invalid' : ''" *ngSwitchCase="'INT'" [value]="baseAbilityScores.intelligence" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Base Score" readonly>
+            <input class="form-control pt-2 pb-2 mb-0" [ngClass]="baseAbilityScores.wisdom >= 17 ? 'is-valid' : hasRolledWis && baseAbilityScores.wisdom <= 9 ? 'is-invalid' : ''" *ngSwitchCase="'WIS'" [value]="baseAbilityScores.wisdom" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Base Score" readonly>
+            <input class="form-control pt-2 pb-2 mb-0" [ngClass]="baseAbilityScores.charisma >= 17 ? 'is-valid' : hasRolledCha && baseAbilityScores.charisma <= 9 ? 'is-invalid' : ''" *ngSwitchCase="'CHA'" [value]="baseAbilityScores.charisma" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Base Score" readonly>
             <input class="form-control pt-2 pb-2 mb-0" *ngSwitchDefault [value]="">
           </div>
           <small class="text-black-50 xx-small">Base Score</small>
@@ -83,33 +104,27 @@
 
           <div [ngSwitch]="abbr" class="d-flex align-items-start flex-grow-1 ml-1">
             <button (click)="rollNewAbilityScore(abbr)" class="btn" style="width: 11.5em;" *ngSwitchCase="'STR'"
-               [ngClass]="!hasRolledStr ? 'btn-primary' : 'btn-outline-secondary'"
-               title="Rolls 4d6 (dropping the lowest die)">
+               [ngClass]="!hasRolledStr ? 'btn-primary' : 'btn-outline-secondary'" [title]="statRollRules.name">
               <i class="fas fa-dice-d6"></i> {{ !hasRolledStr ? "Roll" : "Re-Roll" }} {{ abilityScoreAbbr.abbreviation.get(abbr) }}
             </button>
             <button (click)="rollNewAbilityScore(abbr)" class="btn" style="width: 11.5em;" *ngSwitchCase="'DEX'"
-               [ngClass]="!hasRolledDex ? 'btn-primary' : 'btn-outline-secondary'"
-               title="Rolls 4d6 (dropping the lowest die)">
+               [ngClass]="!hasRolledDex ? 'btn-primary' : 'btn-outline-secondary'" [title]="statRollRules.name">
               <i class="fas fa-dice-d6"></i> {{ !hasRolledDex ? "Roll" : "Re-Roll" }} {{ abilityScoreAbbr.abbreviation.get(abbr) }}
             </button>
             <button (click)="rollNewAbilityScore(abbr)" class="btn" style="width: 11.5em;" *ngSwitchCase="'CON'"
-               [ngClass]="!hasRolledCon ? 'btn-primary' : 'btn-outline-secondary'"
-               title="Rolls 4d6 (dropping the lowest die)">
+               [ngClass]="!hasRolledCon ? 'btn-primary' : 'btn-outline-secondary'" [title]="statRollRules.name">
               <i class="fas fa-dice-d6"></i> {{ !hasRolledCon ? "Roll" : "Re-Roll" }} {{ abilityScoreAbbr.abbreviation.get(abbr) }}
             </button>
             <button (click)="rollNewAbilityScore(abbr)" class="btn" style="width: 11.5em;" *ngSwitchCase="'INT'"
-               [ngClass]="!hasRolledInt ? 'btn-primary' : 'btn-outline-secondary'"
-               title="Rolls 4d6 (dropping the lowest die)">
+               [ngClass]="!hasRolledInt ? 'btn-primary' : 'btn-outline-secondary'" [title]="statRollRules.name">
               <i class="fas fa-dice-d6"></i> {{ !hasRolledInt ? "Roll" : "Re-Roll" }} {{ abilityScoreAbbr.abbreviation.get(abbr) }}
             </button>
             <button (click)="rollNewAbilityScore(abbr)" class="btn" style="width: 11.5em;" *ngSwitchCase="'WIS'"
-               [ngClass]="!hasRolledWis ? 'btn-primary' : 'btn-outline-secondary'"
-               title="Rolls 4d6 (dropping the lowest die)">
+               [ngClass]="!hasRolledWis ? 'btn-primary' : 'btn-outline-secondary'" [title]="statRollRules.name">
               <i class="fas fa-dice-d6"></i> {{ !hasRolledWis ? "Roll" : "Re-Roll" }} {{ abilityScoreAbbr.abbreviation.get(abbr) }}
             </button>
             <button (click)="rollNewAbilityScore(abbr)" class="btn" style="width: 11.5em;" *ngSwitchCase="'CHA'"
-               [ngClass]="!hasRolledCha ? 'btn-primary' : 'btn-outline-secondary'"
-               title="Rolls 4d6 (dropping the lowest die)">
+               [ngClass]="!hasRolledCha ? 'btn-primary' : 'btn-outline-secondary'" [title]="statRollRules.name">
               <i class="fas fa-dice-d6"></i> {{ !hasRolledCha ? "Roll" : "Re-Roll" }} {{ abilityScoreAbbr.abbreviation.get(abbr) }}
             </button>
           </div>
@@ -162,7 +177,9 @@
         <p *ngIf="pointBuy >= 16 && pointBuy <= 22" class="text-warning">Challenging</p>
         <p *ngIf="pointBuy >= 23 && pointBuy <= 28" class="text-info">Normal</p>
         <p *ngIf="pointBuy >= 29 && pointBuy <= 32" class="text-warning">High-powered</p>
-        <p *ngIf="pointBuy >= 33" class="text-danger">God Tier</p>
+        <p *ngIf="pointBuy >= 33 && pointBuy <= 48" class="text-danger">Very High-powered</p>
+        <p *ngIf="pointBuy >= 49 && pointBuy <= 68" class="text-danger">God Like</p>
+        <p *ngIf="pointBuy >= 69" class="text-danger">Broken</p>
       </div>
 
     </div>

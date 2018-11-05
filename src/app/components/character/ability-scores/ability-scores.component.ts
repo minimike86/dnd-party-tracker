@@ -22,6 +22,7 @@ export class AbilityScoresComponent implements OnInit {
   public abilityScoreAbbr: AbilityScoreAbbreviation;
   public boundAbbreviationKeys: Array<string>;
   public allowCheating: boolean;
+  public statRollRules: any;
   public hasRolledStr: boolean;
   public hasRolledDex: boolean;
   public hasRolledCon: boolean;
@@ -71,6 +72,7 @@ export class AbilityScoresComponent implements OnInit {
       this.baseAbilityScores = new AbilityScore(8, 8, 8, 8, 8, 8);
       this.totalAbilityScores = new AbilityScore(0, 0, 0, 0, 0, 0);
       this.allowCheating = false;
+      this.statRollRules = { 'id': 0, 'name': '4d6 drop lowest' };
       this.hasRolledStr = false;
       this.hasRolledDex = false;
       this.hasRolledCon = false;
@@ -103,6 +105,44 @@ export class AbilityScoresComponent implements OnInit {
   toggleAllowCheating(event: boolean): void {
     console.log('toggleAllowCheating: ', event);
     this.allowCheating = event;
+  }
+
+  selectStatRollingRule(ruleId: any): void {
+    this.statRollRules = ruleId;
+  }
+
+
+  rollStat(): number {
+    const diePool: Array<number> = [0, 0, 0, 0];
+    let dieCount = 0;
+    switch (this.statRollRules.id) {
+      case 0: // 4d6 drop lowest
+        for (let i = 0; i < 4; i++) {                           // Roll 4d6
+          diePool[i] = (Math.floor((Math.random() * 6 + 1)));   // Add 1d6 to Die Pool
+          // console.log('die result: ', diePool[i]);
+        }
+        diePool.sort().reverse().pop();                         // Sort Die Pool, Drop lowest Die
+        diePool.forEach(die => {
+          dieCount += die;                                      // Count Die
+        });
+        console.log('die results: ', diePool);
+        break;
+      case 1: // 4d6 drop lowest, re-roll 1's
+        for (let i = 0; i < 4; i++) {                           // Roll 4d6
+          do {
+            diePool[i] = (Math.floor((Math.random() * 6 + 1))); // Add 1d6 to Die Pool
+            // console.log('die result: ', diePool[i]);
+            // if (diePool[i] === 1) { console.log('re-rolling 1'); }
+          } while (diePool[i] === 1);                             // re-roll 1d6 if it was a 1
+        }
+        diePool.sort().reverse().pop();                         // Sort Die Pool, Drop lowest Die
+        diePool.forEach(die => {
+          dieCount += die;                                      // Count Die
+        });
+        console.log('die results: ', diePool);
+        break;
+    }
+    return dieCount;
   }
 
 
@@ -313,20 +353,6 @@ export class AbilityScoresComponent implements OnInit {
   }
 
 
-  rollStat(): number {
-    const diePool: Array<number> = [0, 0, 0, 0];
-    let dieCount = 0;
-    for (let i = 0; i < 4; i++) {                         // Roll 4d6
-      diePool[i] = (Math.floor((Math.random() * 6 + 1))); // Add 1d6 to Die Pool
-    }
-    diePool.sort().reverse().pop();                       // Sort Die Pool, Drop lowest Die
-    diePool.forEach(die => {
-      dieCount += die;                                    // Count Die
-    });
-    return dieCount;
-  }
-
-
   getPointBuyPoints(): number {
     let pointBuyPoints = 0;
     if ( this.selectedRace !== undefined ) {
@@ -478,6 +504,18 @@ export class AbilityScoresComponent implements OnInit {
         return 13;
       case 18:
         return 16;
+      default:
+        let pointTotal = 16;
+        let pointInc = 3;
+        for (let i = 11; i <= abilityScore - 8; i++) {
+          if (i % 2 === 0) { // Even
+            pointTotal += pointInc;
+          } else { // Odd
+            pointInc++;
+            pointTotal += pointInc;
+          }
+        }
+        return pointTotal;
     }
   }
 
