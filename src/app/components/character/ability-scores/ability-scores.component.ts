@@ -21,8 +21,12 @@ export class AbilityScoresComponent implements OnInit {
 
   public abilityScoreAbbr: AbilityScoreAbbreviation;
   public boundAbbreviationKeys: Array<string>;
+
   public allowCheating: boolean;
   public statRollRules: any;
+  public highStat = 17;
+  public lowStat = 7;
+
   public hasRolledStr: boolean;
   public hasRolledDex: boolean;
   public hasRolledCon: boolean;
@@ -30,6 +34,7 @@ export class AbilityScoresComponent implements OnInit {
   public hasRolledWis: boolean;
   public hasRolledCha: boolean;
   public hasRolledAllStats: boolean;
+
   @Output() playerHasRolledAllStatsChanged: EventEmitter<boolean> = new EventEmitter();
   public pointBuy: number;
 
@@ -125,7 +130,7 @@ export class AbilityScoresComponent implements OnInit {
         diePool.forEach(die => {
           dieCount += die;                                      // Count Die
         });
-        console.log('die results: ', diePool);
+        // console.log('die results: ', diePool);
         break;
       case 1: // 4d6 drop lowest, re-roll 1's
         for (let i = 0; i < 4; i++) {                           // Roll 4d6
@@ -139,7 +144,7 @@ export class AbilityScoresComponent implements OnInit {
         diePool.forEach(die => {
           dieCount += die;                                      // Count Die
         });
-        console.log('die results: ', diePool);
+        // console.log('die results: ', diePool);
         break;
     }
     return dieCount;

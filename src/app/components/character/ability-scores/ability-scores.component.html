@@ -1,6 +1,6 @@
 <div class="d-flex align-items-center">
   <h3 class="d-flex d-inline-flex flex-grow-1 mt-3 mr-3">Ability Scores</h3>
-  <div class="d-flex d-inline-flex">
+  <div class="d-flex d-inline-flex" *ngIf="charIsNew==true">
     <div class="custom-control custom-checkbox mt-1">
       <input type="checkbox" class="custom-control-input" id="customCheck1" [(ngModel)]="allowCheating" (ngModelChange)="toggleAllowCheating($event)" >
       <label class="custom-control-label text-black-50" for="customCheck1"><small>Allow ability scores greater than 18</small></label>
@@ -41,12 +41,12 @@
 
         <div [ngSwitch]="abbr" class="d-flex align-items-center flex-column ml-1">
           <div>
-            <input class="form-control pt-2 pb-2 mb-0" *ngSwitchCase="'STR'" [value]="totalAbilityScores.strength" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Total" readonly>
-            <input class="form-control pt-2 pb-2 mb-0" *ngSwitchCase="'DEX'" [value]="totalAbilityScores.dexterity" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Total" readonly>
-            <input class="form-control pt-2 pb-2 mb-0" *ngSwitchCase="'CON'" [value]="totalAbilityScores.constitution" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Total" readonly>
-            <input [ngClass]="totalAbilityScores.intelligence !== 0 && totalAbilityScores.intelligence <= 9 ? 'is-invalid' : ''" class="form-control pt-2 pb-2 mb-0" *ngSwitchCase="'INT'" [value]="totalAbilityScores.intelligence" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Total" readonly>
-            <input [ngClass]="totalAbilityScores.wisdom !== 0 && totalAbilityScores.wisdom <= 9 ? 'is-invalid' : ''" class="form-control pt-2 pb-2 mb-0" *ngSwitchCase="'WIS'" [value]="totalAbilityScores.wisdom" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Total" readonly>
-            <input [ngClass]="totalAbilityScores.charisma !== 0 && totalAbilityScores.charisma <= 9 ? 'is-invalid' : ''" class="form-control pt-2 pb-2 mb-0" *ngSwitchCase="'CHA'" [value]="totalAbilityScores.charisma" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Total" readonly>
+            <input [ngClass]="hasRolledStr && totalAbilityScores.strength <= lowStat ? 'is-invalid' : totalAbilityScores.strength >= highStat ? 'is-valid' : ''" class="form-control pt-2 pb-2 mb-0" *ngSwitchCase="'STR'" [value]="totalAbilityScores.strength" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Total" readonly>
+            <input [ngClass]="hasRolledDex && totalAbilityScores.dexterity <= lowStat ? 'is-invalid' : totalAbilityScores.dexterity >= highStat ? 'is-valid' : ''" class="form-control pt-2 pb-2 mb-0" *ngSwitchCase="'DEX'" [value]="totalAbilityScores.dexterity" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Total" readonly>
+            <input [ngClass]="hasRolledCon && totalAbilityScores.constitution <= lowStat ? 'is-invalid' : totalAbilityScores.constitution >= highStat ? 'is-valid' : ''" class="form-control pt-2 pb-2 mb-0" *ngSwitchCase="'CON'" [value]="totalAbilityScores.constitution" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Total" readonly>
+            <input [ngClass]="hasRolledInt && totalAbilityScores.intelligence <= 9 ? 'is-invalid' : totalAbilityScores.intelligence >= highStat ? 'is-valid' : ''" class="form-control pt-2 pb-2 mb-0" *ngSwitchCase="'INT'" [value]="totalAbilityScores.intelligence" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Total" readonly>
+            <input [ngClass]="hasRolledWis && totalAbilityScores.wisdom <= 9 ? 'is-invalid' : totalAbilityScores.wisdom >= highStat ? 'is-valid' : ''" class="form-control pt-2 pb-2 mb-0" *ngSwitchCase="'WIS'" [value]="totalAbilityScores.wisdom" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Total" readonly>
+            <input [ngClass]="hasRolledCha && totalAbilityScores.charisma <= 9 ? 'is-invalid' : totalAbilityScores.charisma >= highStat ? 'is-valid' : ''" class="form-control pt-2 pb-2 mb-0" *ngSwitchCase="'CHA'" [value]="totalAbilityScores.charisma" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Total" readonly>
             <input class="form-control pt-2 pb-2 mb-0" *ngSwitchDefault [value]="">
           </div>
           <div class="xx-small" *ngSwitchCase="'INT'"><small *ngIf="totalAbilityScores.intelligence !== 0 && totalAbilityScores.intelligence <= 9" class="text-danger xx-small">{{ abilityScoreAbbr.abbreviation.get(abbr) }} is too low to cast spells tied to this ability</small></div>
@@ -57,12 +57,12 @@
 
         <div class="d-flex align-items-center flex-column ml-1" style="margin-top: 0.35em; width: 2.5em; flex: 0 0 auto;">
           <div [ngSwitch]="abbr">
-            <span class="badge badge-pill badge-secondary" *ngSwitchCase="'STR'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Modifier">{{ getAbilityModifier(totalAbilityScores.strength) }}</span>
-            <span class="badge badge-pill badge-secondary" *ngSwitchCase="'DEX'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Modifier">{{ getAbilityModifier(totalAbilityScores.dexterity) }}</span>
-            <span class="badge badge-pill badge-secondary" *ngSwitchCase="'CON'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Modifier">{{ getAbilityModifier(totalAbilityScores.constitution) }}</span>
-            <span [ngClass]="totalAbilityScores.intelligence !== 0 && totalAbilityScores.intelligence <= 9 ? 'badge-danger' : ''" class="badge badge-pill badge-secondary" *ngSwitchCase="'INT'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Modifier">{{ getAbilityModifier(totalAbilityScores.intelligence) }}</span>
-            <span [ngClass]="totalAbilityScores.wisdom !== 0 && totalAbilityScores.wisdom <= 9 ? 'badge-danger' : ''" class="badge badge-pill badge-secondary" *ngSwitchCase="'WIS'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Modifier">{{ getAbilityModifier(totalAbilityScores.wisdom) }}</span>
-            <span [ngClass]="totalAbilityScores.charisma !== 0 && totalAbilityScores.charisma <= 9 ? 'badge-danger' : ''" class="badge badge-pill badge-secondary" *ngSwitchCase="'CHA'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Modifier">{{ getAbilityModifier(totalAbilityScores.charisma) }}</span>
+            <span [ngClass]="hasRolledStr && totalAbilityScores.strength <= lowStat ? 'badge-danger' : totalAbilityScores.strength >= highStat ? 'badge-success' : ''" class="badge badge-pill badge-secondary" *ngSwitchCase="'STR'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Modifier">{{ getAbilityModifier(totalAbilityScores.strength) }}</span>
+            <span [ngClass]="hasRolledDex && totalAbilityScores.dexterity <= lowStat ? 'badge-danger' : totalAbilityScores.dexterity >= highStat ? 'badge-success' : ''" class="badge badge-pill badge-secondary" *ngSwitchCase="'DEX'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Modifier">{{ getAbilityModifier(totalAbilityScores.dexterity) }}</span>
+            <span [ngClass]="hasRolledCon && totalAbilityScores.constitution <= lowStat ? 'badge-danger' : totalAbilityScores.constitution >= highStat ? 'badge-success' : ''" class="badge badge-pill badge-secondary" *ngSwitchCase="'CON'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Modifier">{{ getAbilityModifier(totalAbilityScores.constitution) }}</span>
+            <span [ngClass]="hasRolledInt && totalAbilityScores.intelligence <= 9 ? 'badge-danger' : totalAbilityScores.intelligence >= highStat ? 'badge-success' : ''" class="badge badge-pill badge-secondary" *ngSwitchCase="'INT'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Modifier">{{ getAbilityModifier(totalAbilityScores.intelligence) }}</span>
+            <span [ngClass]="hasRolledWis && totalAbilityScores.wisdom <= 9 ? 'badge-danger' : totalAbilityScores.wisdom >= highStat ? 'badge-success' : ''" class="badge badge-pill badge-secondary" *ngSwitchCase="'WIS'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Modifier">{{ getAbilityModifier(totalAbilityScores.wisdom) }}</span>
+            <span [ngClass]="hasRolledCha && totalAbilityScores.charisma <= 9 ? 'badge-danger' : totalAbilityScores.charisma >= highStat ? 'badge-success' : ''" class="badge badge-pill badge-secondary" *ngSwitchCase="'CHA'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Modifier">{{ getAbilityModifier(totalAbilityScores.charisma) }}</span>
             <span class="badge badge-pill badge-secondary" *ngSwitchDefault title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Modifier"></span>
           </div>
         </div>
@@ -73,12 +73,12 @@
 
         <div class="d-flex align-items-center flex-column ml-1">
           <div [ngSwitch]="abbr">
-            <input class="form-control pt-2 pb-2 mb-0" [ngClass]="baseAbilityScores.strength >= 17 ? 'is-valid' : hasRolledStr && baseAbilityScores.strength <= 7 ? 'is-invalid' : ''" *ngSwitchCase="'STR'" [value]="baseAbilityScores.strength" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Base Score" readonly>
-            <input class="form-control pt-2 pb-2 mb-0" [ngClass]="baseAbilityScores.dexterity >= 17 ? 'is-valid' : hasRolledDex && baseAbilityScores.dexterity <= 7 ? 'is-invalid' : ''" *ngSwitchCase="'DEX'" [value]="baseAbilityScores.dexterity" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Base Score" readonly>
-            <input class="form-control pt-2 pb-2 mb-0" [ngClass]="baseAbilityScores.constitution >= 17 ? 'is-valid' : hasRolledCon && baseAbilityScores.constitution <= 7 ? 'is-invalid' : ''" *ngSwitchCase="'CON'" [value]="baseAbilityScores.constitution" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Base Score" readonly>
-            <input class="form-control pt-2 pb-2 mb-0" [ngClass]="baseAbilityScores.intelligence >= 17 ? 'is-valid' : hasRolledInt && baseAbilityScores.intelligence <= 9 ? 'is-invalid' : ''" *ngSwitchCase="'INT'" [value]="baseAbilityScores.intelligence" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Base Score" readonly>
-            <input class="form-control pt-2 pb-2 mb-0" [ngClass]="baseAbilityScores.wisdom >= 17 ? 'is-valid' : hasRolledWis && baseAbilityScores.wisdom <= 9 ? 'is-invalid' : ''" *ngSwitchCase="'WIS'" [value]="baseAbilityScores.wisdom" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Base Score" readonly>
-            <input class="form-control pt-2 pb-2 mb-0" [ngClass]="baseAbilityScores.charisma >= 17 ? 'is-valid' : hasRolledCha && baseAbilityScores.charisma <= 9 ? 'is-invalid' : ''" *ngSwitchCase="'CHA'" [value]="baseAbilityScores.charisma" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Base Score" readonly>
+            <input class="form-control pt-2 pb-2 mb-0" [ngClass]="baseAbilityScores.strength >= highStat ? 'is-valid' : hasRolledStr && baseAbilityScores.strength <= lowStat ? 'is-invalid' : ''" *ngSwitchCase="'STR'" [value]="baseAbilityScores.strength" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Base Score" readonly>
+            <input class="form-control pt-2 pb-2 mb-0" [ngClass]="baseAbilityScores.dexterity >= highStat ? 'is-valid' : hasRolledDex && baseAbilityScores.dexterity <= lowStat ? 'is-invalid' : ''" *ngSwitchCase="'DEX'" [value]="baseAbilityScores.dexterity" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Base Score" readonly>
+            <input class="form-control pt-2 pb-2 mb-0" [ngClass]="baseAbilityScores.constitution >= highStat ? 'is-valid' : hasRolledCon && baseAbilityScores.constitution <= lowStat ? 'is-invalid' : ''" *ngSwitchCase="'CON'" [value]="baseAbilityScores.constitution" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Base Score" readonly>
+            <input class="form-control pt-2 pb-2 mb-0" [ngClass]="baseAbilityScores.intelligence >= highStat ? 'is-valid' : hasRolledInt && baseAbilityScores.intelligence <= 9 ? 'is-invalid' : ''" *ngSwitchCase="'INT'" [value]="baseAbilityScores.intelligence" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Base Score" readonly>
+            <input class="form-control pt-2 pb-2 mb-0" [ngClass]="baseAbilityScores.wisdom >= highStat ? 'is-valid' : hasRolledWis && baseAbilityScores.wisdom <= 9 ? 'is-invalid' : ''" *ngSwitchCase="'WIS'" [value]="baseAbilityScores.wisdom" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Base Score" readonly>
+            <input class="form-control pt-2 pb-2 mb-0" [ngClass]="baseAbilityScores.charisma >= highStat ? 'is-valid' : hasRolledCha && baseAbilityScores.charisma <= 9 ? 'is-invalid' : ''" *ngSwitchCase="'CHA'" [value]="baseAbilityScores.charisma" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Base Score" readonly>
             <input class="form-control pt-2 pb-2 mb-0" *ngSwitchDefault [value]="">
           </div>
           <small class="text-black-50 xx-small">Base Score</small>
@@ -130,11 +130,11 @@
           </div>
 
           <div class="d-flex align-items-start flex-shrink-0 ml-1">
-            <input class="btn btn-outline-dark" style="width: 2.5em;" (click)="lowerAbilityScore(abbr)" value="-">
+            <input class="btn btn-outline-dark" style="width: 2.5em;" (click)="lowerAbilityScore(abbr)" title="Click to decrease {{ abilityScoreAbbr.abbreviation.get(abbr) }} by 1." value="-">
           </div>
 
           <div class="d-flex align-items-start flex-shrink-0 ml-1">
-            <input class="btn btn-outline-dark" style="width: 2.5em;" (click)="raiseAbilityScore(abbr)" value="+">
+            <input class="btn btn-outline-dark" style="width: 2.5em;" (click)="raiseAbilityScore(abbr)" title="Click to increase {{ abilityScoreAbbr.abbreviation.get(abbr) }} by 1." value="+">
           </div>
 
         </div>
