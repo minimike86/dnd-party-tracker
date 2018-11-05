@@ -31,13 +31,24 @@
     <h6 class="text-muted" style="font-family: 'Special Elite', cursive;">Tell us more about your character&apos;s abilities and race, and we will pre-populate what we can.</h6>
   </div>
 
-  <app-ability-scores (playerHasRolledAllStatsChanged)="playerHasRolledAllStatsChanged($event)"
+  <app-ability-scores-new (playerHasRolledAllStatsChanged)="playerHasRolledAllStatsChanged($event)"
                       (selectedRaceChanged)="selectedRaceChangedHandler($event)"
                       (playerHasSelectedRaceChanged)="playerHasSelectedRaceChangedHandler($event)"
-                      (totalAbilityScoresChanged)="totalAbilityScoresChangedHandler($event)" ></app-ability-scores>
+                      (totalAbilityScoresChanged)="totalAbilityScoresChangedHandler($event)" ></app-ability-scores-new>
 
   <div class="d-flex flex-row-reverse mt-3">
-    <button class="btn" [ngClass]="readyToPickClass ? 'btn-primary' : 'btn-dark disabled'">
+    <button class="btn" [ngClass]="readyToPickClass ? 'btn-primary' : 'btn-dark disabled'"
+            [autoClose]="'outside'"
+            placement="left"
+            triggers="manual"
+            popoverClass=""
+            (click)="popover.open()"
+            popoverTitle="{{ !readyToPickClass ? 'Missing Fields' : '' }}"
+            ngbPopover="{{ playerName.length === 0 ? '\'Player Name\' cannot be blank.' :
+              characterName.length === 0 ? '\'Character Name\' cannot be blank.' :
+              !playerHasSelectedRace ? 'Select your characters race.' :
+              !playerHasRolledAllStats ? 'Roll your characters ability scores.' : '' }}"
+            #popover="ngbPopover">
       Next: Select Character Class <i class="fas fa-hat-wizard"></i>
     </button>
   </div>

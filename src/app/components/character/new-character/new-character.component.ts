@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {AbilityScore} from '../../../models/character/ability-scores';
+import { AbilityScore } from '../../../models/character/ability-scores';
+
 
 @Component({
   selector: 'app-new-character',
@@ -16,14 +17,19 @@ export class NewCharacterComponent implements OnInit {
   public selectedRace: any;
   public readyToPickClass: boolean;
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
+    this.playerName = '';
+    this.characterName = '';
+    this.readyToPickClass = false;
+    this.playerHasRolledAllStats = false;
+    this.playerHasSelectedRace = false;
   }
 
   checkPlayerIsReadyToPickClass(): void {
-    if ( (this.playerName !== undefined && this.playerName.length >= 1)
-      && (this.characterName !== undefined && this.characterName.length >= 1)
+    if ( (this.playerName.length >= 1)
+      && (this.characterName.length >= 1)
       && this.playerHasSelectedRace
       && this.playerHasRolledAllStats
     ) {

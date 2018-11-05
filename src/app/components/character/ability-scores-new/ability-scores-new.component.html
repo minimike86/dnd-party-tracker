@@ -1,0 +1,188 @@
+<div class="d-flex align-items-center">
+  <h3 class="d-flex d-inline-flex flex-grow-1 mt-3 mr-3">Ability Scores</h3>
+  <div class="d-flex d-inline-flex">
+    <div class="custom-control custom-checkbox mt-1">
+      <input type="checkbox" class="custom-control-input" id="customCheck1" [(ngModel)]="allowCheating" (ngModelChange)="toggleAllowCheating($event)" >
+      <label class="custom-control-label text-black-50" for="customCheck1"><small>Allow ability scores greater than 18</small></label>
+    </div>
+    <div ngbDropdown class="d-flex flex-row-reverse">
+      <button ngbDropdownToggle class="btn btn-sm btn-dark ml-3" id="dropdownBasic1" [title]="statRollRules.name"><i class="fas fa-dice-d6"></i> Rolling Rules</button>
+      <div ngbDropdownMenu aria-labelledby="dropdownBasic1" style="width: 17em;">
+        <button class="dropdown-item" (click)="selectStatRollingRule({ 'id': 0, 'name': '4d6 drop lowest' })">
+          <div class="fa-layers fa-fw d-flex d-inline-flex">
+            <i class="fas fa-circle d-flex" style="font-size: 1.75em;" [ngClass]="statRollRules.id === 0 ? 'text-success' : 'text-white'"></i>
+            <i class="fas fa-check text-white d-flex align-items-center" style="margin-left: -1.4em;"></i>
+            <span class="d-flex d-inline-flex ml-3 align-items-center">4d6 drop lowest</span>
+          </div>
+        </button>
+        <button class="dropdown-item" (click)="selectStatRollingRule({ 'id': 1, 'name': '4d6 drop lowest, re-roll 1\'s' })">
+          <div class="fa-layers fa-fw d-flex d-inline-flex">
+            <i class="fas fa-circle d-flex" style="font-size: 1.75em;" [ngClass]="statRollRules.id === 1 ? 'text-success' : 'text-white'"></i>
+            <i class="fas fa-check text-white d-flex align-items-center" style="margin-left: -1.4em;"></i>
+            <span class="d-flex d-inline-flex ml-3 align-items-center">4d6 drop lowest, re-roll 1&apos;s</span>
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+
+    <!-- NEW CHARACTER -->
+    <div class="col-8 p-0">
+
+      <div class="d-flex flex-nowrap row mt-1" *ngFor="let abbr of boundAbbreviationKeys">
+
+        <div class="d-flex align-items-start flex-column ml-3" style="width: 3.5em; flex: 0 0 auto;">
+          <h4 class="pt-1 pb-0 mb-0">{{ abbr }}</h4>
+          <small class="text-black-50 xx-small">{{ abilityScoreAbbr.abbreviation.get(abbr) }}</small>
+        </div>
+
+        <div [ngSwitch]="abbr" class="d-flex align-items-center flex-column ml-1">
+          <div>
+            <input [ngClass]="hasRolledStr && totalAbilityScores.strength <= lowStat ? 'is-invalid' : totalAbilityScores.strength >= highStat ? 'is-valid' : ''" class="form-control pt-2 pb-2 mb-0" *ngSwitchCase="'STR'" [value]="totalAbilityScores.strength" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Total" readonly>
+            <input [ngClass]="hasRolledDex && totalAbilityScores.dexterity <= lowStat ? 'is-invalid' : totalAbilityScores.dexterity >= highStat ? 'is-valid' : ''" class="form-control pt-2 pb-2 mb-0" *ngSwitchCase="'DEX'" [value]="totalAbilityScores.dexterity" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Total" readonly>
+            <input [ngClass]="hasRolledCon && totalAbilityScores.constitution <= lowStat ? 'is-invalid' : totalAbilityScores.constitution >= highStat ? 'is-valid' : ''" class="form-control pt-2 pb-2 mb-0" *ngSwitchCase="'CON'" [value]="totalAbilityScores.constitution" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Total" readonly>
+            <input [ngClass]="hasRolledInt && totalAbilityScores.intelligence <= 9 ? 'is-invalid' : totalAbilityScores.intelligence >= highStat ? 'is-valid' : ''" class="form-control pt-2 pb-2 mb-0" *ngSwitchCase="'INT'" [value]="totalAbilityScores.intelligence" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Total" readonly>
+            <input [ngClass]="hasRolledWis && totalAbilityScores.wisdom <= 9 ? 'is-invalid' : totalAbilityScores.wisdom >= highStat ? 'is-valid' : ''" class="form-control pt-2 pb-2 mb-0" *ngSwitchCase="'WIS'" [value]="totalAbilityScores.wisdom" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Total" readonly>
+            <input [ngClass]="hasRolledCha && totalAbilityScores.charisma <= 9 ? 'is-invalid' : totalAbilityScores.charisma >= highStat ? 'is-valid' : ''" class="form-control pt-2 pb-2 mb-0" *ngSwitchCase="'CHA'" [value]="totalAbilityScores.charisma" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Total" readonly>
+            <input class="form-control pt-2 pb-2 mb-0" *ngSwitchDefault [value]="">
+          </div>
+          <div class="xx-small" *ngSwitchCase="'INT'"><small *ngIf="totalAbilityScores.intelligence !== 0 && totalAbilityScores.intelligence <= 9" class="text-danger xx-small">{{ abilityScoreAbbr.abbreviation.get(abbr) }} is too low to cast spells tied to this ability</small></div>
+          <div class="xx-small" *ngSwitchCase="'WIS'"><small *ngIf="totalAbilityScores.wisdom !== 0 && totalAbilityScores.wisdom <= 9" class="text-danger xx-small">{{ abilityScoreAbbr.abbreviation.get(abbr) }} is too low to cast spells tied to this ability</small></div>
+          <div class="xx-small" *ngSwitchCase="'CHA'"><small *ngIf="totalAbilityScores.charisma !== 0 && totalAbilityScores.charisma <= 9" class="text-danger xx-small">{{ abilityScoreAbbr.abbreviation.get(abbr) }} is too low to cast spells tied to this ability</small></div>
+          <small *ngSwitchDefault class="text-black-50 xx-small">Total</small>
+        </div>
+
+        <div class="d-flex align-items-center flex-column ml-1" style="margin-top: 0.35em; width: 2.5em; flex: 0 0 auto;">
+          <div [ngSwitch]="abbr">
+            <span [ngClass]="hasRolledStr && totalAbilityScores.strength <= lowStat ? 'badge-danger' : totalAbilityScores.strength >= highStat ? 'badge-success' : ''" class="badge badge-pill badge-secondary" *ngSwitchCase="'STR'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Modifier">{{ getAbilityModifier(totalAbilityScores.strength) }}</span>
+            <span [ngClass]="hasRolledDex && totalAbilityScores.dexterity <= lowStat ? 'badge-danger' : totalAbilityScores.dexterity >= highStat ? 'badge-success' : ''" class="badge badge-pill badge-secondary" *ngSwitchCase="'DEX'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Modifier">{{ getAbilityModifier(totalAbilityScores.dexterity) }}</span>
+            <span [ngClass]="hasRolledCon && totalAbilityScores.constitution <= lowStat ? 'badge-danger' : totalAbilityScores.constitution >= highStat ? 'badge-success' : ''" class="badge badge-pill badge-secondary" *ngSwitchCase="'CON'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Modifier">{{ getAbilityModifier(totalAbilityScores.constitution) }}</span>
+            <span [ngClass]="hasRolledInt && totalAbilityScores.intelligence <= 9 ? 'badge-danger' : totalAbilityScores.intelligence >= highStat ? 'badge-success' : ''" class="badge badge-pill badge-secondary" *ngSwitchCase="'INT'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Modifier">{{ getAbilityModifier(totalAbilityScores.intelligence) }}</span>
+            <span [ngClass]="hasRolledWis && totalAbilityScores.wisdom <= 9 ? 'badge-danger' : totalAbilityScores.wisdom >= highStat ? 'badge-success' : ''" class="badge badge-pill badge-secondary" *ngSwitchCase="'WIS'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Modifier">{{ getAbilityModifier(totalAbilityScores.wisdom) }}</span>
+            <span [ngClass]="hasRolledCha && totalAbilityScores.charisma <= 9 ? 'badge-danger' : totalAbilityScores.charisma >= highStat ? 'badge-success' : ''" class="badge badge-pill badge-secondary" *ngSwitchCase="'CHA'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Modifier">{{ getAbilityModifier(totalAbilityScores.charisma) }}</span>
+            <span class="badge badge-pill badge-secondary" *ngSwitchDefault title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Modifier"></span>
+          </div>
+        </div>
+
+        <div class="d-flex align-items-center flex-column ml-1 math-sign">
+          <h6 class="pt-2 pb-2 mb-0">=</h6>
+        </div>
+
+        <div class="d-flex align-items-center flex-column ml-1">
+          <div [ngSwitch]="abbr">
+            <input class="form-control pt-2 pb-2 mb-0" [ngClass]="baseAbilityScores.strength >= highStat ? 'is-valid' : hasRolledStr && baseAbilityScores.strength <= lowStat ? 'is-invalid' : ''" *ngSwitchCase="'STR'" [value]="baseAbilityScores.strength" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Base Score" readonly>
+            <input class="form-control pt-2 pb-2 mb-0" [ngClass]="baseAbilityScores.dexterity >= highStat ? 'is-valid' : hasRolledDex && baseAbilityScores.dexterity <= lowStat ? 'is-invalid' : ''" *ngSwitchCase="'DEX'" [value]="baseAbilityScores.dexterity" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Base Score" readonly>
+            <input class="form-control pt-2 pb-2 mb-0" [ngClass]="baseAbilityScores.constitution >= highStat ? 'is-valid' : hasRolledCon && baseAbilityScores.constitution <= lowStat ? 'is-invalid' : ''" *ngSwitchCase="'CON'" [value]="baseAbilityScores.constitution" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Base Score" readonly>
+            <input class="form-control pt-2 pb-2 mb-0" [ngClass]="baseAbilityScores.intelligence >= highStat ? 'is-valid' : hasRolledInt && baseAbilityScores.intelligence <= 9 ? 'is-invalid' : ''" *ngSwitchCase="'INT'" [value]="baseAbilityScores.intelligence" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Base Score" readonly>
+            <input class="form-control pt-2 pb-2 mb-0" [ngClass]="baseAbilityScores.wisdom >= highStat ? 'is-valid' : hasRolledWis && baseAbilityScores.wisdom <= 9 ? 'is-invalid' : ''" *ngSwitchCase="'WIS'" [value]="baseAbilityScores.wisdom" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Base Score" readonly>
+            <input class="form-control pt-2 pb-2 mb-0" [ngClass]="baseAbilityScores.charisma >= highStat ? 'is-valid' : hasRolledCha && baseAbilityScores.charisma <= 9 ? 'is-invalid' : ''" *ngSwitchCase="'CHA'" [value]="baseAbilityScores.charisma" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Base Score" readonly>
+            <input class="form-control pt-2 pb-2 mb-0" *ngSwitchDefault [value]="">
+          </div>
+          <small class="text-black-50 xx-small">Base Score</small>
+        </div>
+
+        <div class="d-flex align-items-center flex-column ml-1">
+          <div [ngSwitch]="abbr" *ngIf="selectedRace !== undefined">
+            <input class="form-control pt-2 pb-2 mb-0" *ngSwitchCase="'STR'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Racial Bonuses" [value]="selectedRace.abilityScoreAdjustments.strength" readonly>
+            <input class="form-control pt-2 pb-2 mb-0" *ngSwitchCase="'DEX'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Racial Bonuses" [value]="selectedRace.abilityScoreAdjustments.dexterity" readonly>
+            <input class="form-control pt-2 pb-2 mb-0" *ngSwitchCase="'CON'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Racial Bonuses" [value]="selectedRace.abilityScoreAdjustments.constitution" readonly>
+            <input class="form-control pt-2 pb-2 mb-0" *ngSwitchCase="'INT'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Racial Bonuses" [value]="selectedRace.abilityScoreAdjustments.intelligence" readonly>
+            <input class="form-control pt-2 pb-2 mb-0" *ngSwitchCase="'WIS'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Racial Bonuses" [value]="selectedRace.abilityScoreAdjustments.wisdom" readonly>
+            <input class="form-control pt-2 pb-2 mb-0" *ngSwitchCase="'CHA'" title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Racial Bonuses" [value]="selectedRace.abilityScoreAdjustments.charisma" readonly>
+            <input class="form-control pt-2 pb-2 mb-0" *ngSwitchDefault title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Racial Bonuses" value="0" readonly>
+          </div>
+          <div [ngSwitch]="abbr" *ngIf="selectedRace === undefined">
+            <input class="form-control pt-2 pb-2 mb-0" *ngSwitchDefault title="{{ abilityScoreAbbr.abbreviation.get(abbr) }} Racial Bonuses" value="0" readonly>
+          </div>
+          <small class="text-black-50 xx-small">Racial Adjustment</small>
+        </div>
+
+        <div class="d-flex mr-3">
+
+          <div [ngSwitch]="abbr" class="d-flex align-items-start flex-grow-1 ml-1">
+            <button (click)="rollNewAbilityScore(abbr)" class="btn" style="width: 11.5em;" *ngSwitchCase="'STR'"
+                    [ngClass]="!hasRolledStr ? 'btn-primary' : 'btn-outline-secondary'" [title]="statRollRules.name">
+              <i class="fas fa-dice-d6"></i> {{ !hasRolledStr ? "Roll" : "Re-Roll" }} {{ abilityScoreAbbr.abbreviation.get(abbr) }}
+            </button>
+            <button (click)="rollNewAbilityScore(abbr)" class="btn" style="width: 11.5em;" *ngSwitchCase="'DEX'"
+                    [ngClass]="!hasRolledDex ? 'btn-primary' : 'btn-outline-secondary'" [title]="statRollRules.name">
+              <i class="fas fa-dice-d6"></i> {{ !hasRolledDex ? "Roll" : "Re-Roll" }} {{ abilityScoreAbbr.abbreviation.get(abbr) }}
+            </button>
+            <button (click)="rollNewAbilityScore(abbr)" class="btn" style="width: 11.5em;" *ngSwitchCase="'CON'"
+                    [ngClass]="!hasRolledCon ? 'btn-primary' : 'btn-outline-secondary'" [title]="statRollRules.name">
+              <i class="fas fa-dice-d6"></i> {{ !hasRolledCon ? "Roll" : "Re-Roll" }} {{ abilityScoreAbbr.abbreviation.get(abbr) }}
+            </button>
+            <button (click)="rollNewAbilityScore(abbr)" class="btn" style="width: 11.5em;" *ngSwitchCase="'INT'"
+                    [ngClass]="!hasRolledInt ? 'btn-primary' : 'btn-outline-secondary'" [title]="statRollRules.name">
+              <i class="fas fa-dice-d6"></i> {{ !hasRolledInt ? "Roll" : "Re-Roll" }} {{ abilityScoreAbbr.abbreviation.get(abbr) }}
+            </button>
+            <button (click)="rollNewAbilityScore(abbr)" class="btn" style="width: 11.5em;" *ngSwitchCase="'WIS'"
+                    [ngClass]="!hasRolledWis ? 'btn-primary' : 'btn-outline-secondary'" [title]="statRollRules.name">
+              <i class="fas fa-dice-d6"></i> {{ !hasRolledWis ? "Roll" : "Re-Roll" }} {{ abilityScoreAbbr.abbreviation.get(abbr) }}
+            </button>
+            <button (click)="rollNewAbilityScore(abbr)" class="btn" style="width: 11.5em;" *ngSwitchCase="'CHA'"
+                    [ngClass]="!hasRolledCha ? 'btn-primary' : 'btn-outline-secondary'" [title]="statRollRules.name">
+              <i class="fas fa-dice-d6"></i> {{ !hasRolledCha ? "Roll" : "Re-Roll" }} {{ abilityScoreAbbr.abbreviation.get(abbr) }}
+            </button>
+          </div>
+
+          <div class="d-flex align-items-start flex-shrink-0 ml-1">
+            <input class="btn btn-outline-dark" style="width: 2.5em;" (click)="lowerAbilityScore(abbr)" title="Click to decrease {{ abilityScoreAbbr.abbreviation.get(abbr) }} by 1." value="-">
+          </div>
+
+          <div class="d-flex align-items-start flex-shrink-0 ml-1">
+            <input class="btn btn-outline-dark" style="width: 2.5em;" (click)="raiseAbilityScore(abbr)" title="Click to increase {{ abilityScoreAbbr.abbreviation.get(abbr) }} by 1." value="+">
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="col-4 pr-0" *ngIf="charIsNew==true">
+
+      <div class="mb-3">
+        <label for="typeahead-focus">Race:</label>
+        <input
+          id="typeahead-focus"
+          type="text"
+          class="form-control form-inline"
+          placeholder="What race are you?"
+          [(ngModel)]="typeAheadRace"
+          [ngbTypeahead]="search"
+          [resultTemplate]="rt"
+          [resultFormatter]="formatMatches"
+          [inputFormatter]="formatMatches"
+          (focus)="focus$.next($event.target.value)"
+          (click)="click$.next($event.target.value)"
+          (selectItem)="setSelectedRace($event.item)"
+          #instance="ngbTypeahead"
+        />
+        <ng-template #rt let-r="result" let-t="term">
+          <img [src]="r['icon']" class="mr-2" style="width: 1.5em">
+          <ngb-highlight [result]="r.name" [term]="t"></ngb-highlight>
+        </ng-template>
+      </div>
+
+      <div class="jumbotron p-2 mb-1" style="text-align: center;">
+        <h1 class="display-1">{{ (pointBuy <= 0 || pointBuy > 0) ? pointBuy : 0 }}</h1>
+        <p class="lead">Point Buy Total</p>
+        <p *ngIf="pointBuy < 0" class="text-danger">Low-powered</p>
+        <p *ngIf="pointBuy === 0 && (playerHasSelectedRace || hasRolledAllStats)" class="text-muted">Low-powered</p>
+        <p *ngIf="pointBuy >= 1 && pointBuy <= 15" class="text-danger">Low-powered</p>
+        <p *ngIf="pointBuy >= 16 && pointBuy <= 22" class="text-warning">Challenging</p>
+        <p *ngIf="pointBuy >= 23 && pointBuy <= 28" class="text-info">Normal</p>
+        <p *ngIf="pointBuy >= 29 && pointBuy <= 32" class="text-warning">High-powered</p>
+        <p *ngIf="pointBuy >= 33 && pointBuy <= 48" class="text-danger">Very High-powered</p>
+        <p *ngIf="pointBuy >= 49 && pointBuy <= 68" class="text-danger">God Like</p>
+        <p *ngIf="pointBuy >= 69" class="text-danger">Broken</p>
+      </div>
+
+    </div>
+
+  </div>
+</div>
