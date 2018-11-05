@@ -25,6 +25,7 @@ import { NewCharacterComponent } from './components/character/new-character/new-
 import { environment } from '../environments/environment';
 // Routes
 import { RouterModule, Routes } from '@angular/router';
+import { AbilityScoresNewComponent } from './components/character/ability-scores-new/ability-scores-new.component';
 const appRoutes: Routes = [
   { path: '',               component: HomeComponent },
   { path: '',               redirectTo: '/', pathMatch: 'full' },
@@ -50,7 +51,8 @@ const appRoutes: Routes = [
     ArmorClassComponent,
     HitPointsComponent,
     WeaponsComponent,
-    NewCharacterComponent
+    NewCharacterComponent,
+    AbilityScoresNewComponent
   ],
   imports: [
     BrowserModule,
