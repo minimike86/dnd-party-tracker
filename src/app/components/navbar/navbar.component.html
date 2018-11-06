@@ -1,28 +1,48 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark"
-  style="font-family: 'Roboto', sans-serif;">
-  <a class="navbar-brand" href="#">
-    <img class="brand-img" src="{{ brand }}" alt="dnd logo" />
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="font-family: 'Roboto', sans-serif;">
+
+  <a class="navbar-brand"
+     [routerLink]="['/']"
+     [routerLinkActive]="['active']"
+     [routerLinkActiveOptions]="{ exact: true }">
+    <img class="brand-img" src="assets/img/DnD_Logo.png" alt="dnd logo" />
   </a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01"
+          aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
+
   <div class="collapse navbar-collapse" id="navbarColor01">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
         <a class="nav-link" [routerLink]="['/']">Home</a>
       </li>
       <li class="nav-item" [routerLinkActive]="['active']">
-        <a class="nav-link" [routerLink]="['/party']">Party</a>
-      </li>
-      <li class="nav-item" [routerLinkActive]="['active']">
         <a class="nav-link" [routerLink]="['/character']">Characters</a>
       </li>
       <li class="nav-item" [routerLinkActive]="['active']">
-        <a class="nav-link" [routerLink]="['/items']">Items</a>
-      </li>
-      <li class="nav-item" [routerLinkActive]="['active']">
-        <a class="nav-link" [routerLink]="['/spells']">Spells</a>
+        <a class="nav-link" [routerLink]="['/party']">Party</a>
       </li>
     </ul>
   </div>
+
+  <div *ngIf="afAuth.user | async as user; else showLogin">
+    <img class="rounded-circle mr-1" style="border: 2px solid #ccc; height: 2em; width: 2em;" src="{{ user.photoURL }}">
+    <div class="d-inline-flex align-middle mr-3">
+      <a class="text-white font-weight-bold" [routerLink]="['/profile']" [routerLinkActive]="['active']">
+        {{ user.email }}
+      </a>
+    </div>
+    <button (click)="logout()" class="btn btn-sm btn-secondary">Logout</button>
+  </div>
+  <ng-template #showLogin>
+    <div>
+      <div class="input-group my-2 my-lg-0">
+        <input type="text" class="form-control form-control-sm" placeholder="Username" aria-label="Username">
+        <input type="password" class="form-control form-control-sm" placeholder="Password" aria-label="Password">
+        <button (click)="login()" class="btn btn-sm btn-secondary my-2 my-sm-0" type="submit">Login with Google</button>
+      </div>
+    </div>
+  </ng-template>
+
 </nav>

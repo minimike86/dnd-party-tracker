@@ -21,18 +21,19 @@ import { ArmorClassComponent } from './components/character/armor-class/armor-cl
 import { HitPointsComponent } from './components/character/hit-points/hit-points.component';
 import { WeaponsComponent } from './components/weapons/weapons.component';
 import { NewCharacterComponent } from './components/character/new-character/new-character.component';
+import { AbilityScoresNewComponent } from './components/character/ability-scores-new/ability-scores-new.component';
 // Environment Variables
 import { environment } from '../environments/environment';
 // Routes
 import { RouterModule, Routes } from '@angular/router';
-import { AbilityScoresNewComponent } from './components/character/ability-scores-new/ability-scores-new.component';
 const appRoutes: Routes = [
-  { path: '',               component: HomeComponent },
-  { path: '',               redirectTo: '/', pathMatch: 'full' },
-  { path: 'party',          component: PartyComponent },
-  { path: 'character',      component: CharacterComponent },
-  { path: 'character/new',  component: NewCharacterComponent },
-  { path: '**', component: PageNotFoundComponent }
+  { path: '',                     component: HomeComponent },
+  { path: '',                     redirectTo: '/', pathMatch: 'full' },
+  { path: 'party',                component: PartyComponent },
+  { path: 'character',            component: CharacterComponent },
+  { path: 'character/new',        component: NewCharacterComponent },
+  { path: 'character/new/class',  component: NewCharacterComponent },
+  { path: '**',                   component: PageNotFoundComponent }
 ];
 
 
@@ -60,7 +61,7 @@ const appRoutes: Routes = [
     NgbModule,
     AngularFireModule.initializeApp(environment.firebase, 'dnd-party-tracker'),
     AngularFireAuthModule,
-    AngularFirestoreModule,
+    AngularFirestoreModule.enablePersistence(),
     RouterModule.forRoot(
       appRoutes,
       { enableTracing: false } // <-- debugging purposes only
