@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Party, PartyId } from '../../../../app/models/party/party';
+import { Party, PartyId } from '../../../models/party/party';
 
 @Injectable({
   providedIn: 'root'

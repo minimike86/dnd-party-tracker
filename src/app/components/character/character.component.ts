@@ -15,7 +15,6 @@ import {CombatStyle, DamageType, Weapon, WeaponCategory, WeaponType} from '../..
 export class CharacterComponent implements OnInit {
 
   mockCharacter: Character = {
-    id: 1,
     characterName: 'Floon Blagmaar',
     playerName: 'Mike Warner',
     classes: Array(

@@ -5,9 +5,13 @@ import { AbilityScore } from './ability-scores';
 import { Item } from '../../models/item/item';
 import { Weapon } from '../item/weapon';
 
-export class Character {
+export interface CharacterId extends Character{
 
-  id: number;
+  id: string;
+
+}
+
+export class Character {
 
   // Description
   characterName: string;
@@ -16,6 +20,7 @@ export class Character {
   ecl?: number;
   race: RaceName;
   size: Size;
+  imageUrl?: string;
   gender: string;
   alignment: Alignment;
   religion?: string;

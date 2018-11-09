@@ -5,15 +5,19 @@
       <div class="card">
         <h5 class="card-header">
           {{ partyItem.name }}
-          <span class="badge badge-primary" style="font-size: x-small;">{{ partyItem.id }}</span>
         </h5>
         <div class="card-body">
-          <p class="card-text">{{ partyItem.description }}</p>
+          <p class="card-text text-muted">{{ partyItem.description }}</p>
           <div>
             <div class="d-inline-flex text-center" *ngFor="let member of partyItem.members">
-              <div class="m-1">
-                <img class="d-block rounded-circle mr-1" style="border: 2px solid #ccc; height: 2em; width: 2em;" src="{{ member }}">
-                <span class="d-block" style="font-size: small;">{{ member }}</span>
+              <div class="m-3" *ngIf=" getCharacter(member) !== null ">
+                <img class="rounded-circle"
+                     style="border: 2px solid #ccc; height: 4em; width: 4em;"
+                     src="{{ getCharacter(member).imageUrl }}">
+                <span class="d-block">{{ getCharacter(member).characterName }}</span>
+                <div *ngFor="let class of getCharacter(member).classes">
+                  <span class="d-block text-info" style="font-size: small;">{{ class.className }} {{ class.level }}</span>
+                </div>
               </div>
             </div>
           </div>
