@@ -1,44 +1,29 @@
-<div class="container">
+<div class="container mt-3">
   <div class="row">
 
-    <div class="col-12 mt-3">
-      <ngb-alert [dismissible]="false" type="danger" *ngIf="parties === undefined">
-        <strong>No Parties Found:</strong> There are currently no parties.
-        Why not <a class="text-danger font-weight-bold" [routerLink]="['/character/new']" [routerLinkActive]="['active']">create a new character</a>, then create and join a new party?
-      </ngb-alert>
-    </div>
-
-    <div *ngFor="let party of parties">
-
-      <div class="card mt-3 mr-3">
-        <div class="card-header">#{{ party.id }}</div>
+    <div *ngFor="let partyItem of partyArray">
+      <div class="card">
+        <h5 class="card-header">
+          {{ partyItem.name }}
+        </h5>
         <div class="card-body">
-          <h4 class="card-title">{{ party.name }}</h4>
-          <p class="card-text">{{ party.description }}</p>
-          <div class="text-center">
-            <button class="btn btn-primary">
-              View Party
-            </button>
-            <button class="btn btn-warning ml-3" (click)="editParty(party.id)">
-              Edit Party
-            </button>
-            <button class="btn btn-danger ml-3" (click)="deleteParty(party.id)">
-              Delete Party
-            </button>
+          <p class="card-text text-muted">{{ partyItem.description }}</p>
+          <div>
+            <div class="d-inline-flex text-center" *ngFor="let member of partyItem.members">
+              <div class="m-3" *ngIf=" getCharacter(member) !== null ">
+                <img class="rounded-circle"
+                     style="border: 2px solid #ccc; height: 4em; width: 4em;"
+                     src="{{ getCharacter(member).imageUrl }}">
+                <span class="d-block">{{ getCharacter(member).characterName }}</span>
+                <div *ngFor="let class of getCharacter(member).classes">
+                  <span class="d-block text-info" style="font-size: small;">{{ class.className }} {{ class.level }}</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-
-    </div>
-
-    <div class="card ml-3 mt-3">
-      <div class="card-header">
-        <input [(ngModel)]="newParty.id" [value]="parties !== undefined ? parties.length : 0" class="form-control" type="text" placeholder="id">
-      </div>
-      <div class="card-body">
-        <input [(ngModel)]="newParty.name" class="form-control" type="text" placeholder="name">
-        <input [(ngModel)]="newParty.description" class="form-control" type="text" placeholder="description">
-        <button (click)="addParty()" class="btn btn-block btn-primary">Add</button>
+        <div class="card-footer">
+        </div>
       </div>
     </div>
 

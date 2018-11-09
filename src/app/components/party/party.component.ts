@@ -1,16 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
-
-class Party {
-  id: number;
-  name: string;
-  description: string;
-  constructor() {
-    this.id = 0;
-    this.name = '';
-    this.description = '';
-  }
-}
+import { PartyId } from '../../models/party/party';
+import { PartyService } from '../../services/firebase/party/party.service';
+import { CharacterId } from '../../models/character/character';
+import { CharacterService } from '../../services/firebase/character/character.service';
 
 @Component({
   selector: 'app-party',
@@ -19,60 +11,40 @@ class Party {
 })
 export class PartyComponent implements OnInit {
 
-  public parties: any;
-  public newParty: Party;
+  public partyArray: PartyId[];
+  public characterArray: CharacterId[];
 
-  constructor(public db: AngularFirestore) {
-    db.collection('parties').valueChanges().subscribe(
-      value => {
-        // Set parties from firebase db
-        this.parties = value;
-        // Sort parties by id
-        this.parties.sort((a, b) => {
-          const x = a.id;
-          const y = b.id;
-          return ((x < y) ? -1 : ((x > y) ? 1 : 0));
-        });
-        // console.log(this.parties);
-      }
-    );
-  }
+  constructor(
+    public partyService: PartyService,
+    public characterService: CharacterService
+  ) {}
 
   ngOnInit() {
-    this.newParty = new Party();
-  }
-
-  addParty(): void {
-    this.newParty.id = this.parties.length;
-    this.db.collection('parties').doc('party' + this.newParty.id).set(JSON.parse(JSON.stringify(this.newParty)));
-  }
-
-  editParty(id: number): void {
-    let docId: string;
-    this.db.collection('parties').get().subscribe(partyDoc => {
-      partyDoc.forEach(doc => {
-        if (parseInt(doc.id.substr(-1), 10) === parseInt(id.toString(), 10)) {
-          console.log(doc.id);
-          docId = doc.id;
-        }
-      });
-    }, err => {
-      console.error(err);
-    }, () => {
-      this.db.collection('parties').doc(docId).valueChanges().subscribe(partyDoc => {
-        console.log('partyDoc: ', partyDoc);
-      });
+    this.partyService.getParties().subscribe(parties => {
+      this.partyArray = parties;
+    });
+    this.characterService.getCharacters().subscribe( characters => {
+      this.characterArray = characters;
     });
   }
 
-  deleteParty(id: number): void {
-    this.db.collection('parties').get().subscribe(partyDoc => {
-      partyDoc.forEach(doc => {
-        if (parseInt(doc.id.substr(-1), 10) === parseInt(id.toString(), 10)) {
-          this.db.collection('parties').doc(doc.id).delete();
-        }
-      });
-    });
+  getCharacter(characterId: string): CharacterId {
+    if (this.characterArray !== undefined) {
+      return this.characterArray.filter(character => character.id === characterId)[0];
+    }
+    return null;
+  }
+
+  addParty(partyId: PartyId) {
+    this.addParty(partyId);
+  }
+
+  editParty(partyId: PartyId, newParty: PartyId) {
+    this.editParty(partyId, newParty);
+  }
+
+  deleteParty(partyId: PartyId) {
+    this.deleteParty(partyId);
   }
 
 }
