@@ -9,34 +9,20 @@ import { Party, PartyId } from '../../../models/party/party';
 })
 export class PartyService {
 
-  public partyCollection: AngularFirestoreCollection<Party>;
-  public parties: Observable<PartyId[]>;
+  private partyCollection: AngularFirestoreCollection<Party>;
 
   constructor(public db: AngularFirestore) {
     this.partyCollection = db.collection<Party>('/parties');
-    this.parties = this.partyCollection.snapshotChanges().pipe(
-      map(actions => actions.map(a => {
-        const data = a.payload.doc.data() as Party;
-        const id = a.payload.doc.id;
-        return { id, ...data };
-      }))
-    );
   }
 
   getParties(): Observable<PartyId[]> {
-    return this.parties;
-  }
-
-  addParty(partyId: PartyId): void {
-    this.db.collection('parties').add(partyId);
-  }
-
-  editParty(partyId: PartyId, newParty: PartyId): void {
-    this.db.collection('parties').doc(partyId.id).set(newParty);
-  }
-
-  deleteParty(partyId: PartyId): void {
-    this.db.collection('parties').doc(partyId.id).delete();
+    return this.partyCollection.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const id = a.payload.doc.id;
+        const data = a.payload.doc.data() as Party;
+        return { id, ...data };
+      }))
+    );
   }
 
 }
