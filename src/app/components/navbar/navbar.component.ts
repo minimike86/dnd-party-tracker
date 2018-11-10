@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
-import { AngularFireAuth } from '@angular/fire/auth';
-import { auth } from 'firebase/app';
+import { AuthService } from '../../services/firebase/auth/auth.service';
+
 
 @Component({
   selector: 'app-navbar',
@@ -10,21 +9,18 @@ import { auth } from 'firebase/app';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor(public afAuth: AngularFireAuth,
-              public db: AngularFirestore) {}
+  constructor(public authService: AuthService) {
+  }
 
   ngOnInit() {
-    this.afAuth.user.subscribe(user => {
-      this.db.collection('users').doc(user.email).set(user.toJSON());
-    });
   }
 
   login() {
-    this.afAuth.auth.signInWithPopup(new auth.GoogleAuthProvider());
+    this.authService.login('google');
   }
 
   logout() {
-    this.afAuth.auth.signOut();
+    this.authService.logout();
   }
 
 }

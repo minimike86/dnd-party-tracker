@@ -9,15 +9,22 @@
         <div class="card-body">
           <p class="card-text text-muted">{{ partyItem.description }}</p>
           <div>
-            <div class="d-inline-flex text-center" *ngFor="let member of partyItem.members">
-              <div class="m-3" *ngIf=" getCharacter(member) !== null ">
+            <div class="d-inline-flex text-center" *ngFor="let memberReference of partyItem.members">
+              <div class="m-3" *ngIf=" getCharacter(memberReference) !== null ">
                 <img class="rounded-circle"
                      style="border: 2px solid #ccc; height: 4em; width: 4em;"
-                     src="{{ getCharacter(member).imageUrl }}">
-                <span class="d-block">{{ getCharacter(member).characterName }}</span>
-                <div *ngFor="let class of getCharacter(member).classes">
+                     src="{{ getCharacter(memberReference).imageUrl }}">
+                <span class="d-block">{{ getCharacter(memberReference).characterName }}</span>
+                <div *ngFor="let class of getCharacter(memberReference).classes">
                   <span class="d-block text-info" style="font-size: small;">{{ class.className }} {{ class.level }}</span>
                 </div>
+                <button class="btn btn-warning btn-sm mt-1"
+                        (click)="editCharacter(memberReference)"
+                        *ngIf="authService.getCurrentUser() !== undefined && getCharacter(memberReference).player !== undefined &&
+                               authService.getCurrentUser() !== null && getCharacter(memberReference).player !== null &&
+                               authService.getCurrentUser() === getCharacter(memberReference).player">
+                  Edit
+                </button>
               </div>
             </div>
           </div>
