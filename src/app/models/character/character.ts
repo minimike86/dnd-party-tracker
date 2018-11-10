@@ -5,13 +5,15 @@ import { AbilityScore } from './ability-scores';
 import { Item } from '../../models/item/item';
 import { Weapon } from '../item/weapon';
 
-export interface CharacterId extends Character{
+export interface CharacterId extends Character {
 
   id: string;
 
 }
 
 export class Character {
+
+  player?: string;        // User account (email)
 
   // Description
   characterName: string;

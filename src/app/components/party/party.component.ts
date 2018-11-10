@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { PartyId } from '../../models/party/party';
+import { AuthService } from '../../services/firebase/auth/auth.service';
 import { PartyService } from '../../services/firebase/party/party.service';
-import { CharacterId } from '../../models/character/character';
 import { CharacterService } from '../../services/firebase/character/character.service';
+import { PartyId } from '../../models/party/party';
+import { CharacterId } from '../../models/character/character';
 
 @Component({
   selector: 'app-party',
@@ -15,6 +16,7 @@ export class PartyComponent implements OnInit {
   public characterArray: CharacterId[];
 
   constructor(
+    public authService: AuthService,
     public partyService: PartyService,
     public characterService: CharacterService
   ) {}
@@ -28,11 +30,15 @@ export class PartyComponent implements OnInit {
     });
   }
 
-  getCharacter(characterId: string): CharacterId {
+  getCharacter(characterReference: string): CharacterId {
     if (this.characterArray !== undefined) {
-      return this.characterArray.filter(character => character.id === characterId)[0];
+      return this.characterArray.filter(character => character.id === characterReference)[0];
     }
     return null;
+  }
+
+  editCharacter(characterReference: string) {
+    //
   }
 
   addParty(partyId: PartyId) {
