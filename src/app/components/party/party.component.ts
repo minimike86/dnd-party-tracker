@@ -4,6 +4,8 @@ import { PartyService } from '../../services/firebase/party/party.service';
 import { CharacterService } from '../../services/firebase/character/character.service';
 import { PartyId } from '../../models/party/party';
 import { CharacterId } from '../../models/character/character';
+import {error} from 'util';
+
 
 @Component({
   selector: 'app-party',
@@ -12,45 +14,44 @@ import { CharacterId } from '../../models/character/character';
 })
 export class PartyComponent implements OnInit {
 
-  public partyArray: PartyId[];
-  public characterArray: CharacterId[];
+  public parties: PartyId[];
+  public characters: CharacterId[];
 
-  constructor(
-    public authService: AuthService,
-    public partyService: PartyService,
-    public characterService: CharacterService
-  ) {}
+  constructor(public authService: AuthService,
+              public partyService: PartyService,
+              public characterService: CharacterService) {}
 
   ngOnInit() {
-    this.partyService.getParties().subscribe(parties => {
-      this.partyArray = parties;
-    });
-    this.characterService.getCharacters().subscribe( characters => {
-      this.characterArray = characters;
-    });
+    this.getParties();
+    this.getCharacters();
+  }
+
+  // Party Functions
+  getParties(): void {
+    this.partyService.getParties()
+      .subscribe(
+        parties => this.parties = parties,
+        err => console.log('Error :: ' + err)
+      );
+  }
+
+  // Character Functions
+  getCharacters(): void {
+    this.characterService.getCharacters()
+      .subscribe(
+        characters => this.characters = characters,
+        err => console.log('Error :: ' + err)
+      );
   }
 
   getCharacter(characterReference: string): CharacterId {
-    if (this.characterArray !== undefined) {
-      return this.characterArray.filter(character => character.id === characterReference)[0];
+    if (this.characters !== undefined) {
+      return this.characters.filter(characterId => characterId.id === characterReference)[0];
     }
-    return null;
   }
 
   editCharacter(characterReference: string) {
     //
-  }
-
-  addParty(partyId: PartyId) {
-    this.addParty(partyId);
-  }
-
-  editParty(partyId: PartyId, newParty: PartyId) {
-    this.editParty(partyId, newParty);
-  }
-
-  deleteParty(partyId: PartyId) {
-    this.deleteParty(partyId);
   }
 
 }

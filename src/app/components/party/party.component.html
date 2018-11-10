@@ -1,16 +1,18 @@
 <div class="container mt-3">
   <div class="row">
 
-    <div *ngFor="let partyItem of partyArray">
+    <div *ngFor="let party of parties">
+
       <div class="card">
         <h5 class="card-header">
-          {{ partyItem.name }}
+          {{ party.name }}
         </h5>
         <div class="card-body">
-          <p class="card-text text-muted">{{ partyItem.description }}</p>
+          <p class="card-text text-muted">{{ party.description }}</p>
           <div>
-            <div class="d-inline-flex text-center" *ngFor="let memberReference of partyItem.members">
-              <div class="m-3" *ngIf=" getCharacter(memberReference) !== null ">
+            <div class="d-inline-flex text-center" *ngFor="let memberReference of party.members">
+
+              <div class="m-3" *ngIf=" getCharacter(memberReference) !== undefined ">
                 <img class="rounded-circle"
                      style="border: 2px solid #ccc; height: 4em; width: 4em;"
                      src="{{ getCharacter(memberReference).imageUrl }}">
@@ -23,15 +25,17 @@
                         *ngIf="authService.getCurrentUser() !== undefined && getCharacter(memberReference).player !== undefined &&
                                authService.getCurrentUser() !== null && getCharacter(memberReference).player !== null &&
                                authService.getCurrentUser() === getCharacter(memberReference).player">
-                  Edit
+                  View
                 </button>
               </div>
+
             </div>
           </div>
         </div>
         <div class="card-footer">
         </div>
       </div>
+
     </div>
 
   </div>
