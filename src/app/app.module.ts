@@ -6,6 +6,8 @@ import { FormsModule } from '@angular/forms';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { MaterialModule } from './material/material.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // App
 import { AppComponent } from './app.component';
@@ -35,27 +37,29 @@ import { environment } from '../environments/environment';
     AppComponent,
     NavbarComponent,
     FooterComponent,
-    CharacterComponent,
-    PartyComponent,
     PageNotFoundComponent,
     HomeComponent,
-    AbilityScoresComponent,
+    CharacterComponent,
+    NewCharacterComponent,
+    PartyComponent,
     CombatOptionsComponent,
     SavingThrowsComponent,
     ArmorClassComponent,
     HitPointsComponent,
     WeaponsComponent,
-    NewCharacterComponent,
+    AbilityScoresComponent,
     AbilityScoresNewComponent
   ],
   imports: [
-    BrowserModule,
-    FormsModule,
-    NgbModule,
     AngularFireModule.initializeApp(environment.firebase, 'dnd-party-tracker'),
     AngularFireAuthModule,
     AngularFirestoreModule.enablePersistence(),
-    AppRoutingModule
+    NgbModule,
+    BrowserModule,
+    FormsModule,
+    AppRoutingModule,
+    MaterialModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
