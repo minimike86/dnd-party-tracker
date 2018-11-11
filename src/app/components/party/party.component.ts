@@ -23,9 +23,8 @@ export class PartyComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getCharacters();
+    this.getCharacters(); // Must call characters first
     this.getParties();
-    this.getPartiesUserHasPlayerCharacter(this.parties);
   }
 
   // Party Functions
@@ -51,16 +50,15 @@ export class PartyComponent implements OnInit {
 
   getPartiesUserHasPlayerCharacter(parties): void {
     this.partiesUserHasPlayerCharacter = [];
-    if (this.parties !== undefined) {
+    if (this.parties !== undefined && this.characters !== undefined) {
       for (const partyItem of parties) {
         for (const member of partyItem.members) {
-          if (this.getCharacter(member) !== undefined && this.getCharacter(member).player === this.authService.getCurrentUser()) {
+          if (this.getCharacter(member).player === this.authService.getCurrentUser()) {
             this.partiesUserHasPlayerCharacter.push(partyItem.id);
           }
         }
       }
     }
-    console.log('partiesUserHasPlayerCharacter: ', this.partiesUserHasPlayerCharacter);
   }
 
   getCharacter(characterReference: string): CharacterId {

@@ -19,7 +19,7 @@
         <div class="card-body px-3 py-2">
           <p class="card-text text-secondary mb-2"><small>{{ party.description }}</small></p>
           <div class="d-flex flex-wrap">
-            <div class="flex-fill align-content-stretch text-center" *ngFor="let memberReference of party.members">
+            <div class="flex-fill align-content-stretch text-center" *ngFor="let memberReference of party.members ">
 
               <div class="" *ngIf=" getCharacter(memberReference) !== undefined ">
                 <div class="card mr-1 mb-1">
@@ -42,6 +42,7 @@
                   </div>
                   <div class="card-footer p-1">
                     <button class="btn btn-outline-primary btn-sm"
+                            title="View {{ getCharacter(memberReference).characterName }}&apos;s character sheet"
                             (click)="viewCharacter(memberReference)">
                       View
                     </button>
@@ -49,10 +50,12 @@
                                 authService.getCurrentUser() !== null && getCharacter(memberReference).player !== null &&
                                 authService.getCurrentUser() === getCharacter(memberReference).player">
                       <button class="btn btn-outline-warning btn-sm ml-1"
+                              title="Edit {{ getCharacter(memberReference).characterName }}"
                               (click)="editCharacter(memberReference)">
                         <i class="far fa-edit"></i>
                       </button>
                       <button class="btn btn-outline-danger btn-sm ml-1"
+                              title="Remove {{ getCharacter(memberReference).characterName }} from &apos;{{ party.name }}&apos;"
                               (click)="removeCharacter(memberReference, party.id)">
                         <i class="far fa-trash-alt"></i>
                       </button>
@@ -73,7 +76,7 @@
                 <i class="fas fa-users"></i>&nbsp;<i class="fas fa-plus-circle"></i>
               </button>
               <button class="btn btn-outline-danger btn-sm ml-1"
-                      title="Delete this party"
+                      title="Delete &apos;{{ party.name }}&apos;"
                       (click)="null" *ngIf="authService.getCurrentUser() !== undefined &&
                                             authService.getCurrentUser() !== null &&
                                             authService.getCurrentUser() === party.partyLeader">
