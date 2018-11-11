@@ -5,7 +5,7 @@
       <input type="checkbox" class="custom-control-input" id="customCheck1" [(ngModel)]="allowCheating" (ngModelChange)="toggleAllowCheating($event)" >
       <label class="custom-control-label text-black-50" for="customCheck1"><small>Allow ability scores greater than 18</small></label>
     </div>
-    <div ngbDropdown class="d-flex flex-row-reverse">
+    <div ngbDropdown placement="top-right" class="d-flex flex-row-reverse">
       <button ngbDropdownToggle class="btn btn-sm btn-dark ml-3" id="dropdownBasic1" [title]="statRollRules.name"><i class="fas fa-dice-d6"></i> Rolling Rules</button>
       <div ngbDropdownMenu aria-labelledby="dropdownBasic1" style="width: 17em;">
         <button class="dropdown-item" (click)="selectStatRollingRule({ 'id': 0, 'name': '4d6 drop lowest' })">
