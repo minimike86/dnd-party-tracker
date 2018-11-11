@@ -21,6 +21,10 @@
     </div>
     <div class="form-group">
       <label for="characterName">Character Name</label>
+      <button class="btn btn-outline-info btn-sm ml-1 py-0" title="Generate a random character name"
+              (click)="generateRandomName()">
+        <i class="fas fa-random"></i>
+      </button>
       <input type="text" class="form-control" id="characterName" placeholder="What is your characters name?"
              [(ngModel)]="characterName" (ngModelChange)="checkPlayerIsReadyToPickClass()" required>
     </div>

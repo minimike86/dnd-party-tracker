@@ -6,8 +6,12 @@ import { FormsModule } from '@angular/forms';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
-// Components
+
+// App
 import { AppComponent } from './app.component';
+import { AppRoutingModule } from './app-routing.module';
+
+// Components
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { CharacterComponent } from './components/character/character.component';
@@ -22,20 +26,9 @@ import { HitPointsComponent } from './components/character/hit-points/hit-points
 import { WeaponsComponent } from './components/weapons/weapons.component';
 import { NewCharacterComponent } from './components/character/new-character/new-character.component';
 import { AbilityScoresNewComponent } from './components/character/ability-scores-new/ability-scores-new.component';
+
 // Environment Variables
 import { environment } from '../environments/environment';
-// Routes
-import { RouterModule, Routes } from '@angular/router';
-const appRoutes: Routes = [
-  { path: '',                     component: HomeComponent },
-  { path: '',                     redirectTo: '/', pathMatch: 'full' },
-  { path: 'party',                component: PartyComponent },
-  { path: 'character',            component: CharacterComponent },
-  { path: 'character/new',        component: NewCharacterComponent },
-  { path: 'character/new/class',  component: NewCharacterComponent },
-  { path: '**',                   component: PageNotFoundComponent }
-];
-
 
 @NgModule({
   declarations: [
@@ -62,10 +55,7 @@ const appRoutes: Routes = [
     AngularFireModule.initializeApp(environment.firebase, 'dnd-party-tracker'),
     AngularFireAuthModule,
     AngularFirestoreModule.enablePersistence(),
-    RouterModule.forRoot(
-      appRoutes,
-      { enableTracing: false } // <-- debugging purposes only
-    )
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
