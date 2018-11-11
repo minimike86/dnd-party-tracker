@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AbilityScore } from '../../../models/character/ability-scores';
+import {AuthService} from '../../../services/firebase/auth/auth.service';
 
 
 @Component({
@@ -17,10 +18,14 @@ export class NewCharacterComponent implements OnInit {
   public selectedRace: any;
   public readyToPickClass: boolean;
 
-  constructor() {}
+  constructor(public authService: AuthService) {
+    this.authService.afAuth.user.subscribe(data => {
+      this.playerName = data !== null ? data.displayName : '';
+    });
+  }
 
   ngOnInit() {
-    this.playerName = '';
+    this.playerName = ''
     this.characterName = '';
     this.readyToPickClass = false;
     this.playerHasRolledAllStats = false;
