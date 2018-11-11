@@ -3,36 +3,84 @@
 
     <div *ngFor="let party of parties">
 
-      <div class="card">
-        <h5 class="card-header">
-          {{ party.name }}
-        </h5>
-        <div class="card-body">
-          <p class="card-text text-muted">{{ party.description }}</p>
-          <div>
-            <div class="d-inline-flex text-center" *ngFor="let memberReference of party.members">
+      <div class="card m-1">
+        <h6 class="card-header px-3 py-2">
+          <div class="d-flex">
+            <div class="mr-2">
+              <span class="text-muted" style="opacity: 0.25">PARTY: </span>
+              {{ party.name | titlecase }}
+            </div>
+            <div class="ml-auto">
+              <span class="text-muted" style="opacity: 0.25">CAMPAIGN: </span>
+              <a class="text-info" [routerLink]="" [routerLinkActive]="" title="DM">{{ party.campaign }}</a>
+            </div>
+          </div>
+        </h6>
+        <div class="card-body px-3 py-2">
+          <p class="card-text text-secondary mb-2"><small>{{ party.description }}</small></p>
+          <div class="d-flex flex-wrap">
+            <div class="flex-fill align-content-stretch text-center" *ngFor="let memberReference of party.members">
 
-              <div class="m-3" *ngIf=" getCharacter(memberReference) !== undefined ">
-                <img class="rounded-circle"
-                     style="border: 2px solid #ccc; height: 4em; width: 4em;"
-                     src="{{ getCharacter(memberReference).imageUrl }}">
-                <span class="d-block">{{ getCharacter(memberReference).characterName }}</span>
-                <div *ngFor="let class of getCharacter(memberReference).classes">
-                  <span class="d-block text-info" style="font-size: small;">{{ class.className }} {{ class.level }}</span>
+              <div class="" *ngIf=" getCharacter(memberReference) !== undefined ">
+                <div class="card mr-1 mb-1">
+                  <div class="card-body p-3">
+                    <img class="rounded-circle"
+                         style="border: 2px solid #ccc; height: 4em; width: 4em;"
+                         src="{{ getCharacter(memberReference).imageUrl }}">
+                    <span class="d-block">
+                      {{ getCharacter(memberReference).characterName }}
+                    </span>
+                    <div class="d-block">
+                      <div class="list-inline-item" *ngFor="let classItem of getCharacter(memberReference).classes">
+                        <span class="text-black-50" *ngIf=" classItem !== getCharacter(memberReference).classes[0]
+                                   && classItem !== getCharacter(memberReference).classes[getCharacter(memberReference).classes.length] ">/</span>
+                        <span class="text-info" style="font-size: small;">
+                          {{ classItem.className }} {{ classItem.level }}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card-footer p-1">
+                    <button class="btn btn-outline-primary btn-sm"
+                            (click)="viewCharacter(memberReference)">
+                      View
+                    </button>
+                    <div class="list-inline-item" *ngIf="authService.getCurrentUser() !== undefined && getCharacter(memberReference).player !== undefined &&
+                                authService.getCurrentUser() !== null && getCharacter(memberReference).player !== null &&
+                                authService.getCurrentUser() === getCharacter(memberReference).player">
+                      <button class="btn btn-outline-warning btn-sm ml-1"
+                              (click)="editCharacter(memberReference)">
+                        <i class="far fa-edit"></i>
+                      </button>
+                      <button class="btn btn-outline-danger btn-sm ml-1"
+                              (click)="removeCharacter(memberReference, party.id)">
+                        <i class="far fa-trash-alt"></i>
+                      </button>
+                    </div>
+                  </div>
                 </div>
-                <button class="btn btn-warning btn-sm mt-1"
-                        (click)="editCharacter(memberReference)"
-                        *ngIf="authService.getCurrentUser() !== undefined && getCharacter(memberReference).player !== undefined &&
-                               authService.getCurrentUser() !== null && getCharacter(memberReference).player !== null &&
-                               authService.getCurrentUser() === getCharacter(memberReference).player">
-                  View
-                </button>
               </div>
 
             </div>
           </div>
         </div>
         <div class="card-footer">
+          <div class="d-flex">
+            <div class="ml-auto">
+              <button class="btn btn-outline-success btn-sm ml-1"
+                      title="Join this party"
+                      (click)="null" *ngIf=" !partiesUserHasPlayerCharacter.includes(party.id) ">
+                <i class="fas fa-users"></i>&nbsp;<i class="fas fa-plus-circle"></i>
+              </button>
+              <button class="btn btn-outline-danger btn-sm ml-1"
+                      title="Delete this party"
+                      (click)="null" *ngIf="authService.getCurrentUser() !== undefined &&
+                                            authService.getCurrentUser() !== null &&
+                                            authService.getCurrentUser() === party.partyLeader">
+                <i class="far fa-trash-alt"></i>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 

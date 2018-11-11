@@ -2,7 +2,9 @@ export interface Party {
 
   name: string;
   description: string;
+  campaign: string;
   members: string[];
+  partyLeader: string;
 
 }
 
