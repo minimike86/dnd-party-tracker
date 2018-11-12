@@ -5,6 +5,7 @@ export interface Party {
   campaign: string;
   members: string[];
   partyLeader: string;
+  dateCreated: Date;
 
 }
 

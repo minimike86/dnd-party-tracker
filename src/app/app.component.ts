@@ -1,5 +1,12 @@
 import { Component } from '@angular/core';
-import { Event, NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
+import {
+  Event,
+  NavigationCancel,
+  NavigationEnd,
+  NavigationError,
+  NavigationStart,
+  Router
+} from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +16,9 @@ import { Event, NavigationCancel, NavigationEnd, NavigationError, NavigationStar
 export class AppComponent {
 
   loading = false;
+
   constructor(private router: Router) {
+
     this.router.events.subscribe((event: Event) => {
       switch (true) {
         case event instanceof NavigationStart: {
@@ -27,6 +36,7 @@ export class AppComponent {
         }
       }
     });
+
   }
 
 }

@@ -1,18 +1,22 @@
 <div class="container mt-3">
   <div class="row">
-
-    <div *ngFor="let party of parties">
+    <h2 class="" style="font-family: 'Fredericka the Great', cursive;">Adventuring Parties:</h2>
+  </div>
+  <div class="row">
+    <div class="d-block w-100" *ngFor="let party of parties">
 
       <div class="card m-1">
         <h6 class="card-header px-3 py-2">
           <div class="d-flex">
             <div class="mr-2">
-              <span class="text-muted" style="opacity: 0.25">PARTY: </span>
-              {{ party.name | titlecase }}
+              <span class="text-muted" style="opacity: 0.25">PARTY#: </span>
+              {{ party.name }}
             </div>
             <div class="ml-auto">
-              <span class="text-muted" style="opacity: 0.25">CAMPAIGN: </span>
-              <a class="text-info" [routerLink]="" [routerLinkActive]="" title="DM">{{ party.campaign }}</a>
+              <span class="text-muted" style="opacity: 0.25">CAMPAIGN#: </span>
+              <a class="text-info" [routerLink]="" [routerLinkActive]="" title="DM">
+                {{ party.campaign }}
+              </a>
             </div>
           </div>
         </h6>
@@ -46,9 +50,7 @@
                             (click)="viewCharacter(memberReference)">
                       View
                     </button>
-                    <div class="list-inline-item" *ngIf="authService.getCurrentUser() !== undefined && getCharacter(memberReference).player !== undefined &&
-                                authService.getCurrentUser() !== null && getCharacter(memberReference).player !== null &&
-                                authService.getCurrentUser() === getCharacter(memberReference).player">
+                    <div class="list-inline-item" *ngIf="authService.getCurrentUser() === getCharacter(memberReference).player">
                       <button class="btn btn-outline-warning btn-sm ml-1"
                               title="Edit {{ getCharacter(memberReference).characterName }}"
                               (click)="editCharacter(memberReference)">
@@ -69,17 +71,18 @@
         </div>
         <div class="card-footer">
           <div class="d-flex">
+            <div *ngIf="authService.getCurrentUser() === party.partyLeader">
+              <small class="text-muted" title="This party is owned by you!"><i class="fas fa-crown"></i></small>
+            </div>
             <div class="ml-auto">
               <button class="btn btn-outline-success btn-sm ml-1"
                       title="Join this party"
-                      (click)="null" *ngIf=" !partiesUserHasPlayerCharacter.includes(party.id) ">
+                      (click)="openCharacterJoinPartyModal(party)" *ngIf=" !partiesUserHasPlayerCharacter.includes(party.id) ">
                 <i class="fas fa-users"></i>&nbsp;<i class="fas fa-plus-circle"></i>
               </button>
               <button class="btn btn-outline-danger btn-sm ml-1"
                       title="Delete &apos;{{ party.name }}&apos;"
-                      (click)="null" *ngIf="authService.getCurrentUser() !== undefined &&
-                                            authService.getCurrentUser() !== null &&
-                                            authService.getCurrentUser() === party.partyLeader">
+                      (click)="openDeletePartyModal(party)" *ngIf="authService.getCurrentUser() === party.partyLeader">
                 <i class="far fa-trash-alt"></i>
               </button>
             </div>
@@ -88,6 +91,13 @@
       </div>
 
     </div>
-
+  </div>
+  <div class="row">
+    <div class="d-flex flex-fill justify-content-center">
+      <button class="btn btn-sm btn-primary mt-2"
+              (click)="openNewPartyModal()">
+        Start an Adventuring Party
+      </button>
+    </div>
   </div>
 </div>

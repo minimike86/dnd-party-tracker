@@ -24,7 +24,7 @@ export class AbilityScoresNewComponent implements OnInit {
 
   public allowCheating: boolean;
   public statRollRules: any;
-  public highStat = 17;
+  public highStat = 16;
   public lowStat = 7;
 
   public hasRolledStr: boolean;

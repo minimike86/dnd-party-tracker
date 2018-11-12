@@ -13,6 +13,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
+// Environment Variables
+import { environment } from '../environments/environment';
+
 // Components
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { FooterComponent } from './components/footer/footer.component';
@@ -28,9 +31,9 @@ import { HitPointsComponent } from './components/character/hit-points/hit-points
 import { WeaponsComponent } from './components/weapons/weapons.component';
 import { NewCharacterComponent } from './components/character/new-character/new-character.component';
 import { AbilityScoresNewComponent } from './components/character/ability-scores-new/ability-scores-new.component';
-
-// Environment Variables
-import { environment } from '../environments/environment';
+import { AddPartyComponent } from './components/party/modals/add-party/add-party.component';
+import { ConfirmDeletePartyComponent } from './components/party/modals/confirm-delete-party/confirm-delete-party.component';
+import { CharacterJoinPartyComponent } from './components/party/modals/character-join-party/character-join-party.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +51,10 @@ import { environment } from '../environments/environment';
     HitPointsComponent,
     WeaponsComponent,
     AbilityScoresComponent,
-    AbilityScoresNewComponent
+    AbilityScoresNewComponent,
+    AddPartyComponent,
+    ConfirmDeletePartyComponent,
+    CharacterJoinPartyComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebase, 'dnd-party-tracker'),
@@ -60,6 +66,11 @@ import { environment } from '../environments/environment';
     AppRoutingModule,
     MaterialModule,
     BrowserAnimationsModule
+  ],
+  entryComponents: [
+    AddPartyComponent,
+    ConfirmDeletePartyComponent,
+    CharacterJoinPartyComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

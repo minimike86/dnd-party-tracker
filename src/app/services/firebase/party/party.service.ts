@@ -16,8 +16,9 @@ export class PartyService {
 
   constructor(public characterService: CharacterService,
               public db: AngularFirestore) {
-    this.getCharacters(); // TODO: Used to sort party members by character name - remove the need to use...
     this.partyCollection = db.collection<Party>('/parties');
+    this.getCharacters(); // TODO: Used to sort party members by character name - remove the need to use...
+    this.getParties();
   }
 
   getParties(): Observable<PartyId[]> {
@@ -43,10 +44,18 @@ export class PartyService {
   }
 
   // TODO: Used to sort party members by character name - remove the need to use...
-  getCharacter(characterReference: string): CharacterId {
+  private getCharacter(characterReference: string): CharacterId {
     if (this.characters !== undefined) {
       return this.characters.filter(characterId => characterId.id === characterReference)[0];
     }
+  }
+
+  addParty(party: Party): void {
+    this.partyCollection.add(party);
+  }
+
+  deleteParty(partyId: string): void {
+    this.partyCollection.doc(partyId).delete();
   }
 
 }
