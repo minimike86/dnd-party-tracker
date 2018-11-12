@@ -59,7 +59,7 @@ import { CharacterJoinPartyComponent } from './components/party/modals/character
   imports: [
     AngularFireModule.initializeApp(environment.firebase, 'dnd-party-tracker'),
     AngularFireAuthModule,
-    AngularFirestoreModule.enablePersistence(),
+    AngularFirestoreModule,
     NgbModule,
     BrowserModule,
     FormsModule,

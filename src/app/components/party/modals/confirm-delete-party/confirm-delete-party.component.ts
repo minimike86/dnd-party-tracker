@@ -14,7 +14,6 @@ export class ConfirmDeletePartyComponent {
 
   constructor(public partyService: PartyService,
               public activeModal: NgbActiveModal) {
-    console.log('ConfirmDeletePartyComponent: ', this.party);
     this.party = {
       id: '',
       name: '',

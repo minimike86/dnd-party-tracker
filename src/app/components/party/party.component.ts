@@ -47,7 +47,6 @@ export class PartyComponent implements OnInit {
           this.parties.sort((aParty, bParty) => (aParty.dateCreated < bParty.dateCreated)
                                 ? 1 : ((bParty.dateCreated < aParty.dateCreated) ? -1 : 0));
 
-          console.log('this.routerParamId', this.routerParamId);
           if (this.routerParamId !== undefined && this.routerParamId !== null) {
             switch (this.routerParamId) {
               case 'owned':
@@ -115,8 +114,8 @@ export class PartyComponent implements OnInit {
     //
   }
 
-  removeCharacter(characterReference: string, partyReference: string) {
-    //
+  removeCharacter(partyReference: string, characterReference: string) {
+    this.partyService.deleteCharacterFromParty(partyReference, characterReference);
   }
 
 }
