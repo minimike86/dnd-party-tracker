@@ -4,11 +4,19 @@
     <div class="ml-auto">
       <button class="btn btn-sm btn-primary"
               (click)="openNewPartyModal()">
-        Start an Adventuring Party
+        <i class="fas fa-users"></i>&nbsp;<i class="fas fa-plus-circle"></i> Start an Adventuring Party!
       </button>
     </div>
   </div>
   <div class="row">
+    <div class="d-block w-100 text-muted text-center" *ngIf="parties !== undefined && parties.length === 0">
+      <p class="mb-1">There are no parties.</p>
+      <button class="btn btn-success btn-sm p-3 m-3"
+              title="Join this party"
+              (click)="openNewPartyModal()">
+        <i class="fas fa-users"></i>&nbsp;<i class="fas fa-plus-circle"></i> Start an Adventuring Party!
+      </button>
+    </div>
     <div class="d-block w-100" *ngFor="let party of parties">
 
       <div class="card m-1">

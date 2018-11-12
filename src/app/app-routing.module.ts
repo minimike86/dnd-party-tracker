@@ -11,9 +11,9 @@ import { NewCharacterComponent } from './components/character/new-character/new-
 const appRoutes: Routes = [
   { path: '',                     component: HomeComponent },
   { path: '',                     redirectTo: '/', pathMatch: 'full' },
-  { path: 'party',                component: PartyComponent },
-  { path: 'party/:id',            component: PartyComponent },
-  { path: 'party/owned/',         component: PartyComponent },
+  { path: 'parties',              component: PartyComponent },
+  { path: 'parties/:id',          component: PartyComponent },
+  { path: 'parties/owned/',       component: PartyComponent },
   { path: 'character',            component: CharacterComponent },
   { path: 'character/new',        component: NewCharacterComponent },
   { path: 'character/new/class',  component: NewCharacterComponent },
