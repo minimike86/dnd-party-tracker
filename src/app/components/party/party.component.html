@@ -1,6 +1,12 @@
 <div class="container mt-3">
   <div class="row">
     <h2 class="" style="font-family: 'Fredericka the Great', cursive;">Adventuring Parties:</h2>
+    <div class="ml-auto">
+      <button class="btn btn-sm btn-primary"
+              (click)="openNewPartyModal()">
+        Start an Adventuring Party
+      </button>
+    </div>
   </div>
   <div class="row">
     <div class="d-block w-100" *ngFor="let party of parties">
@@ -22,6 +28,14 @@
         </h6>
         <div class="card-body px-3 py-2">
           <p class="card-text text-secondary mb-2"><small>{{ party.description }}</small></p>
+          <div class="text-muted text-center" *ngIf="party.members.length === 0">
+            <p class="mb-1">There are no characters in this party.</p>
+            <button class="btn btn-success btn-sm p-3 m-3"
+                    title="Join this party"
+                    (click)="openCharacterJoinPartyModal(party)"> <!-- !partiesUserHasPlayerCharacter.includes(party.id) -->
+              <i class="fas fa-users"></i>&nbsp;<i class="fas fa-plus-circle"></i> Join this party!
+            </button>
+          </div>
           <div class="d-flex flex-wrap">
             <div class="flex-fill align-content-stretch text-center" *ngFor="let memberReference of party.members ">
 
@@ -58,7 +72,7 @@
                       </button>
                       <button class="btn btn-outline-danger btn-sm ml-1"
                               title="Remove {{ getCharacter(memberReference).characterName }} from &apos;{{ party.name }}&apos;"
-                              (click)="removeCharacter(party.id, memberReference)">
+                              (click)="openRemoveCharacterFromPartyModal(party, getCharacter(memberReference))">
                         <i class="far fa-trash-alt"></i>
                       </button>
                     </div>
@@ -75,7 +89,7 @@
               <small class="text-muted" title="This party is owned by you!"><i class="fas fa-crown"></i></small>
             </div>
             <div class="ml-auto">
-              <button class="btn btn-outline-success btn-sm ml-1"
+              <button class="btn btn-success btn-sm ml-1"
                       title="Join this party"
                       (click)="openCharacterJoinPartyModal(party)"> <!-- !partiesUserHasPlayerCharacter.includes(party.id) -->
                 <i class="fas fa-users"></i>&nbsp;<i class="fas fa-plus-circle"></i>
@@ -90,14 +104,6 @@
         </div>
       </div>
 
-    </div>
-  </div>
-  <div class="row">
-    <div class="d-flex flex-fill justify-content-center">
-      <button class="btn btn-sm btn-primary mt-2"
-              (click)="openNewPartyModal()">
-        Start an Adventuring Party
-      </button>
     </div>
   </div>
 </div>
