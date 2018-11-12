@@ -1,9 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from '../../services/firebase/auth/auth.service';
 import { PartyService } from '../../services/firebase/party/party.service';
 import { CharacterService } from '../../services/firebase/character/character.service';
 import { PartyId } from '../../models/party/party';
 import { CharacterId } from '../../models/character/character';
+import { AddPartyComponent } from './modals/add-party/add-party.component';
+import { ConfirmDeletePartyComponent } from './modals/confirm-delete-party/confirm-delete-party.component';
+import { CharacterJoinPartyComponent } from './modals/character-join-party/character-join-party.component';
 
 
 @Component({
@@ -16,10 +21,15 @@ export class PartyComponent implements OnInit {
   public parties: PartyId[];
   public characters: CharacterId[];
   public partiesUserHasPlayerCharacter: string[];
+  public routerParamId: string;
 
-  constructor(public authService: AuthService,
+  constructor(private route: ActivatedRoute,
+              private router: Router,
+              public authService: AuthService,
               public partyService: PartyService,
-              public characterService: CharacterService) {
+              public characterService: CharacterService,
+              private modalService: NgbModal) {
+    this.routerParamId = this.route.snapshot.paramMap.get('id');
   }
 
   ngOnInit() {
@@ -32,11 +42,40 @@ export class PartyComponent implements OnInit {
     this.partyService.getParties()
       .subscribe(
         parties => {
+
           this.parties = parties;
+          this.parties.sort((aParty, bParty) => (aParty.dateCreated < bParty.dateCreated)
+                                ? 1 : ((bParty.dateCreated < aParty.dateCreated) ? -1 : 0));
+
+          if (this.routerParamId !== undefined && this.routerParamId !== null) {
+            switch (this.routerParamId) {
+              case 'owned':
+                this.parties = this.parties.filter(party => party.partyLeader === this.authService.getCurrentUser());
+                break;
+              default:
+                this.parties = this.parties.filter(party => party.id === this.routerParamId);
+            }
+          }
+
           this.getPartiesUserHasPlayerCharacter(this.parties);
-          },
+
+        },
         err => console.log('Error :: ' + err)
       );
+  }
+
+  openCharacterJoinPartyModal(partyId: PartyId): void {
+    const modalRef = this.modalService.open(CharacterJoinPartyComponent, { size: 'lg' });
+    modalRef.componentInstance.party = partyId;
+  }
+
+  openDeletePartyModal(partyId: PartyId): void {
+    const modalRef = this.modalService.open(ConfirmDeletePartyComponent, {});
+    modalRef.componentInstance.party = partyId;
+  }
+
+  openNewPartyModal(): void {
+    const modalRef = this.modalService.open(AddPartyComponent, { size: 'lg' });
   }
 
   // Character Functions
@@ -75,8 +114,8 @@ export class PartyComponent implements OnInit {
     //
   }
 
-  removeCharacter(characterReference: string, partyReference: string) {
-    //
+  removeCharacter(partyReference: string, characterReference: string) {
+    this.partyService.deleteCharacterFromParty(partyReference, characterReference);
   }
 
 }

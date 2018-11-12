@@ -1,0 +1,35 @@
+<div>
+  <div class="modal-header bg-light p-2">
+    <h4 class="modal-title" style="font-family: 'Fredericka the Great', cursive;">New Adventuring Party</h4>
+    <button type="button btn-sm" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <label class="col-form-label" for="partyName">Party Name:</label>
+      <input type="text" class="form-control" id="partyName" [(ngModel)]="party.name" title="Party Name"
+             placeholder="Give your new party a catchy name." ngbAutofocus
+             [ngClass]="nameIsValid === false ? 'is-invalid' : ''"
+             (ngModelChange)="isNameValid()" />
+      <div class="invalid-feedback">&apos;Party Name&apos; cannot be empty!</div>
+    </div>
+    <div class="form-group">
+      <label class="col-form-label" for="description">Description:</label>
+      <textarea type="text" class="form-control" id="description" [(ngModel)]="party.description" title="Description"
+                placeholder="What will the party do? Are they good/evil? What are their goals, capabilities and motivations?" ></textarea>
+    </div>
+    <div class="form-group">
+      <label class="col-form-label" for="campaign">Campaign Name:</label>
+      <input type="text" class="form-control" id="campaign" [(ngModel)]="party.campaign" title="Campaign Name"
+             placeholder="What&apos;s the name of the campaign or settings that you are playing?" />
+    </div>
+  </div>
+  <div class="modal-footer bg-light p-2">
+    <small class="text-muted mr-auto" title="This party will be owned by the account &quot;{{ party.partyLeader }}&quot;"><i class="fas fa-crown"></i> {{ party.partyLeader }}</small>
+    <button type="button" class="btn btn-sm btn-success" (click)="addParty()">
+      <i class="fas fa-users"></i>&nbsp;<i class="fas fa-plus-circle"></i> Add
+    </button>
+    <button type="button" class="btn btn-sm btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+  </div>
+</div>

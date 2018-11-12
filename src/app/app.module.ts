@@ -6,10 +6,15 @@ import { FormsModule } from '@angular/forms';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { MaterialModule } from './material/material.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // App
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+
+// Environment Variables
+import { environment } from '../environments/environment';
 
 // Components
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -26,36 +31,46 @@ import { HitPointsComponent } from './components/character/hit-points/hit-points
 import { WeaponsComponent } from './components/weapons/weapons.component';
 import { NewCharacterComponent } from './components/character/new-character/new-character.component';
 import { AbilityScoresNewComponent } from './components/character/ability-scores-new/ability-scores-new.component';
-
-// Environment Variables
-import { environment } from '../environments/environment';
+import { AddPartyComponent } from './components/party/modals/add-party/add-party.component';
+import { ConfirmDeletePartyComponent } from './components/party/modals/confirm-delete-party/confirm-delete-party.component';
+import { CharacterJoinPartyComponent } from './components/party/modals/character-join-party/character-join-party.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
     FooterComponent,
-    CharacterComponent,
-    PartyComponent,
     PageNotFoundComponent,
     HomeComponent,
-    AbilityScoresComponent,
+    CharacterComponent,
+    NewCharacterComponent,
+    PartyComponent,
     CombatOptionsComponent,
     SavingThrowsComponent,
     ArmorClassComponent,
     HitPointsComponent,
     WeaponsComponent,
-    NewCharacterComponent,
-    AbilityScoresNewComponent
+    AbilityScoresComponent,
+    AbilityScoresNewComponent,
+    AddPartyComponent,
+    ConfirmDeletePartyComponent,
+    CharacterJoinPartyComponent
   ],
   imports: [
-    BrowserModule,
-    FormsModule,
-    NgbModule,
     AngularFireModule.initializeApp(environment.firebase, 'dnd-party-tracker'),
     AngularFireAuthModule,
-    AngularFirestoreModule.enablePersistence(),
-    AppRoutingModule
+    AngularFirestoreModule,
+    NgbModule,
+    BrowserModule,
+    FormsModule,
+    AppRoutingModule,
+    MaterialModule,
+    BrowserAnimationsModule
+  ],
+  entryComponents: [
+    AddPartyComponent,
+    ConfirmDeletePartyComponent,
+    CharacterJoinPartyComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

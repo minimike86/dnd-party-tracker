@@ -24,7 +24,7 @@ export class AbilityScoresNewComponent implements OnInit {
 
   public allowCheating: boolean;
   public statRollRules: any;
-  public highStat = 17;
+  public highStat = 16;
   public lowStat = 7;
 
   public hasRolledStr: boolean;
@@ -63,10 +63,7 @@ export class AbilityScoresNewComponent implements OnInit {
         // Set default selectedRace as Human
         this.selectedRace = this.races.find(race => race.name === 'Human');
       },
-      err => {
-        console.log(err);
-        window.location.reload();
-      }
+      err => console.log('Error :: ' + err)
     );
   }
 
@@ -123,27 +120,22 @@ export class AbilityScoresNewComponent implements OnInit {
       case 0: // 4d6 drop lowest
         for (let i = 0; i < 4; i++) {                           // Roll 4d6
           diePool[i] = (Math.floor((Math.random() * 6 + 1)));   // Add 1d6 to Die Pool
-          // console.log('die result: ', diePool[i]);
         }
         diePool.sort().reverse().pop();                         // Sort Die Pool, Drop lowest Die
         diePool.forEach(die => {
           dieCount += die;                                      // Count Die
         });
-        // console.log('die results: ', diePool);
         break;
       case 1: // 4d6 drop lowest, re-roll 1's
         for (let i = 0; i < 4; i++) {                           // Roll 4d6
           do {
             diePool[i] = (Math.floor((Math.random() * 6 + 1))); // Add 1d6 to Die Pool
-            // console.log('die result: ', diePool[i]);
-            // if (diePool[i] === 1) { console.log('re-rolling 1'); }
-          } while (diePool[i] === 1);                             // re-roll 1d6 if it was a 1
+          } while (diePool[i] === 1);                           // re-roll 1d6 if it was a 1
         }
         diePool.sort().reverse().pop();                         // Sort Die Pool, Drop lowest Die
         diePool.forEach(die => {
           dieCount += die;                                      // Count Die
         });
-        // console.log('die results: ', diePool);
         break;
     }
     return dieCount;
@@ -363,96 +355,78 @@ export class AbilityScoresNewComponent implements OnInit {
 
       if ( this.selectedRace.abilityScoreMinimum !== undefined && this.selectedRace.abilityScoreMinimum.strength !== undefined
         && this.totalAbilityScores.strength <= this.selectedRace.abilityScoreMinimum.strength ) {
-        // console.log('strength <= min');
         pointBuyPoints += this.getPointBuyPoint(this.totalAbilityScores.strength
           - this.selectedRace.abilityScoreAdjustments.strength);
       } else {
         if ( (this.baseAbilityScores.strength + this.selectedRace.abilityScoreAdjustments.strength) <= 1 ) {
-          // console.log('strength <= 1');
           pointBuyPoints += this.getPointBuyPoint(this.totalAbilityScores.strength
             - this.selectedRace.abilityScoreAdjustments.strength);
         } else {
-          // console.log('strength > 1 && > min');
           pointBuyPoints += this.getPointBuyPoint(this.baseAbilityScores.strength);
         }
       }
 
       if ( this.selectedRace.abilityScoreMinimum !== undefined && this.selectedRace.abilityScoreMinimum.dexterity !== undefined
         && this.totalAbilityScores.dexterity <= this.selectedRace.abilityScoreMinimum.dexterity ) {
-        // console.log('dexterity <= min');
         pointBuyPoints += this.getPointBuyPoint(this.totalAbilityScores.dexterity
           - this.selectedRace.abilityScoreAdjustments.dexterity);
       } else {
         if ( (this.baseAbilityScores.dexterity + this.selectedRace.abilityScoreAdjustments.dexterity) <= 1 ) {
-          // console.log('dexterity <= 1');
           pointBuyPoints += this.getPointBuyPoint(this.totalAbilityScores.dexterity
             - this.selectedRace.abilityScoreAdjustments.dexterity);
         } else {
-          // console.log('dexterity > 1 && > min');
           pointBuyPoints += this.getPointBuyPoint(this.baseAbilityScores.dexterity);
         }
       }
 
       if ( this.selectedRace.abilityScoreMinimum !== undefined && this.selectedRace.abilityScoreMinimum.constitution !== undefined
         && this.totalAbilityScores.constitution <= this.selectedRace.abilityScoreMinimum.constitution ) {
-        // console.log('constitution <= min');
         pointBuyPoints += this.getPointBuyPoint(this.totalAbilityScores.constitution
           - this.selectedRace.abilityScoreAdjustments.constitution);
       } else {
         if ( (this.baseAbilityScores.constitution + this.selectedRace.abilityScoreAdjustments.constitution) <= 1 ) {
-          // console.log('constitution <= 1');
           pointBuyPoints += this.getPointBuyPoint(this.totalAbilityScores.constitution
             - this.selectedRace.abilityScoreAdjustments.constitution);
         } else {
-          // console.log('constitution > 1 && > min');
           pointBuyPoints += this.getPointBuyPoint(this.baseAbilityScores.constitution);
         }
       }
 
       if ( this.selectedRace.abilityScoreMinimum !== undefined && this.selectedRace.abilityScoreMinimum.intelligence !== undefined
         && this.totalAbilityScores.intelligence <= this.selectedRace.abilityScoreMinimum.intelligence ) {
-        // console.log('intelligence <= min');
         pointBuyPoints += this.getPointBuyPoint(this.totalAbilityScores.intelligence
           - this.selectedRace.abilityScoreAdjustments.intelligence);
       } else {
         if ( (this.baseAbilityScores.intelligence + this.selectedRace.abilityScoreAdjustments.intelligence) <= 1 ) {
-          // console.log('intelligence <= 1');
           pointBuyPoints += this.getPointBuyPoint(this.totalAbilityScores.intelligence
             - this.selectedRace.abilityScoreAdjustments.intelligence);
         } else {
-          // console.log('intelligence > 1 && > min');
           pointBuyPoints += this.getPointBuyPoint(this.baseAbilityScores.intelligence);
         }
       }
 
       if ( this.selectedRace.abilityScoreMinimum !== undefined && this.selectedRace.abilityScoreMinimum.wisdom !== undefined
         && this.totalAbilityScores.wisdom <= this.selectedRace.abilityScoreMinimum.wisdom ) {
-        // console.log('wisdom <= min');
         pointBuyPoints += this.getPointBuyPoint(this.totalAbilityScores.wisdom
           - this.selectedRace.abilityScoreAdjustments.wisdom);
       } else {
         if ( (this.baseAbilityScores.wisdom + this.selectedRace.abilityScoreAdjustments.wisdom) <= 1 ) {
-          // console.log('wisdom <= 1');
           pointBuyPoints += this.getPointBuyPoint(this.totalAbilityScores.wisdom
             - this.selectedRace.abilityScoreAdjustments.wisdom);
         } else {
-          // console.log('wisdom > 1 && > min');
           pointBuyPoints += this.getPointBuyPoint(this.baseAbilityScores.wisdom);
         }
       }
 
       if ( this.selectedRace.abilityScoreMinimum !== undefined && this.selectedRace.abilityScoreMinimum.charisma !== undefined
         && this.totalAbilityScores.charisma <= this.selectedRace.abilityScoreMinimum.charisma ) {
-        // console.log('charisma <= min');
         pointBuyPoints += this.getPointBuyPoint(this.totalAbilityScores.charisma
           - this.selectedRace.abilityScoreAdjustments.charisma);
       } else {
         if ( (this.baseAbilityScores.charisma + this.selectedRace.abilityScoreAdjustments.charisma) <= 1 ) {
-          // console.log('charisma <= 1');
           pointBuyPoints += this.getPointBuyPoint(this.totalAbilityScores.charisma
             - this.selectedRace.abilityScoreAdjustments.charisma);
         } else {
-          // console.log('charisma > 1 && > min');
           pointBuyPoints += this.getPointBuyPoint(this.baseAbilityScores.charisma);
         }
       }
