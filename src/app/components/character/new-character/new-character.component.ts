@@ -189,22 +189,18 @@ export class NewCharacterComponent implements OnInit {
   }
 
   playerHasRolledAllStatsChanged(playerHasRolledAllStats: boolean) {
-    // console.log('playerHasRolledAllStats: ', playerHasRolledAllStats);
     this.playerHasRolledAllStats = playerHasRolledAllStats;
   }
 
   selectedRaceChangedHandler(selectedRace: any) {
-    // console.log('selectedRace: ', selectedRace);
     this.selectedRace = selectedRace;
   }
 
   playerHasSelectedRaceChangedHandler(playerHasSelectedRace: boolean) {
-    // console.log('playerHasSelectedRace: ', playerHasSelectedRace);
     this.playerHasSelectedRace = playerHasSelectedRace;
   }
 
   totalAbilityScoresChangedHandler(totalAbilityScores: AbilityScore) {
-    // console.log('totalAbilityScores: ', totalAbilityScores);
     this.totalAbilityScores = totalAbilityScores;
     this.checkPlayerIsReadyToPickClass();
   }

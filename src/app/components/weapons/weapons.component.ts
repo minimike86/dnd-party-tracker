@@ -19,10 +19,8 @@ export class WeaponsComponent implements OnInit {
   getAmmunitionString(weaponId: number): string {
     let tempStr = '';
     for (const weapon of this.weapons) {
-      // console.log(weapon);
       if (weapon.id === weaponId && weapon.ammunition != null) {
         for (const ammoType of weapon.ammunition) {
-          // console.log(ammoType);
           if (tempStr === '') {
             tempStr += ammoType.ammoType + ' (' + ammoType.quantity + ')';
           } else {
