@@ -1,7 +1,7 @@
 <div>
   <div class="modal-header bg-light p-2">
     <div class="modal-title">
-      <h4 class="d-block w-100 m-0" style="font-family: 'Fredericka the Great', cursive;">Join Party</h4>
+      <h4 class="d-block w-100 m-0" style="font-family: 'Fredericka the Great', cursive;">Join Adventuring Party</h4>
       <p class="d-block w-100 m-0"><small>Select a character to join this party:</small></p>
     </div>
     <button type="button btn-sm" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
@@ -10,6 +10,7 @@
   </div>
   <div class="modal-body">
     <div class="d-flex flex-wrap">
+
       <div class="w-50" *ngFor="let character of characters" >
         <div class="card mb-1 mr-1">
           <div class="card-body">
@@ -48,6 +49,7 @@
           </div>
         </div>
       </div>
+
     </div>
   </div>
   <div class="modal-footer bg-light p-2">

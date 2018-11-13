@@ -34,6 +34,10 @@ import { AbilityScoresNewComponent } from './components/character/ability-scores
 import { AddPartyComponent } from './components/party/modals/add-party/add-party.component';
 import { ConfirmDeletePartyComponent } from './components/party/modals/confirm-delete-party/confirm-delete-party.component';
 import { CharacterJoinPartyComponent } from './components/party/modals/character-join-party/character-join-party.component';
+import {
+  ConfirmRemoveCharacterFromPartyComponent
+} from './components/party/modals/confirm-remove-character-from-party/confirm-remove-character-from-party.component';
+import { NewCharacterClassComponent } from './components/character/new-character-class/new-character-class.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +58,9 @@ import { CharacterJoinPartyComponent } from './components/party/modals/character
     AbilityScoresNewComponent,
     AddPartyComponent,
     ConfirmDeletePartyComponent,
-    CharacterJoinPartyComponent
+    CharacterJoinPartyComponent,
+    ConfirmRemoveCharacterFromPartyComponent,
+    NewCharacterClassComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebase, 'dnd-party-tracker'),
@@ -70,7 +76,8 @@ import { CharacterJoinPartyComponent } from './components/party/modals/character
   entryComponents: [
     AddPartyComponent,
     ConfirmDeletePartyComponent,
-    CharacterJoinPartyComponent
+    CharacterJoinPartyComponent,
+    ConfirmRemoveCharacterFromPartyComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -9,6 +9,7 @@ import { CharacterId } from '../../models/character/character';
 import { AddPartyComponent } from './modals/add-party/add-party.component';
 import { ConfirmDeletePartyComponent } from './modals/confirm-delete-party/confirm-delete-party.component';
 import { CharacterJoinPartyComponent } from './modals/character-join-party/character-join-party.component';
+import {ConfirmRemoveCharacterFromPartyComponent} from './modals/confirm-remove-character-from-party/confirm-remove-character-from-party.component';
 
 
 @Component({
@@ -112,6 +113,12 @@ export class PartyComponent implements OnInit {
 
   editCharacter(characterReference: string) {
     //
+  }
+
+  openRemoveCharacterFromPartyModal(partyId: PartyId, characterId: CharacterId): void {
+    const modalRef = this.modalService.open(ConfirmRemoveCharacterFromPartyComponent, {});
+    modalRef.componentInstance.party = partyId;
+    modalRef.componentInstance.character = characterId;
   }
 
   removeCharacter(partyReference: string, characterReference: string) {

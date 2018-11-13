@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-import { map, filter } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { Character, CharacterId } from '../../../models/character/character';
+
 
 @Injectable({
   providedIn: 'root'
@@ -10,9 +11,13 @@ import { Character, CharacterId } from '../../../models/character/character';
 export class CharacterService {
 
   private characterCollection: AngularFirestoreCollection<Character>;
+  private characters: CharacterId[];
 
   constructor(public db: AngularFirestore) {
     this.characterCollection = db.collection<Character>('/characters');
+    this.getCharacters().subscribe(data => {
+      this.characters = data;
+    });
   }
 
   getCharacters(): Observable<CharacterId[]> {
