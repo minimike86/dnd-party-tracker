@@ -150,7 +150,7 @@ export class AbilityScoresNewComponent implements OnInit {
     return merge(debouncedText$, inputFocus$, clicksWithClosedPopup$).pipe(
       map(term => (
           term === '' ? this.races : this.races.filter( v => v.name.toString().toLowerCase().indexOf( term.toLowerCase() ) > -1  )
-        ).slice(0, 7)
+        ).slice(0, 10)
       )
     );
   }
