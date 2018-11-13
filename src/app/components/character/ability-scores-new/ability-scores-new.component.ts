@@ -2,8 +2,9 @@ import { Component, Input, Output, OnInit, ViewChild, EventEmitter } from '@angu
 import { Observable, Subject, merge } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
 import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
-import { AngularFirestore } from '@angular/fire/firestore';
 import { AbilityScore, AbilityScoreAbbreviation  } from '../../../models/character/ability-scores';
+import { Race, RaceId } from '../../../models/character/race';
+import { RaceService } from '../../../services/firebase/race/race.service';
 
 
 @Component({
@@ -49,8 +50,8 @@ export class AbilityScoresNewComponent implements OnInit {
   focus$ = new Subject<string>();
   click$ = new Subject<string>();
 
-  constructor(db: AngularFirestore) {
-    db.collection('races').valueChanges().subscribe(
+  constructor(raceService: RaceService) {
+    raceService.getRaces().subscribe(
       value => {
         // Set races from firebase db
         this.races = value;

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AbilityScore } from '../../../models/character/ability-scores';
-import {AuthService} from '../../../services/firebase/auth/auth.service';
+import { AuthService } from '../../../services/firebase/auth/auth.service';
 
 
 @Component({
@@ -19,19 +19,20 @@ export class NewCharacterComponent implements OnInit {
   public readyToPickClass: boolean;
 
   constructor(public authService: AuthService) {
-    this.authService.afAuth.user.subscribe(data => {
-      this.playerName = data !== null ? data.displayName : '';
-    });
   }
 
   ngOnInit() {
     this.playerName = '';
+    this.authService.afAuth.user.subscribe(data => {
+      this.playerName = data !== null ? data.displayName : '';
+    });
     this.characterName = '';
     this.readyToPickClass = false;
     this.playerHasRolledAllStats = false;
     this.playerHasSelectedRace = false;
   }
 
+  // TODO: Add names to Firestore
   generateRandomName(): void {
     const dwarfMaleNames = ['Adrik', 'Alberich', 'Baern', 'Barendd', 'Brottor', 'Bruenor', 'Dain', 'Darrak', 'Delg', 'Eberk',
       'Einkil', 'Fargrim', 'Flint', 'Gardain', 'Harbek', 'Kildrak', 'Morgran', 'Orsik', 'Oskar', 'Rangrim', 'Rurik', 'Taklinn',
@@ -79,6 +80,12 @@ export class NewCharacterComponent implements OnInit {
                                  'Paela', 'Portia', 'Seraphina', 'Shaena', 'Trym', 'Vani', 'Verna'];
     const halflingFamilyNames = ['Brushgather', 'Goodbarrel', 'Greenbottle', 'High-hill', 'Hilltopple', 'Leagallow', 'Tealeaf', 'Thorngage',
                                  'Tosscobble', 'Underbough'];
+
+    const warforgedNames = ['Azm', 'Book', 'Bulwark', 'Cart', 'Charger', 'Cutter', 'Falchion', 'Graven', 'Hammer', 'Mark', 'Morg',
+                            'Nameless', 'Pierce', 'Pious', 'Relic', 'Rune', 'Steeple', 'Sword', 'Three', 'Titan', 'Unsung', 'Victor',
+                            'Watcher', 'Zealot', 'Mega Man', 'A.W.E.S.O.M-O', 'HK-47', 'ED-209', 'Bishop', 'Energizer', 'H.E.L.P.eR.',
+                            'Clank', 'Johnny 5', 'Marvin the Paranoid Android', 'NXT', 'Optimus Prime', 'Roomba', 'Rosie', 'K-9',
+                            'T-800/101/RIP', 'ASIMO', 'GLaDOS', 'HAL 9000', 'Data', 'R2D2', 'Bender Bending Rodriguez', 'Wall-E'];
 
     if (this.selectedRace !== undefined) {
       switch (this.selectedRace.name) {
@@ -166,6 +173,9 @@ export class NewCharacterComponent implements OnInit {
                 + humanFamilyNames[Math.floor(Math.random() * humanFamilyNames.length)];
               break;
           }
+          break;
+        case 'Warforged':
+          this.characterName = warforgedNames[Math.floor(Math.random() * warforgedNames.length)];
           break;
         default:
           this.characterName = 'Geoff';

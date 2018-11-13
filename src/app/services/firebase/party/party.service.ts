@@ -19,12 +19,9 @@ export class PartyService {
               public db: AngularFirestore) {
     this.partyCollection = db.collection<Party>('/parties');
     this.getCharacters(); // TODO: Used to sort party members by character name - remove the need to use...
-
-
     this.getParties().subscribe(data => {
       this.parties = data;
     });
-
   }
 
   getParties(): Observable<PartyId[]> {

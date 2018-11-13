@@ -7,6 +7,7 @@ import { PartyComponent } from './components/party/party.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { HomeComponent } from './components/home/home.component';
 import { NewCharacterComponent } from './components/character/new-character/new-character.component';
+import { NewCharacterClassComponent } from './components/character/new-character-class/new-character-class.component';
 
 const appRoutes: Routes = [
   { path: '',                     component: HomeComponent },
@@ -16,7 +17,7 @@ const appRoutes: Routes = [
   { path: 'parties/owned/',       component: PartyComponent },
   { path: 'character',            component: CharacterComponent },
   { path: 'character/new',        component: NewCharacterComponent },
-  { path: 'character/new/class',  component: NewCharacterComponent },
+  { path: 'character/new/class',  component: NewCharacterClassComponent },
   { path: '**',                   component: PageNotFoundComponent }
 ];
 
