@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { AbilityScore } from '../../../models/character/ability-scores';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
+import { Router } from '@angular/router';
 import { AuthService } from '../../../services/firebase/auth/auth.service';
+import { AbilityScore } from '../../../models/character/ability-scores';
+import { CharacterService } from '../../../services/firebase/character/character.service';
 
 
 @Component({
@@ -17,8 +20,11 @@ export class NewCharacterComponent implements OnInit {
   public playerHasSelectedRace: boolean;
   public selectedRace: any;
   public readyToPickClass: boolean;
+  @ViewChild('popover') public popover: NgbPopover;
 
-  constructor(public authService: AuthService) {
+  constructor(private router: Router,
+              public characterService: CharacterService,
+              public authService: AuthService) {
   }
 
   ngOnInit() {
@@ -184,6 +190,7 @@ export class NewCharacterComponent implements OnInit {
     } else {
       this.characterName = 'Geoff';
     }
+    this.checkPlayerIsReadyToPickClass();
   }
 
   checkPlayerIsReadyToPickClass(): void {
@@ -213,6 +220,19 @@ export class NewCharacterComponent implements OnInit {
   totalAbilityScoresChangedHandler(totalAbilityScores: AbilityScore) {
     this.totalAbilityScores = totalAbilityScores;
     this.checkPlayerIsReadyToPickClass();
+  }
+
+  selectCharacterClass() {
+    if (this.readyToPickClass) {
+      this.characterService.tempCharacter.owner = this.authService.getCurrentUser();
+      this.characterService.tempCharacter.playerName = this.playerName;
+      this.characterService.tempCharacter.characterName = this.characterName;
+      this.characterService.tempCharacter.baseAbilityScores = this.totalAbilityScores;
+      this.characterService.tempCharacter.raceId = this.selectedRace.id;
+      this.router.navigateByUrl( '/character/new/class' );
+    } else {
+      this.popover.open();
+    }
   }
 
 }

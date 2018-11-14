@@ -1,8 +1,7 @@
-import { RaceName } from '../../enums/enum-race';
 import { Size } from '../../enums/enum-size';
 import { Alignment } from '../../enums/enum-alignment';
 import { AbilityScore } from './ability-scores';
-import { Item } from '../../models/item/item';
+import { Item } from '../item/item';
 import { Weapon } from '../item/weapon';
 
 export interface CharacterId extends Character {
@@ -11,16 +10,16 @@ export interface CharacterId extends Character {
 
 }
 
-export class Character {
+export interface Character {
 
-  player?: string;        // User account (email)
+  owner?: string;        // User account (email)
 
   // Description
   characterName: string;
   playerName: string;
   classes: Array<{className: string, level: number}>;
   ecl?: number;
-  race: RaceName;
+  raceId: string;
   size: Size;
   imageUrl?: string;
   gender: string;
@@ -41,7 +40,7 @@ export class Character {
   baseAttackBonus: number;
 
   // Inventory
-  weapons: Array<Weapon>;
-  inventory: Array<Item>;
+  weaponsId: string;
+  inventoryId: string;
 
 }

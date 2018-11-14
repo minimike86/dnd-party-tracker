@@ -93,7 +93,7 @@ export class PartyComponent implements OnInit {
     if (this.parties !== undefined && this.characters !== undefined) {
       for (const partyItem of parties) {
         for (const member of partyItem.members) {
-          if (this.getCharacter(member).player === this.authService.getCurrentUser()) {
+          if (this.getCharacter(member).owner === this.authService.getCurrentUser()) {
             this.partiesUserHasPlayerCharacter.push(partyItem.id);
           }
         }

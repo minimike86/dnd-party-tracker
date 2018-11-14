@@ -23,7 +23,7 @@
       <small class="text-black-50 x-small">ECL</small>
     </div>
     <div class="character-attribute col-md-2 col-sm-4 mb-1">
-      <input class="form-control form-control-sm" type="text" id="raceTemplate" value="{{ mockCharacter.race }}" placeholder="Race/Template">
+      <input class="form-control form-control-sm" type="text" id="raceTemplate" value="{{ mockCharacter.raceId }}" placeholder="Race/Template">
       <small class="text-black-50 x-small">Race/Template</small>
     </div>
     <div class="character-attribute col-md-2 col-sm-4 mb-1">
@@ -65,7 +65,7 @@
     </div>
     <div class="col-lg-6 col-md-12 mb-1">
       <app-hit-points [totalHitPoints]="mockCharacter.hitPoints"></app-hit-points>
-      <app-combat-options [bab]="mockCharacter.baseAttackBonus" [weapons]="mockCharacter.weapons"></app-combat-options>
+      <app-combat-options [bab]="mockCharacter.baseAttackBonus" [weapons]="mockCharacter.weaponsId"></app-combat-options>
     </div>
   </div>
 

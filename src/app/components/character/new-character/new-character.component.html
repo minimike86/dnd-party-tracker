@@ -46,7 +46,7 @@
             placement="left"
             triggers="manual"
             popoverClass=""
-            (click)="popover.open()"
+            (click)="selectCharacterClass()"
             popoverTitle="{{ !readyToPickClass ? 'Missing Fields' : '' }}"
             ngbPopover="{{ playerName.length === 0 ? '\'Player Name\' cannot be blank.' :
               characterName.length === 0 ? '\'Character Name\' cannot be blank.' :

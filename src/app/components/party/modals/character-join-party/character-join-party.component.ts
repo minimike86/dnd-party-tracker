@@ -31,7 +31,7 @@ export class CharacterJoinPartyComponent implements OnInit {
   getCharacters(): void {
     this.characterService.getCharacters()
       .subscribe(
-        characters => this.characters = characters.filter(characterId => characterId.player === this.authService.getCurrentUser()),
+        characters => this.characters = characters.filter(characterId => characterId.owner === this.authService.getCurrentUser()),
         err => console.log('Error :: ' + err)
       );
   }
