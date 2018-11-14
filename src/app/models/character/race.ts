@@ -7,7 +7,7 @@ export interface RaceId extends Race {
 export interface Race {
 
   name: string;
-  abilityScoreAdjustments: Map<string, number>;
-  favoredClass: string;
+  abilityScoreAdjustments?: Map<string, number>;
+  favoredClass?: string;
 
 }

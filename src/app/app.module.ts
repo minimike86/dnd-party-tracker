@@ -38,6 +38,7 @@ import {
   ConfirmRemoveCharacterFromPartyComponent
 } from './components/party/modals/confirm-remove-character-from-party/confirm-remove-character-from-party.component';
 import { NewCharacterClassComponent } from './components/character/new-character-class/new-character-class.component';
+import { LoginComponent } from './components/login/login.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,8 @@ import { NewCharacterClassComponent } from './components/character/new-character
     ConfirmDeletePartyComponent,
     CharacterJoinPartyComponent,
     ConfirmRemoveCharacterFromPartyComponent,
-    NewCharacterClassComponent
+    NewCharacterClassComponent,
+    LoginComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebase, 'dnd-party-tracker'),

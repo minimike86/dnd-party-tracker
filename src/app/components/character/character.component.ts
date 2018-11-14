@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {Character} from '../../models/character/character';
-import {RaceName} from '../../enums/enum-race';
 import {Size} from '../../enums/enum-size';
 import {Gender} from '../../enums/enum-gender';
 import {Alignment} from '../../enums/enum-alignment';
@@ -23,7 +22,7 @@ export class CharacterComponent implements OnInit {
                   {className: 'Rogue', level: 1}
             ),
     ecl: 3,
-    race: RaceName.HUMAN,
+    raceId: 'V9qgAWIxvCDpaRDv4YaF',
     size: Size.MEDIUM,
     gender: Gender.MALE,
     alignment: Alignment.CN,
@@ -37,16 +36,8 @@ export class CharacterComponent implements OnInit {
                         {hitDie: 'd4', dieValue: 2}
             ),
     baseAttackBonus: 20,
-    inventory: null,
-    weapons: Array(
-      new Weapon(1, 'Longsword +2', '', {platinum: 0, gold: 15, electrum: 0, silver: 0, copper: 0}, 4,
-        WeaponCategory.MARTIAL, CombatStyle.MELEE, WeaponType.ONE_HANDED, 2, Size.MEDIUM, false, false, false,
-        false, null, '1d8', Array(DamageType.SLASHING), '19-20/x2', null,
-        null, false),
-      new Weapon(2, 'Longbow, composite', '', {platinum: 0, gold: 100, electrum: 0, silver: 0, copper: 0},
-        4, WeaponCategory.MARTIAL, CombatStyle.RANGED, null, 0, Size.MEDIUM, false, false, false,
-        true, Array({ammoType: 'Arrows', quantity: 20}), '1d8', Array(DamageType.PIERCING), 'x3',
-        110, null, false))
+    inventoryId: '',
+    weaponsId: ''
   };
 
   constructor() {}

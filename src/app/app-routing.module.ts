@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuardService as AuthGuard } from './services/firebase/auth/auth-guard.service';
 
 // Components
+import { LoginComponent } from './components/login/login.component';
 import { CharacterComponent } from './components/character/character.component';
 import { PartyComponent } from './components/party/party.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
@@ -10,14 +12,15 @@ import { NewCharacterComponent } from './components/character/new-character/new-
 import { NewCharacterClassComponent } from './components/character/new-character-class/new-character-class.component';
 
 const appRoutes: Routes = [
-  { path: '',                     component: HomeComponent },
-  { path: '',                     redirectTo: '/', pathMatch: 'full' },
-  { path: 'parties',              component: PartyComponent },
+  { path: '',                     component: HomeComponent, },
+  { path: '',                     redirectTo: '/', pathMatch: 'full', },
+  { path: 'login',                component: LoginComponent, },
+  { path: 'parties',              component: PartyComponent, },
   { path: 'parties/:id',          component: PartyComponent },
-  { path: 'parties/owned/',       component: PartyComponent },
+  { path: 'parties/owned/',       component: PartyComponent,                  canActivate: [AuthGuard] },
   { path: 'character',            component: CharacterComponent },
-  { path: 'character/new',        component: NewCharacterComponent },
-  { path: 'character/new/class',  component: NewCharacterClassComponent },
+  { path: 'character/new',        component: NewCharacterComponent,           canActivate: [AuthGuard] },
+  { path: 'character/new/class',  component: NewCharacterClassComponent,      canActivate: [AuthGuard] },
   { path: '**',                   component: PageNotFoundComponent }
 ];
 
@@ -26,7 +29,7 @@ const appRoutes: Routes = [
   imports: [
     RouterModule.forRoot(
       appRoutes,
-      { enableTracing: true } // <-- debugging purposes only
+      { enableTracing: false } // <-- debugging purposes only
     )
   ],
   exports: [

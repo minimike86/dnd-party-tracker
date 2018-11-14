@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from '../../services/firebase/auth/auth.service';
 import { PartyService } from '../../services/firebase/party/party.service';
@@ -93,7 +93,7 @@ export class PartyComponent implements OnInit {
     if (this.parties !== undefined && this.characters !== undefined) {
       for (const partyItem of parties) {
         for (const member of partyItem.members) {
-          if (this.getCharacter(member).player === this.authService.getCurrentUser()) {
+          if (this.getCharacter(member).owner === this.authService.getCurrentUser()) {
             this.partiesUserHasPlayerCharacter.push(partyItem.id);
           }
         }

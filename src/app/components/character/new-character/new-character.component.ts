@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { AbilityScore } from '../../../models/character/ability-scores';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
+import { Router } from '@angular/router';
 import { AuthService } from '../../../services/firebase/auth/auth.service';
+import { AbilityScore } from '../../../models/character/ability-scores';
+import { CharacterService } from '../../../services/firebase/character/character.service';
 
 
 @Component({
@@ -12,13 +15,17 @@ export class NewCharacterComponent implements OnInit {
 
   public playerName: string;
   public characterName: string;
+  public gender: string;
   public totalAbilityScores: AbilityScore;
   public playerHasRolledAllStats: boolean;
   public playerHasSelectedRace: boolean;
   public selectedRace: any;
   public readyToPickClass: boolean;
+  @ViewChild('popover') public popover: NgbPopover;
 
-  constructor(public authService: AuthService) {
+  constructor(private router: Router,
+              public characterService: CharacterService,
+              public authService: AuthService) {
   }
 
   ngOnInit() {
@@ -27,6 +34,7 @@ export class NewCharacterComponent implements OnInit {
       this.playerName = data !== null ? data.displayName : '';
     });
     this.characterName = '';
+    this.gender = 'Male';
     this.readyToPickClass = false;
     this.playerHasRolledAllStats = false;
     this.playerHasSelectedRace = false;
@@ -90,36 +98,36 @@ export class NewCharacterComponent implements OnInit {
     if (this.selectedRace !== undefined) {
       switch (this.selectedRace.name) {
         case 'Dwarf':
-          switch (Math.floor(Math.random() * 2) + 1) {
-            case 1: // Return Male Dwarf Name
+          switch (this.gender) {
+            case 'Male': // Return Male Dwarf Name
               this.characterName = dwarfMaleNames[Math.floor(Math.random() * dwarfMaleNames.length)] + ' '
                 + dwarfClanNames[Math.floor(Math.random() * dwarfClanNames.length)];
               break;
-            case 2: // Return Female Dwarf Name
+            case 'Female': // Return Female Dwarf Name
               this.characterName = dwarfFemaleNames[Math.floor(Math.random() * dwarfFemaleNames.length)] + ' '
                 + dwarfClanNames[Math.floor(Math.random() * dwarfClanNames.length)];
               break;
           }
           break;
         case 'Elf':
-          switch (Math.floor(Math.random() * 2) + 1) {
-            case 1: // Return Male Elf Name
+          switch (this.gender) {
+            case 'Male': // Return Male Elf Name
               this.characterName = elfMaleNames[Math.floor(Math.random() * elfMaleNames.length)] + ' '
                 + elfFamilyNames[Math.floor(Math.random() * elfFamilyNames.length)];
               break;
-            case 2: // Return Female Elf Name
+            case 'Female': // Return Female Elf Name
               this.characterName = elfFemaleNames[Math.floor(Math.random() * elfFemaleNames.length)] + ' '
                 + elfFamilyNames[Math.floor(Math.random() * elfFamilyNames.length)];
               break;
           }
           break;
         case 'Gnome':
-          switch (Math.floor(Math.random() * 2) + 1) {
-            case 1: // Return Male Gnome Name
+          switch (this.gender) {
+            case 'Male': // Return Male Gnome Name
               this.characterName = gnomeMaleNames[Math.floor(Math.random() * gnomeMaleNames.length)] + ' '
                 + gnomeClanNames[Math.floor(Math.random() * gnomeClanNames.length)];
               break;
-            case 2: // Return Female Gnome Name
+            case 'Female': // Return Female Gnome Name
               this.characterName = gnomeFemaleNames[Math.floor(Math.random() * gnomeFemaleNames.length)] + ' '
                 + gnomeClanNames[Math.floor(Math.random() * gnomeClanNames.length)];
               break;
@@ -129,46 +137,46 @@ export class NewCharacterComponent implements OnInit {
           const halfElfMaleNames = [...elfMaleNames , ...humanMaleNames];
           const halfElfFemaleNames = [...elfFemaleNames , ...humanFemaleNames];
           const halfElfFamilyNames = [...elfFamilyNames , ...humanFamilyNames];
-          switch (Math.floor(Math.random() * 2) + 1) {
-            case 1: // Return Male Half-Elf Name
+          switch (this.gender) {
+            case 'Male': // Return Male Half-Elf Name
               this.characterName = halfElfMaleNames[Math.floor(Math.random() * halfElfMaleNames.length)] + ' '
                 + halfElfFamilyNames[Math.floor(Math.random() * halfElfFamilyNames.length)];
               break;
-            case 2: // Return Female Half-Elf Name
+            case 'Female': // Return Female Half-Elf Name
               this.characterName = halfElfFemaleNames[Math.floor(Math.random() * halfElfFemaleNames.length)] + ' '
                 + halfElfFamilyNames[Math.floor(Math.random() * halfElfFamilyNames.length)];
               break;
           }
           break;
         case 'Half-Orc':
-          switch (Math.floor(Math.random() * 2) + 1) {
-            case 1: // Return Male Half-Orc Name
+          switch (this.gender) {
+            case 'Male': // Return Male Half-Orc Name
               this.characterName = halfOrcMaleNames[Math.floor(Math.random() * halfOrcMaleNames.length)];
               break;
-            case 2: // Return Female Half-Orc Name
+            case 'Female': // Return Female Half-Orc Name
               this.characterName = halfOrcFemaleNames[Math.floor(Math.random() * halfOrcFemaleNames.length)];
               break;
           }
           break;
         case 'Halfling':
-          switch (Math.floor(Math.random() * 2) + 1) {
-            case 1: // Return Male Halfling Name
+          switch (this.gender) {
+            case 'Male': // Return Male Halfling Name
               this.characterName = halflingMaleNames[Math.floor(Math.random() * halflingMaleNames.length)] + ' '
                 + halflingFamilyNames[Math.floor(Math.random() * halflingFamilyNames.length)];
               break;
-            case 2: // Return Female Halfling Name
+            case 'Female': // Return Female Halfling Name
               this.characterName = halflingFemaleNames[Math.floor(Math.random() * halflingFemaleNames.length)] + ' '
                 + halflingFamilyNames[Math.floor(Math.random() * halflingFamilyNames.length)];
               break;
           }
           break;
         case 'Human':
-          switch (Math.floor(Math.random() * 2) + 1) {
-            case 1: // Return Male Human Name
+          switch (this.gender) {
+            case 'Male': // Return Male Human Name
               this.characterName = humanMaleNames[Math.floor(Math.random() * humanMaleNames.length)] + ' '
                 + humanFamilyNames[Math.floor(Math.random() * humanFamilyNames.length)];
               break;
-            case 2: // Return Female Human Name
+            case 'Female': // Return Female Human Name
               this.characterName = humanFemaleNames[Math.floor(Math.random() * humanFemaleNames.length)] + ' '
                 + humanFamilyNames[Math.floor(Math.random() * humanFamilyNames.length)];
               break;
@@ -184,11 +192,21 @@ export class NewCharacterComponent implements OnInit {
     } else {
       this.characterName = 'Geoff';
     }
+    this.checkPlayerIsReadyToPickClass();
+  }
+
+  radioBtnMale(): void {
+    this.gender = 'Male';
+  }
+
+  radioBtnFemale(): void {
+    this.gender = 'Female';
   }
 
   checkPlayerIsReadyToPickClass(): void {
     if ( (this.playerName.length >= 1)
       && (this.characterName.length >= 1)
+      && this.gender
       && this.playerHasSelectedRace
       && this.playerHasRolledAllStats
     ) {
@@ -213,6 +231,21 @@ export class NewCharacterComponent implements OnInit {
   totalAbilityScoresChangedHandler(totalAbilityScores: AbilityScore) {
     this.totalAbilityScores = totalAbilityScores;
     this.checkPlayerIsReadyToPickClass();
+  }
+
+  selectCharacterClass() {
+    if (this.readyToPickClass) {
+      this.characterService.tempCharacter.owner = this.authService.getCurrentUser();
+      this.characterService.tempCharacter.playerName = this.playerName;
+      this.characterService.tempCharacter.characterName = this.characterName;
+      this.characterService.tempCharacter.gender = this.gender;
+      this.characterService.tempCharacter.baseAbilityScores = this.totalAbilityScores;
+      this.characterService.tempCharacter.raceId = this.selectedRace.id;
+      this.characterService.tempCharacter.size = this.selectedRace.size;
+      this.router.navigateByUrl( '/character/new/class' );
+    } else {
+      this.popover.open();
+    }
   }
 
 }

@@ -3,6 +3,7 @@ import { FirebaseApp } from '@angular/fire';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { auth } from 'firebase/app';
+import {Router} from '@angular/router';
 
 
 @Injectable({
@@ -14,7 +15,8 @@ export class AuthService {
 
   constructor(private app: FirebaseApp,
               public afAuth: AngularFireAuth,
-              private db: AngularFirestore) {
+              private db: AngularFirestore,
+              private router: Router) {
 
     app.auth().onAuthStateChanged(user => {
       if (user) {
@@ -43,6 +45,7 @@ export class AuthService {
 
   logout() {
     this.afAuth.auth.signOut();
+    this.router.navigate(['/']);
   }
 
 }
