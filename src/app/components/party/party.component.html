@@ -2,7 +2,7 @@
 <div class="container mt-3">
   <div class="row">
     <h2 class="" style="font-family: 'Fredericka the Great', cursive;">Adventuring Parties:</h2>
-    <div class="ml-auto">
+    <div class="ml-auto" *ngIf="authService.getCurrentUser()">
       <button class="btn btn-sm btn-primary"
               (click)="openNewPartyModal()">
         <i class="fab fa-d-and-d"></i> Start an Adventuring Party!
@@ -109,7 +109,7 @@
             <div *ngIf="authService.getCurrentUser() === party.partyLeader">
               <small class="text-warning ml-2" title="This party is owned by you!"><i class="fas fa-crown"></i></small>
             </div>
-            <div class="ml-auto">
+            <div class="ml-auto" *ngIf="authService.getCurrentUser(); else showLogin">
               <button class="btn btn-success btn-sm ml-1 py-0"
                       title="Join this party"
                       (click)="openCharacterJoinPartyModal(party)"> <!-- !partiesUserHasPlayerCharacter.includes(party.id) -->
@@ -121,6 +121,13 @@
                 <i class="far fa-trash-alt"></i>
               </button>
             </div>
+            <ng-template #showLogin>
+              <div class="ml-auto">
+                <div class="input-group my-2 my-lg-0">
+                  <button [routerLink]="['/login']" [routerLinkActive]="['active']" class="btn btn-sm btn-secondary my-2 my-sm-0" type="submit" title="Login with your Google Account">Login with <i class="fab fa-google"></i></button>
+                </div>
+              </div>
+            </ng-template>
           </div>
         </div>
       </div>

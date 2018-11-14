@@ -9,41 +9,32 @@
 <div class="container">
   <div class="row">
 
-    <div class="col-sm-1">
-    </div>
-
     <!-- PLAYER -->
     <div class="col-sm">
-      <div class="card bg-light mb-3">
-        <div class="card-header">Player Character</div>
+      <div class="card border-success bg-light mb-3">
         <div class="embed-responsive embed-responsive-16by9">
           <img class="embed-responsive-item" src="https://i.pinimg.com/originals/b4/85/d8/b485d8f6692c4c78ba5d96bf5b943e1e.jpg">
         </div>
-        <div class="card-body">
-          <p class="card-text"></p>
-          <a [routerLink]="['/character/new']" [routerLinkActive]="['active']" class="btn btn-success btn-block">Create A New Character</a>
+        <div class="card-body p-2">
+          <p class="card-text">
+            <a [routerLink]="['/character/new']" [routerLinkActive]="['active']" class="btn btn-success btn-block">Player Character</a>
+          </p>
         </div>
       </div>
-    </div>
-
-    <div class="col-sm-1">
     </div>
 
     <!-- DM -->
     <div class="col-sm">
-      <div class="card bg-light mb-3">
-        <div class="card-header">Dungeon Master</div>
+      <div class="card border-warning bg-light mb-3">
         <div class="embed-responsive embed-responsive-16by9">
           <img class="embed-responsive-item" src="https://i.pinimg.com/564x/5a/23/a5/5a23a5c5c39f565867703af79d7ce374.jpg">
         </div>
-        <div class="card-body">
-          <p class="card-text"></p>
-          <a [routerLink]="['/parties']" [routerLinkActive]="['active']" class="btn btn-warning btn-block">Manage The Adventuring Party</a>
+        <div class="card-body p-2">
+          <p class="card-text">
+            <a [routerLink]="['/parties']" [routerLinkActive]="['active']" class="btn btn-warning btn-block">Dungeon Master</a>
+          </p>
         </div>
       </div>
-    </div>
-
-    <div class="col-sm-1">
     </div>
 
   </div>

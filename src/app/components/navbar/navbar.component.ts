@@ -12,7 +12,7 @@ export class NavbarComponent implements OnInit {
 
   public user: User;
 
-  constructor(public authService: AuthService) {
+  constructor(private authService: AuthService) {
     authService.afAuth.user.subscribe(data => {
       this.user = data;
     });

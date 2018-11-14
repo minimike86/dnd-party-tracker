@@ -13,7 +13,6 @@ export class AuthGuardService implements CanActivate {
               private router: Router) {
     this.activate = false;
     this.authService.afAuth.authState.subscribe(data => {
-      console.log('data', data);
       this.activate = false;
       if (data !== undefined && data !== null && data.email !== undefined) {
         this.activate = true;

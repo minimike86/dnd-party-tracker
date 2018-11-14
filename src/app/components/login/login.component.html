@@ -1,0 +1,39 @@
+<app-navbar></app-navbar>
+<div class="container mt-3">
+  <div class="row d-flex justify-content-center">
+    <div class="card border-primary w-50">
+      <div class="card-header d-flex pb-1">
+        <img class="align-self-center" src="https://www.gstatic.com/images/branding/googlelogo/svg/googlelogo_clr_74x24px.svg">
+        <span class="align-self-center ml-1 mb-1" style="font-size: large;">Account</span>
+      </div>
+      <div class="card-body bg-light">
+        <!--
+        <div class="form-group">
+          <label class="col-form-label col-form-label-lg" for="inputEmail">Email:</label>
+          <input class="form-control form-control-lg" type="text" placeholder="email.address@gmail.com" id="inputEmail">
+        </div>
+        <div class="form-group">
+          <label class="col-form-label col-form-label-lg" for="inputPassword">Password:</label>
+          <input class="form-control form-control-lg" type="password" placeholder="Password" id="inputPassword">
+        </div>
+        -->
+        <div class="form-group text-center">
+          <button class="btn btn-lg btn-primary my-2 w-50" type="submit" (click)="login()" title="Login with your Google Account">Login with <i class="fab fa-google"></i></button>
+        </div>
+      </div>
+      <div class="card-footer">
+        <span class="small">By logging in using your Google account you agree to our <span class="text-info" (click)="showPrivacyPolicyModal()">privacy policy</span> and <span class="text-info" (click)="showTermsOfServiceModal()">terms of service</span>.
+          Google provide us with your name, email address and profile picture.
+          You can revoke our access to your account data any time from your <a class="text-muted" href="https://myaccount.google.com/permissions" target="_blank">
+            <span class="text-primary">G</span>
+            <span class="text-danger">o</span>
+            <span class="text-warning">o</span>
+            <span class="text-primary">g</span>
+            <span class="text-success">l</span>
+            <span class="text-danger">e</span>
+            Account
+          </a>.</span>
+      </div>
+    </div>
+  </div>
+</div>

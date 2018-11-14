@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuardService as AuthGuard } from './services/firebase/auth/auth-guard.service';
 
 // Components
+import { LoginComponent } from './components/login/login.component';
 import { CharacterComponent } from './components/character/character.component';
 import { PartyComponent } from './components/party/party.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
@@ -13,6 +14,7 @@ import { NewCharacterClassComponent } from './components/character/new-character
 const appRoutes: Routes = [
   { path: '',                     component: HomeComponent, },
   { path: '',                     redirectTo: '/', pathMatch: 'full', },
+  { path: 'login',                component: LoginComponent, },
   { path: 'parties',              component: PartyComponent, },
   { path: 'parties/:id',          component: PartyComponent },
   { path: 'parties/owned/',       component: PartyComponent,                  canActivate: [AuthGuard] },
