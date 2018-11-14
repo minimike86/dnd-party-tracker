@@ -23,29 +23,26 @@ export class CharacterService {
       this.characters = data;
     });
     this.tempCharacter = {
-      owner: '',
-      characterName: '',
-      playerName: '',
-      classes: [{
-        className: '',
-        level: 0
-      }],
-      ecl: 1,
-      raceId: '',
-      size: Size.MEDIUM,
-      imageUrl: '',
-      gender: '',
-      alignment: Alignment.N,
-      religion: '',
-      height: [0, 0], // 5' 10"
-      weight: 0,      // 220 lbs.
-      looks: '',
+      owner: null,
+      characterName: null,
+      playerName: null,
+      classes: null,
+      ecl: null,
+      raceId: null,
+      size: null,
+      imageUrl: null,
+      gender: null,
+      alignment: null,
+      religion: null,
+      height: null, // 5' 10"
+      weight: null, // 220 lbs.
+      looks: null,
       baseAbilityScores: new AbilityScore(0, 0, 0, 0,  0, 0),
-      hitPoints: 0,
-      hitDie: [],
-      baseAttackBonus: 0,
-      weaponsId: '',
-      inventoryId: '',
+      hitPoints: null,
+      hitDie: null,
+      baseAttackBonus: null,
+      weaponsId: null,
+      inventoryId: null,
     };
   }
 

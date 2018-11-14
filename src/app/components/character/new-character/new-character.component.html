@@ -15,20 +15,51 @@
   </div>
 
   <div>
+
     <div class="form-group">
-      <label for="playerName">Player Name</label>
+      <label for="playerName">Player Name:</label>
       <input type="text" class="form-control" id="playerName" placeholder="What is your name?"
              [(ngModel)]="playerName" (ngModelChange)="checkPlayerIsReadyToPickClass()" required>
     </div>
-    <div class="form-group">
-      <label for="characterName">Character Name</label>
-      <button class="btn btn-outline-info btn-sm ml-1 py-0" title="Generate a random character name"
-              (click)="generateRandomName()">
-        <i class="fas fa-random"></i>
-      </button>
-      <input type="text" class="form-control" id="characterName" placeholder="What is your characters name?"
-             [(ngModel)]="characterName" (ngModelChange)="checkPlayerIsReadyToPickClass()" required>
+
+    <div class="row">
+      <div class="col-9">
+
+        <div class="form-group">
+          <label for="characterName">Character Name:</label>
+          <button class="d-inline-flex align-items-center btn btn-outline-info btn-sm ml-1 py-0"
+                  title="Generate a random character name based on the selected race and gender."
+                  (click)="generateRandomName()">
+            <i class="fas fa-random"></i><span class="small ml-1">Random Name</span>
+          </button>
+          <input type="text" class="form-control" id="characterName" placeholder="What is your characters name?"
+                 [(ngModel)]="characterName" (ngModelChange)="checkPlayerIsReadyToPickClass()" required>
+        </div>
+
+      </div>
+      <div class="col-3">
+
+        <fieldset class="form-group">
+          <label for="radioGenderMale">Gender:</label>
+          <div class="form-check">
+            <label class="form-check-label">
+              <input type="radio" class="form-check-input" name="radioGender" id="radioGenderMale" value="Male" checked=""
+                     (click)="radioBtnMale()">
+              Male
+            </label>
+          </div>
+          <div class="form-check">
+            <label class="form-check-label">
+              <input type="radio" class="form-check-input" name="radioGender" id="radioGenderFemale" value="Female"
+                     (click)="radioBtnFemale()">
+              Female
+            </label>
+          </div>
+        </fieldset>
+
+      </div>
     </div>
+
   </div>
 
   <div>
