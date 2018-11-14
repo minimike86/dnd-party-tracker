@@ -1,10 +1,11 @@
+<app-navbar></app-navbar>
 <div class="container mt-3">
   <div class="row">
     <h2 class="" style="font-family: 'Fredericka the Great', cursive;">Adventuring Parties:</h2>
     <div class="ml-auto">
       <button class="btn btn-sm btn-primary"
               (click)="openNewPartyModal()">
-        <i class="fas fa-users"></i>&nbsp;<i class="fas fa-plus-circle"></i> Start an Adventuring Party!
+        <i class="fab fa-d-and-d"></i> Start an Adventuring Party!
       </button>
     </div>
   </div>
@@ -14,7 +15,7 @@
       <button class="btn btn-success btn-sm p-3 m-3"
               title="Join this party"
               (click)="openNewPartyModal()">
-        <i class="fas fa-users"></i>&nbsp;<i class="fas fa-plus-circle"></i> Start an Adventuring Party!
+        <i class="fab fa-d-and-d"></i> Start an Adventuring Party!
       </button>
     </div>
     <div class="d-block w-100" *ngFor="let party of parties">
@@ -112,7 +113,7 @@
               <button class="btn btn-success btn-sm ml-1 py-0"
                       title="Join this party"
                       (click)="openCharacterJoinPartyModal(party)"> <!-- !partiesUserHasPlayerCharacter.includes(party.id) -->
-                <i class="fas fa-user-plus"></i> Add a character to this party!
+                <i class="fas fa-user-plus"></i><span class="small ml-1"> Add a character to this party!</span>
               </button>
               <button class="btn btn-outline-danger btn-sm ml-1 py-0"
                       title="Delete &apos;{{ party.name }}&apos;"

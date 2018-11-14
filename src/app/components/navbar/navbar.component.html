@@ -26,9 +26,13 @@
     </ul>
   </div>
 
-  <div *ngIf="authService.afAuth.user | async as user; else showLogin">
-    <img class="rounded-circle mr-1" style="border: 2px solid #ccc; height: 2em; width: 2em;" src="{{ user.photoURL }}">
-    <div class="d-inline-flex align-middle mr-3">
+  <div class="d-flex align-items-stretch" *ngIf="user; else showLogin">
+    <div class="d-flex align-self-center mr-2">
+      <a class="text-white" [routerLink]="['/profile']" [routerLinkActive]="['active']">
+        <img class="rounded-circle" style="border: 2px solid #ccc; height: 2em; width: 2em;" src="{{ user.photoURL }}">
+      </a>
+    </div>
+    <div class="d-flex align-self-center mr-2">
       <a class="text-white" [routerLink]="['/profile']" [routerLinkActive]="['active']">
         {{ user.displayName }}
       </a>
