@@ -6,6 +6,80 @@
     <p class="text-muted" style="font-family: 'Special Elite', cursive;">Your character’s class is their profession or vocation determining: combat prowess, magical ability, skills, and more...</p>
   </div>
 
+  <div class="d-flex">
+
+    <div class="mr-2" *ngIf="characterService.tempCharacter.alignment !== null; else showSelectAlignmentBtn">
+      <div class="form-group">
+        <label for="alignment">Alignment:</label>
+        <div class="d-flex">
+          <div class="flex-fill mr-2">
+            <input type="text" class="form-control" id="alignment" [value]="characterService.tempCharacter.alignment" readonly required>
+          </div>
+          <div class="">
+            <button class="btn btn-outline-secondary" (click)="openSelectAlignmentModal()">Change Alignment</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ng-template #showSelectAlignmentBtn>
+      <div class="w-25 mr-2">
+        <div class="form-group">
+          <label for="alignment">Alignment:</label>
+          <button class="btn btn-outline-primary btn-block" (click)="openSelectAlignmentModal()">Select Alignment</button>
+        </div>
+      </div>
+    </ng-template>
+
+    <div class="mr-2">
+      <div class="form-group">
+        <label for="heightFeet">Height:</label>
+        <div class="d-flex">
+          <div class="d-inline-flex mr-2">
+            <input type="number" class="form-control text-right" style="width: 4em;" id="heightFeet" min="0"
+                   [(ngModel)]="heightFeet" title="Feet" required>
+            <span class="d-block">&apos;</span>
+          </div>
+          <div class="d-inline-flex mr-2">
+            <input type="number" class="form-control text-right" style="width: 4em;" id="heightInches" min="0" max="12"
+                   [(ngModel)]="heightInches" (ngModelChange)="heightInchesChanged()" title="Inches" required>
+            <span class="d-block">&quot;</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mr-2">
+      <div class="form-group">
+        <label for="weight">Weight:</label>
+        <div class="d-flex">
+          <div class="d-inline-flex mr-2">
+            <input type="number" class="form-control text-right" style="width: 6em;" id="weight" min="0" max="999999"
+                   [(ngModel)]="weight" title="Pounds" required>
+            <span class="d-block align-self-center ml-1">lbs.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mr-2">
+      <div class="form-group">
+        <div>
+          <label for="age">Age:</label>
+          <button class="d-inline-flex align-items-center btn btn-outline-info btn-sm ml-1 py-0"
+                  title="Generate a random character aged based on the selected race."
+                  (click)="generateRandomAge(4, 6)">
+            <i class="fas fa-random"></i><span class="small ml-1">Random Age</span>
+          </button>
+        </div>
+        <label class="form-check-label">
+          <input type="number" class="form-control" name="age" id="age" [(ngModel)]="age">
+        </label>
+        <span class="d-block text-warning small ml-1" style="font-family: 'Roboto', sans-serif;">{{ ageCategory }}</span>
+      </div>
+    </div>
+
+  </div>
+
   <div class="mb-3">
     <label for="typeahead-focus">Class:</label>
     <input

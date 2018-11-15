@@ -22,6 +22,10 @@ export class CharacterService {
     this.getCharacters().subscribe(data => {
       this.characters = data;
     });
+    this.newCharacter();
+  }
+
+  newCharacter(): void {
     this.tempCharacter = {
       owner: null,
       characterName: null,
@@ -32,6 +36,7 @@ export class CharacterService {
       size: null,
       imageUrl: null,
       gender: null,
+      age: null,
       alignment: null,
       religion: null,
       height: null, // 5' 10"

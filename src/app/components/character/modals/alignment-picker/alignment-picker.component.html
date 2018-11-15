@@ -1,0 +1,100 @@
+<div class="modal-header bg-light p-2">
+  <div class="modal-title">
+    <h4 class="d-block w-100 m-0" style="font-family: 'Fredericka the Great', cursive;">Choose Alignment</h4>
+    <p class="d-block w-100 m-0"><small>A creature’s general moral and personal attitudes are represented by its alignment:</small></p>
+  </div>
+  <button type="button btn-sm" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+
+  <div class="container" style="font-family: 'Patua One', cursive;">
+    <div class="row pb-3">
+      <div class="col-4">
+        <button class="btn btn-lg btn-outline-success btn-block" triggers="mouseenter:mouseleave"
+                (click)="selectedAlignment('Lawful Good')"
+                placement="bottom" popoverTitle="Lawful Good, &quot;Crusader&quot;" container="body"
+                ngbPopover="Lawful good is the best alignment you can be because it combines honor and compassion.">
+          Lawful Good
+        </button>
+      </div>
+      <div class="col-4">
+        <button class="btn btn-lg btn-outline-success btn-block" triggers="mouseenter:mouseleave"
+                (click)="selectedAlignment('Neutral Good')"
+                placement="bottom" popoverTitle="Neutral Good, &quot;Benefactor&quot;" container="body"
+                ngbPopover="Neutral good is the best alignment you can be because it means doing what is good without bias for or against order.">
+          Neutral Good
+        </button>
+      </div>
+      <div class="col-4">
+        <button class="btn btn-lg btn-outline-success btn-block" triggers="mouseenter:mouseleave"
+                (click)="selectedAlignment('Chaotic Good')"
+                placement="bottom" popoverTitle="Chaotic Good, &quot;Rebel&quot;" container="body"
+                ngbPopover="Chaotic good is the best alignment you can be because it combines a good heart with a free spirit.">
+          Chaotic Good
+        </button>
+      </div>
+    </div>
+    <div class="row pb-3">
+      <div class="col-4">
+        <button class="btn btn-lg btn-outline-info btn-block" triggers="mouseenter:mouseleave"
+                (click)="selectedAlignment('Lawful Neutral')"
+                placement="bottom" popoverTitle="Lawful Neutral, &quot;Judge&quot;" container="body"
+                ngbPopover="Lawful neutral is the best alignment you can be because it means you are reliable and honorable without being a zealot.">
+          Lawful Neutral
+        </button>
+      </div>
+      <div class="col-4">
+        <button class="btn btn-lg btn-outline-info btn-block" triggers="mouseenter:mouseleave"
+                (click)="selectedAlignment('Neutral')"
+                placement="bottom" popoverTitle="Neutral, &quot;Undecided&quot;" container="body"
+                ngbPopover="Neutral is the best alignment you can be because it means you act naturally, without prejudice or compulsion.">
+          Neutral
+        </button>
+      </div>
+      <div class="col-4">
+        <button class="btn btn-lg btn-outline-info btn-block" triggers="mouseenter:mouseleave"
+                (click)="selectedAlignment('Chaotic Neutral')"
+                placement="bottom" popoverTitle="Chaotic Neutral, &quot;Free Spirit&quot;" container="body"
+                ngbPopover="Chaotic neutral is the best alignment you can be because it represents true freedom from
+                both society’s restrictions and a dogooder&apos;s zeal.">
+          Chaotic Neutral
+        </button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-4">
+        <button class="btn btn-lg btn-outline-danger btn-block" triggers="mouseenter:mouseleave"
+                (click)="selectedAlignment('Lawful Evil')"
+                placement="bottom" popoverTitle="Lawful Evil, &quot;Dominator&quot;" container="body"
+                ngbPopover="Lawful evil is sometimes called &quot;diabolical&quot;, because devils are the epitome of lawful evil.
+                Lawful evil is the most dangerous alignment because it represents methodical, intentional, and frequently successful evil.">
+          Lawful Evil
+        </button>
+      </div>
+      <div class="col-4">
+        <button class="btn btn-lg btn-outline-danger btn-block" triggers="mouseenter:mouseleave"
+                (click)="selectedAlignment('Neutral Evil')"
+                placement="bottom" popoverTitle="Neutral Evil, &quot;Malefactor&quot;" container="body"
+                ngbPopover="Neutral evil is the most dangerous alignment because it represents pure evil without honor and without variation. ">
+          Neutral Evil
+        </button>
+      </div>
+      <div class="col-4">
+        <button class="btn btn-lg btn-outline-danger btn-block" triggers="mouseenter:mouseleave"
+                (click)="selectedAlignment('Chaotic Evil')"
+                placement="bottom" popoverTitle="Chaotic Evil, &quot;Destroyer&quot;" container="body"
+                ngbPopover="Chaotic evil is sometimes called &quot;demonic&quot; because demons are the epitome of chaotic evil.
+                Chaotic evil is the most dangerous alignment because it represents the destruction not only of beauty
+                and life but also of the order on which beauty and life depend.">
+          Chaotic Evil
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div class="modal-footer bg-light p-2">
+  <button type="button" ngbAutofocus class="btn btn-sm btn-outline-dark" (click)="activeModal.close('Close click')">Cancel</button>
+</div>

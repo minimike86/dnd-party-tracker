@@ -23,7 +23,8 @@ export interface Character {
   size: Size;
   imageUrl?: string;
   gender: string;
-  alignment: Alignment;
+  age: number;
+  alignment: string;
   religion?: string;
   height: [number, number]; // 5' 10"
   weight: number;           // 220 lbs.

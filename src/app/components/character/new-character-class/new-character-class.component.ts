@@ -1,11 +1,13 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { merge, Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
-import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
 import { CharacterService } from '../../../services/firebase/character/character.service';
 import { CharacterClassService } from '../../../services/firebase/character-class/character-class.service';
 import { CharacterClass, CharacterClassId } from '../../../models/character/character-class';
 import { Character } from '../../../models/character/character';
+import { AlignmentPickerComponent } from '../modals/alignment-picker/alignment-picker.component';
+import {AbilityScore} from '../../../models/character/ability-scores';
 
 
 @Component({
@@ -16,6 +18,12 @@ import { Character } from '../../../models/character/character';
 export class NewCharacterClassComponent implements OnInit {
 
   public character: Character;
+  public alignment: string;
+  public heightFeet: number;
+  public heightInches: number;
+  public weight: number;
+  public age: number;
+  public ageCategory: string;
   public classes: any;
   public typeAheadClass: any;
   public selectedClass: any;
@@ -25,8 +33,9 @@ export class NewCharacterClassComponent implements OnInit {
   focus$ = new Subject<string>();
   click$ = new Subject<string>();
 
-  constructor(characterService: CharacterService,
-              classService: CharacterClassService) {
+  constructor(public characterService: CharacterService,
+              private classService: CharacterClassService,
+              private modalService: NgbModal) {
 
     this.classes = classService.getClasses().subscribe(
       value => {
@@ -43,6 +52,13 @@ export class NewCharacterClassComponent implements OnInit {
     );
 
     this.character = characterService.tempCharacter;
+    // TODO: Make default height and weight be the races random starting value
+    this.heightFeet = 0;
+    this.heightInches = 0;
+    this.weight = 0;
+    // TODO: Make age the random starting age for a given race
+    this.age = 0;
+    this.ageCategory = '';
 
   }
 
@@ -67,6 +83,34 @@ export class NewCharacterClassComponent implements OnInit {
     // Set selected race and emit updates back to parent component
     this.selectedClass = this.classes.find(race => race.name === selectedValue.name);
     this.playerHasSelectedClass = true;
+  }
+
+  openSelectAlignmentModal(): void {
+    const modalRef = this.modalService.open(AlignmentPickerComponent, { size: 'lg' });
+  }
+
+  heightInchesChanged(): void {
+    if (this.heightInches === 12) {
+      this.heightFeet = this.heightFeet + 1;
+      this.heightInches = 0;
+    }
+  }
+
+  generateRandomAge(dieCount: number, dieType: number): void {
+    const adulthoodAgeForRace = Math.floor((Math.random() * 110) + 14);
+    const ageForClass = (Math.floor((Math.random() * dieType) + 1) * dieCount);
+    this.age = adulthoodAgeForRace + ageForClass;
+  }
+
+  getAgingEffects(race: any, age: number): AbilityScore {
+    if (age >= race.aging.venerable) {
+      return new AbilityScore(-6, -6, -6, 3, 3, 3);
+    } else if (age >= race.aging.old) {
+      return new AbilityScore(-3, -3, -3, 2, 2, 2);
+    } else if (age >= race.aging.middleAged) {
+      return new AbilityScore(-1, -1, -1, 1, 1, 1);
+    }
+    return new AbilityScore(0, 0, 0, 0, 0, 0);
   }
 
 }

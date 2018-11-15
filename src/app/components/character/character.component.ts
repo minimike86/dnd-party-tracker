@@ -25,6 +25,7 @@ export class CharacterComponent implements OnInit {
     raceId: 'V9qgAWIxvCDpaRDv4YaF',
     size: Size.MEDIUM,
     gender: Gender.MALE,
+    age: 50,
     alignment: Alignment.CN,
     religion: 'Pelor',
     height: [5, 10], // feet, inches
