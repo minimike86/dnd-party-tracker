@@ -68,7 +68,7 @@
                               <li class="text-info" style="font-size: x-small;" *ngFor="let classItem of getCharacter(memberReference).classes">
                                 <span class="text-black-50" *ngIf=" classItem !== getCharacter(memberReference).classes[0]
                                          && classItem !== getCharacter(memberReference).classes[getCharacter(memberReference).classes.length] ">/</span>
-                                {{ classItem.className }} {{ classItem.level }}
+                                {{ classItem.classId }} {{ classItem.level }}
                               </li>
                             </ul>
                           </div>

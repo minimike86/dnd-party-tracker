@@ -17,14 +17,15 @@ export class CharacterComponent implements OnInit {
     characterName: 'Floon Blagmaar',
     playerName: 'Mike Warner',
     classes: Array(
-            {className: 'Fighter', level: 1},
-                  {className: 'Sorcerer', level: 1},
-                  {className: 'Rogue', level: 1}
+            {classId: 'FIGHTER', level: 1},
+                  {classId: 'SORCERER', level: 1},
+                  {classId: 'ROGUE', level: 1}
             ),
     ecl: 3,
     raceId: 'V9qgAWIxvCDpaRDv4YaF',
     size: Size.MEDIUM,
     gender: Gender.MALE,
+    age: 50,
     alignment: Alignment.CN,
     religion: 'Pelor',
     height: [5, 10], // feet, inches
@@ -45,13 +46,14 @@ export class CharacterComponent implements OnInit {
   ngOnInit() {
   }
 
+  // TODO: Get character class name from db for given classId field
   getCharClassAndLevelString(): string {
     let tempStr = '';
     for (const charClass of this.mockCharacter.classes) {
       if (tempStr === '') {
-        tempStr += charClass.className + charClass.level;
+        tempStr += charClass.classId + charClass.level;
       } else {
-        tempStr += ' / ' + charClass.className + charClass.level;
+        tempStr += ' / ' + charClass.classId + charClass.level;
       }
     }
     return tempStr;

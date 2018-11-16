@@ -17,13 +17,14 @@ export interface Character {
   // Description
   characterName: string;
   playerName: string;
-  classes: Array<{className: string, level: number}>;
+  classes: Array<{classId: string, level: number}>;
   ecl?: number;
   raceId: string;
   size: Size;
   imageUrl?: string;
   gender: string;
-  alignment: Alignment;
+  age: number;
+  alignment: string;
   religion?: string;
   height: [number, number]; // 5' 10"
   weight: number;           // 220 lbs.

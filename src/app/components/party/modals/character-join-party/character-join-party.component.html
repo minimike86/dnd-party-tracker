@@ -32,7 +32,7 @@
                       <li class="text-info" style="font-size: x-small;" *ngFor="let classItem of getCharacter(character.id).classes">
                         <span class="text-black-50" *ngIf=" classItem !== getCharacter(character.id).classes[0]
                                  && classItem !== getCharacter(character.id).classes[getCharacter(character.id).classes.length] ">/</span>
-                        {{ classItem.className }} {{ classItem.level }}
+                        {{ classItem.classId }} {{ classItem.level }}
                       </li>
                     </ul>
                   </div>

@@ -224,6 +224,12 @@ export class NewCharacterComponent implements OnInit {
     this.selectedRace = selectedRace;
   }
 
+  ageChanged(): void {
+    if (this.selectedRace !== undefined) {
+      // TODO: Get race age categories and set this.ageCategory text
+    }
+  }
+
   playerHasSelectedRaceChangedHandler(playerHasSelectedRace: boolean) {
     this.playerHasSelectedRace = playerHasSelectedRace;
   }
@@ -235,6 +241,7 @@ export class NewCharacterComponent implements OnInit {
 
   selectCharacterClass() {
     if (this.readyToPickClass) {
+      this.characterService.newCharacter();
       this.characterService.tempCharacter.owner = this.authService.getCurrentUser();
       this.characterService.tempCharacter.playerName = this.playerName;
       this.characterService.tempCharacter.characterName = this.characterName;
