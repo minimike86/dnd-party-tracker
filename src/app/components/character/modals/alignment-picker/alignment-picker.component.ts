@@ -10,15 +10,22 @@ import { CharacterService } from '../../../../services/firebase/character/charac
 })
 export class AlignmentPickerComponent implements OnInit {
 
+  public alignmentDescription: string;
+
   constructor(public characterService: CharacterService,
               public activeModal: NgbActiveModal) { }
 
   ngOnInit() {
+    this.alignmentDescription = '';
   }
 
   selectedAlignment(alignment: string): void {
     this.characterService.tempCharacter.alignment = alignment;
     this.activeModal.close();
+  }
+
+  setAlignmentDescription(description: string): void {
+    this.alignmentDescription = description;
   }
 
 }

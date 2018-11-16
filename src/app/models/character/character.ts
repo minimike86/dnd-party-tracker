@@ -17,7 +17,7 @@ export interface Character {
   // Description
   characterName: string;
   playerName: string;
-  classes: Array<{className: string, level: number}>;
+  classes: Array<{classId: string, level: number}>;
   ecl?: number;
   raceId: string;
   size: Size;

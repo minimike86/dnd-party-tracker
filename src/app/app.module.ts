@@ -40,6 +40,7 @@ import {
 import { NewCharacterClassComponent } from './components/character/new-character-class/new-character-class.component';
 import { LoginComponent } from './components/login/login.component';
 import { AlignmentPickerComponent } from './components/character/modals/alignment-picker/alignment-picker.component';
+import { ReligionPickerComponent } from './components/character/modals/religion-picker/religion-picker.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,8 @@ import { AlignmentPickerComponent } from './components/character/modals/alignmen
     ConfirmRemoveCharacterFromPartyComponent,
     NewCharacterClassComponent,
     LoginComponent,
-    AlignmentPickerComponent
+    AlignmentPickerComponent,
+    ReligionPickerComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebase, 'dnd-party-tracker'),
@@ -80,6 +82,7 @@ import { AlignmentPickerComponent } from './components/character/modals/alignmen
   entryComponents: [
     AddPartyComponent,
     AlignmentPickerComponent,
+    ReligionPickerComponent,
     ConfirmDeletePartyComponent,
     CharacterJoinPartyComponent,
     ConfirmRemoveCharacterFromPartyComponent
