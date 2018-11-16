@@ -12,6 +12,7 @@ export interface CharacterClass {
   armorProficiency: [string];
   weaponProficiency: [string];
   classSkills?: [string];
+  religionRequired: boolean;
   skillPointsFirstLevel: number;
   skillPointsEachLevel: number;
 
