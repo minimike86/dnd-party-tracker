@@ -93,12 +93,12 @@ export class NewCharacterClassComponent implements OnInit {
 
   openSelectAlignmentModal(): void {
     const modalRef = this.modalService.open(AlignmentPickerComponent, { size: 'lg' });
-    modalRef.componentInstance.characterClass = this.character.classes[0].classId;
+    modalRef.componentInstance.characterClass = this.character.classes !== null ? this.character.classes[0].classId : '';
   }
 
   openSelectReligionModal(): void {
     const modalRef = this.modalService.open(ReligionPickerComponent, { size: 'lg' });
-    modalRef.componentInstance.characterClass = this.character.classes[0].classId;
+    modalRef.componentInstance.characterClass = this.character.classes !== null ? this.character.classes[0].classId : '';
   }
 
   heightInchesChanged(): void {

@@ -12,21 +12,27 @@
   <div class="container" style="font-family: 'Patua One', cursive;">
     <div class="row pb-3">
       <div class="col-4">
-        <button class="btn btn-lg btn-outline-success btn-block"
+        <button class="btn btn-lg btn-block"
+                [disabled]="alignmentWhitelist !== undefined && alignmentWhitelist !== null && !alignmentWhitelist.includes('LG')"
+                [ngClass]="alignmentWhitelist !== undefined && alignmentWhitelist !== null && !alignmentWhitelist.includes('LG') ? 'btn-light' : 'btn-outline-success'"
                 (click)="selectedAlignment('Lawful Good')"
                 (mouseenter)="setAlignmentDescription('Lawful good is the best alignment you can be because it combines honor and compassion.')">
           Lawful Good
         </button>
       </div>
       <div class="col-4">
-        <button class="btn btn-lg btn-outline-success btn-block"
+        <button class="btn btn-lg btn-block"
+                [disabled]="alignmentWhitelist !== undefined && alignmentWhitelist !== null && !alignmentWhitelist.includes('NG')"
+                [ngClass]="alignmentWhitelist !== undefined && alignmentWhitelist !== null && !alignmentWhitelist.includes('NG') ? 'btn-light' : 'btn-outline-success'"
                 (click)="selectedAlignment('Neutral Good')"
                 (mouseenter)="setAlignmentDescription('Neutral good is the best alignment you can be because it means doing what is good without bias for or against order.')">
           Neutral Good
         </button>
       </div>
       <div class="col-4">
-        <button class="btn btn-lg btn-outline-success btn-block"
+        <button class="btn btn-lg btn-block"
+                [disabled]="alignmentWhitelist !== undefined && alignmentWhitelist !== null && !alignmentWhitelist.includes('CG')"
+                [ngClass]="alignmentWhitelist !== undefined && alignmentWhitelist !== null && !alignmentWhitelist.includes('CG') ? 'btn-light' : 'btn-outline-success'"
                 (click)="selectedAlignment('Chaotic Good')"
                 (mouseenter)="setAlignmentDescription('Chaotic good is the best alignment you can be because it combines a good heart with a free spirit.')">
           Chaotic Good
@@ -35,21 +41,27 @@
     </div>
     <div class="row pb-3">
       <div class="col-4">
-        <button class="btn btn-lg btn-outline-info btn-block"
+        <button class="btn btn-lg btn-block"
+                [disabled]="alignmentWhitelist !== undefined && alignmentWhitelist !== null && !alignmentWhitelist.includes('LN')"
+                [ngClass]="alignmentWhitelist !== undefined && alignmentWhitelist !== null && !alignmentWhitelist.includes('LN') ? 'btn-light' : 'btn-outline-info'"
                 (click)="selectedAlignment('Lawful Neutral')"
                 (mouseenter)="setAlignmentDescription('Lawful neutral is the best alignment you can be because it means you are reliable and honorable without being a zealot.')">
           Lawful Neutral
         </button>
       </div>
       <div class="col-4">
-        <button class="btn btn-lg btn-outline-info btn-block"
+        <button class="btn btn-lg btn-block"
+                [disabled]="alignmentWhitelist !== undefined && alignmentWhitelist !== null && !alignmentWhitelist.includes('N')"
+                [ngClass]="alignmentWhitelist !== undefined && alignmentWhitelist !== null && !alignmentWhitelist.includes('N') ? 'btn-light' : 'btn-outline-info'"
                 (click)="selectedAlignment('Neutral')"
                 (mouseenter)="setAlignmentDescription('Neutral is the best alignment you can be because it means you act naturally, without prejudice or compulsion.')">
           Neutral
         </button>
       </div>
       <div class="col-4">
-        <button class="btn btn-lg btn-outline-info btn-block"
+        <button class="btn btn-lg btn-block"
+                [disabled]="alignmentWhitelist !== undefined && alignmentWhitelist !== null && !alignmentWhitelist.includes('CN')"
+                [ngClass]="alignmentWhitelist !== undefined && alignmentWhitelist !== null && !alignmentWhitelist.includes('CN') ? 'btn-light' : 'btn-outline-info'"
                 (click)="selectedAlignment('Chaotic Neutral')"
                 (mouseenter)="setAlignmentDescription('Chaotic neutral is the best alignment you can be because it represents true freedom from both society’s restrictions and a dogooder’s zeal.')">
           Chaotic Neutral
@@ -58,21 +70,27 @@
     </div>
     <div class="row">
       <div class="col-4">
-        <button class="btn btn-lg btn-outline-danger btn-block"
+        <button class="btn btn-lg btn-block"
+                [disabled]="alignmentWhitelist !== undefined && alignmentWhitelist !== null && !alignmentWhitelist.includes('LE')"
+                [ngClass]="alignmentWhitelist !== undefined && alignmentWhitelist !== null && !alignmentWhitelist.includes('LE') ? 'btn-light' : 'btn-outline-danger'"
                 (click)="selectedAlignment('Lawful Evil')"
                 (mouseenter)="setAlignmentDescription('Lawful evil is sometimes called &quot;diabolical&quot;, because devils are the epitome of lawful evil. Lawful evil is the most dangerous alignment because it represents methodical, intentional, and frequently successful evil.')">
           Lawful Evil
         </button>
       </div>
       <div class="col-4">
-        <button class="btn btn-lg btn-outline-danger btn-block"
+        <button class="btn btn-lg btn-block"
+                [disabled]="alignmentWhitelist !== undefined && alignmentWhitelist !== null && !alignmentWhitelist.includes('NE')"
+                [ngClass]="alignmentWhitelist !== undefined && alignmentWhitelist !== null && !alignmentWhitelist.includes('NE') ? 'btn-light' : 'btn-outline-danger'"
                 (click)="selectedAlignment('Neutral Evil')"
                 (mouseenter)="setAlignmentDescription('Neutral evil is the most dangerous alignment because it represents pure evil without honor and without variation.')">
           Neutral Evil
         </button>
       </div>
       <div class="col-4">
-        <button class="btn btn-lg btn-outline-danger btn-block"
+        <button class="btn btn-lg btn-block"
+                [disabled]="alignmentWhitelist !== undefined && alignmentWhitelist !== null && !alignmentWhitelist.includes('CE')"
+                [ngClass]="alignmentWhitelist !== undefined && alignmentWhitelist !== null && !alignmentWhitelist.includes('CE') ? 'btn-light' : 'btn-outline-danger'"
                 (click)="selectedAlignment('Chaotic Evil')"
                 (mouseenter)="setAlignmentDescription('Chaotic evil is sometimes called &quot;demonic&quot; because demons are the epitome of chaotic evil. Chaotic evil is the most dangerous alignment because it represents the destruction not only of beauty and life but also of the order on which beauty and life depend.')">
           Chaotic Evil

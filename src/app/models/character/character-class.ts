@@ -7,5 +7,12 @@ export interface CharacterClassId extends CharacterClass {
 export interface CharacterClass {
 
   name: string;
+  hitDie: number;
+  alignmentWhitelist: [string];
+  armorProficiency: [string];
+  weaponProficiency: [string];
+  classSkills?: [string];
+  skillPointsFirstLevel: number;
+  skillPointsEachLevel: number;
 
 }
