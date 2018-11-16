@@ -12,7 +12,7 @@
       <div class="flex-fill">
         <label for="typeahead-focus">Class:</label>
         <input
-          class="form-control"
+          class="form-control input"
           type="text"
           id="typeahead-focus"
           placeholder="What is your character class?"
@@ -40,18 +40,23 @@
           <button class="d-inline-flex align-items-center btn btn-outline-info btn-sm ml-1 py-0"
                   title="Select your characters alignment."
                   (click)="openSelectAlignmentModal()">
-            <i class="fas fa-undo"></i><span class="small ml-1">Change Alignment</span>
+            <i class="fas fa-undo"></i><span class="small ml-1">Change</span>
           </button>
           <div class="d-flex">
             <div class="flex-fill">
-              <input type="text" class="form-control" id="alignment" [value]="characterService.tempCharacter.alignment" readonly required>
+              <input type="text" class="form-control" id="alignment"
+                     [value]="characterService.tempCharacter.alignment"
+                     readonly required>
             </div>
           </div>
         </div>
         <ng-template #showSelectAlignmentBtn>
           <div class="form-group">
             <label for="alignment">Alignment:</label>
-            <button class="btn btn-block" (click)="openSelectAlignmentModal()">Select Alignment</button>
+            <button class="btn btn-block" [ngClass]=" characterService.tempCharacter.alignment === null ? 'btn-primary' : '' "
+                    (click)="openSelectAlignmentModal()">
+              Select Alignment <i class="fas fa-balance-scale"></i>
+            </button>
           </div>
         </ng-template>
       </div>
@@ -59,7 +64,7 @@
 
     <div class="d-inline-flex w-25 ml-2">
       <div class="flex-fill">
-        <div class="form-group" *ngIf="characterService.tempCharacter.religion !== null; else showSelectReligionBtn">
+        <div class="form-group" *ngIf="characterService.tempCharacter.religion.length !== 0; else showSelectReligionBtn">
           <label for="alignment">Religion:</label>
           <button class="d-inline-flex align-items-center btn btn-outline-info btn-sm ml-1 py-0"
                   title="Select your characters Religion or Patron Deity."
@@ -68,14 +73,21 @@
           </button>
           <div class="d-flex">
             <div class="flex-fill">
-              <input type="text" class="form-control" id="religion" [value]="characterService.tempCharacter.religion" readonly required>
+              <input type="text" class="form-control" id="religion"
+                     [value]="characterService.tempCharacter.religion"
+                     readonly required>
             </div>
           </div>
         </div>
         <ng-template #showSelectReligionBtn>
           <div class="form-group">
             <label for="alignment">Religion:</label>
-            <button class="btn btn-block" (click)="openSelectReligionModal()">Select Religion</button>
+            <button class="btn btn-block" [ngClass]=" characterService.tempCharacter.alignment === null ? 'btn-secondary'
+                                                      : characterService.tempCharacter.religion.length === 0 ? 'btn-primary'
+                                                      : '' "
+                    (click)="openSelectReligionModal()">
+              Select Religion <i class="fas fa-church"></i>
+            </button>
           </div>
         </ng-template>
       </div>

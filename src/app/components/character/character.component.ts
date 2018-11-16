@@ -27,7 +27,7 @@ export class CharacterComponent implements OnInit {
     gender: Gender.MALE,
     age: 50,
     alignment: Alignment.CN,
-    religion: 'Pelor',
+    religion: ['BOCCOB'],
     height: [5, 10], // feet, inches
     weight: 220, // lbs.
     baseAbilityScores: new AbilityScore(8, 16, 12, 18, 6, 17),
