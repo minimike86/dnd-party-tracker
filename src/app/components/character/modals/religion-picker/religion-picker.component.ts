@@ -73,6 +73,10 @@ export class ReligionPickerComponent implements OnInit {
           // Deities By Class
           (rel.worshipedBy.classes !== undefined && this.characterService.tempCharacter.classes.length >= 1
             && rel.worshipedBy.classes.includes(this.characterService.tempCharacter.classes[0].classId))
+          ||
+          // Deities By Alignment
+          (this.characterService.tempCharacter.alignment !== null
+            && rel.alignment.includes(this.characterService.tempCharacter.alignment))
         );
       }
     }

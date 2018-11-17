@@ -28,16 +28,14 @@
           <div class="card-body">
             <div class="d-flex">
               <div class="flex-column">
-                <img class="d-inline img-thumbnail border-secondary" style="min-width: 100px; max-height: 100px;" src="{{ religion.image }}">
+                <img class="d-inline img-thumbnail border-secondary" style="min-width: 100px; max-width: 100px;" src="{{ religion.image }}">
               </div>
               <div class="w-100 ml-3">
                 <div class="flex-row mb-2">
-                  <div class="d-flex">
-                    <div class="w-25">
+                  <div class="">
+                    <div class="">
                       <h3 class="m-0">{{ religion.name }}</h3>
-                    </div>
-                    <div class="w-75">
-                      <span class="align-self-center small text-muted ml-3">
+                      <span class="align-self-center text-black-50" style="font-size: 0.7em;">
                         &quot;{{ religion.titles.sort().toString().split(',').join(', ') }}&quot;
                       </span>
                     </div>

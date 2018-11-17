@@ -3,6 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuardService as AuthGuard } from './services/firebase/auth/auth-guard.service';
 
 // Components
+import { AdminComponent } from './components/admin/admin.component';
+import { AddDeityComponent } from './components/admin/add-deity/add-deity.component';
 import { LoginComponent } from './components/login/login.component';
 import { CharacterComponent } from './components/character/character.component';
 import { PartyComponent } from './components/party/party.component';
@@ -12,10 +14,12 @@ import { NewCharacterComponent } from './components/character/new-character/new-
 import { NewCharacterClassComponent } from './components/character/new-character-class/new-character-class.component';
 
 const appRoutes: Routes = [
-  { path: '',                     component: HomeComponent, },
+  { path: '',                     component: HomeComponent },
   { path: '',                     redirectTo: '/', pathMatch: 'full', },
-  { path: 'login',                component: LoginComponent, },
-  { path: 'parties',              component: PartyComponent, },
+  { path: 'admin',                component: AdminComponent,                  canActivate: [AuthGuard] },
+  { path: 'admin/add-deity',      component: AddDeityComponent,               canActivate: [AuthGuard] },
+  { path: 'login',                component: LoginComponent },
+  { path: 'parties',              component: PartyComponent },
   { path: 'parties/:id',          component: PartyComponent },
   { path: 'parties/owned/',       component: PartyComponent,                  canActivate: [AuthGuard] },
   { path: 'character',            component: CharacterComponent },

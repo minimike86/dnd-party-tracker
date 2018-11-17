@@ -88,6 +88,7 @@ export class NewCharacterClassComponent implements OnInit {
       classId: this.selectedClass.id,
       level: 1
     });
+    this.characterService.tempCharacter.alignment = null;
     this.playerHasSelectedClass = true;
   }
 
