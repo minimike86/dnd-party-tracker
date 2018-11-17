@@ -123,8 +123,7 @@ export class NewCharacterClassComponent implements OnInit {
   }
 
   generateRandomHeight(): void {
-    this.heightFeet = 0;
-    this.heightInches = 0;
+    //
   }
 
   generateRandomWeight(): void {
