@@ -9,6 +9,8 @@ import { Character } from '../../../models/character/character';
 import { AlignmentPickerComponent } from '../modals/alignment-picker/alignment-picker.component';
 import { AbilityScore } from '../../../models/character/ability-scores';
 import { ReligionPickerComponent } from '../modals/religion-picker/religion-picker.component';
+import { ReligionId } from '../../../models/character/religion';
+import {ReligionService} from '../../../services/firebase/religion/religion.service';
 
 
 @Component({
@@ -19,7 +21,16 @@ import { ReligionPickerComponent } from '../modals/religion-picker/religion-pick
 export class NewCharacterClassComponent implements OnInit {
 
   public character: Character;
+  public religions: ReligionId[];
+
+  public classes: any;
+  public typeAheadClass: any;
+  public selectedClass: CharacterClassId;
+  public playerHasSelectedClass: boolean;
+
   public alignment: string;
+  public hitDie: number;
+  public hitPoints: number;
 
   public heightFeet: number;
   public heightInches: number;
@@ -29,18 +40,17 @@ export class NewCharacterClassComponent implements OnInit {
   public age: number;
   public ageCategory: string;
 
-  public classes: any;
-  public typeAheadClass: any;
-  public selectedClass: CharacterClassId;
-  public playerHasSelectedClass: boolean;
-
   @ViewChild('instance') instance: NgbTypeahead;
   focus$ = new Subject<string>();
   click$ = new Subject<string>();
 
   constructor(public characterService: CharacterService,
+              public religionService: ReligionService,
               private classService: CharacterClassService,
               private modalService: NgbModal) {
+    religionService.getReligions().subscribe(data => {
+      this.religions = data;
+    });
     this.classes = classService.getClasses().subscribe(
       value => {
         // Set races from firebase db
@@ -59,6 +69,9 @@ export class NewCharacterClassComponent implements OnInit {
   ngOnInit() {
     this.character = this.characterService.tempCharacter;
     this.classes = [];
+    this.characterService.tempCharacter.ecl = 1; // TODO: Add Racial Level Adjustment
+    this.characterService.tempCharacter.hitPoints = 0;
+    this.characterService.tempCharacter.hitDie = [{ hitDie: 0, dieValue: 0 }];
     // TODO: Make default height and weight be the races random starting value
     this.heightFeet = 0;
     this.heightInches = 0;
@@ -88,17 +101,33 @@ export class NewCharacterClassComponent implements OnInit {
       classId: this.selectedClass.id,
       level: 1
     });
+    this.characterService.tempCharacter.alignment = null;
     this.playerHasSelectedClass = true;
   }
 
   openSelectAlignmentModal(): void {
     const modalRef = this.modalService.open(AlignmentPickerComponent, { size: 'lg' });
-    modalRef.componentInstance.characterClass = this.character.classes !== null ? this.character.classes[0].classId : '';
+    modalRef.componentInstance.characterClass = this.character.classes.length >= 1 ? this.character.classes[0].classId : '';
   }
 
   openSelectReligionModal(): void {
     const modalRef = this.modalService.open(ReligionPickerComponent, { size: 'lg' });
-    modalRef.componentInstance.characterClass = this.character.classes !== null ? this.character.classes[0].classId : '';
+    modalRef.componentInstance.characterClass = this.character.classes.length >= 1 ? this.character.classes[0].classId : '';
+  }
+
+  getReligionText(): string {
+    let religionText = '';
+    for (let i = 0; i < this.characterService.tempCharacter.religion.length; i++) {
+      switch (i) {
+        case 0: religionText += this.religions
+          .find( rel => rel.id === this.characterService.tempCharacter.religion[i] ).name; break;
+        case this.characterService.tempCharacter.religion.length - 1: religionText += ', and ' + this.religions
+          .find( rel => rel.id === this.characterService.tempCharacter.religion[i] ).name; break;
+        default: religionText += ', ' + this.religions
+          .find( rel => rel.id === this.characterService.tempCharacter.religion[i] ).name; break;
+      }
+    }
+    return religionText;
   }
 
   heightInchesChanged(): void {
@@ -123,8 +152,7 @@ export class NewCharacterClassComponent implements OnInit {
   }
 
   generateRandomHeight(): void {
-    this.heightFeet = 0;
-    this.heightInches = 0;
+    //
   }
 
   generateRandomWeight(): void {

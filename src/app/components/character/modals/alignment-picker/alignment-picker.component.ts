@@ -12,18 +12,20 @@ import { CharacterClass, CharacterClassId } from '../../../../models/character/c
 })
 export class AlignmentPickerComponent implements OnInit {
 
+  public alignmentWhitelist: [string];
   public alignmentDescription: string;
   public classList: CharacterClassId[];
-  public alignmentWhitelist: [string];
 
   constructor(public characterClassService: CharacterClassService,
               public characterService: CharacterService,
               public activeModal: NgbActiveModal) {
     characterClassService.getClasses().subscribe(data => {
       this.classList = data;
-      this.alignmentWhitelist = this.classList !== null && this.characterService.tempCharacter.classes !== null
-        ? this.classList.find(classItem => classItem.id === this.characterService.tempCharacter.classes[0].classId).alignmentWhitelist
-        : [''];
+      if (this.characterService.tempCharacter.classes.length > 0) {
+        this.alignmentWhitelist = this.classList !== null && this.characterService.tempCharacter.classes !== null
+          ? this.classList.find(classItem => classItem.id === this.characterService.tempCharacter.classes[0].classId).alignmentWhitelist
+          : [''];
+      }
     });
   }
 

@@ -30,7 +30,7 @@ export class CharacterService {
       owner: null,
       characterName: null,
       playerName: null,
-      classes: null,
+      classes: [],
       ecl: null,
       raceId: null,
       size: null,
@@ -38,13 +38,13 @@ export class CharacterService {
       gender: null,
       age: null,
       alignment: null,
-      religion: null,
-      height: null, // 5' 10"
+      religion: [],
+      height: [null, null], // 5' 10"
       weight: null, // 220 lbs.
       looks: null,
       baseAbilityScores: new AbilityScore(0, 0, 0, 0,  0, 0),
       hitPoints: null,
-      hitDie: null,
+      hitDie: [],
       baseAttackBonus: null,
       weaponsId: null,
       inventoryId: null,

@@ -1,3 +1,112 @@
-<p>
-  religion-picker works!
-</p>
+<div class="modal-header bg-light p-2">
+  <div class="modal-title">
+    <h4 class="d-block w-100 m-0" style="font-family: 'Fredericka the Great', cursive;">Choose Religion</h4>
+    <div class="w-100 m-0">
+      <div class="d-inline-flex">
+        <div class="small">
+          Your character may or may not worship a patron deity. However if you want to have one, consider first the deities who are most appropriate to the character’s race, class, and alignment:
+        </div>
+        <div class="align-self-center custom-control custom-checkbox">
+          <input type="checkbox" class="custom-control-input" id="checkAllReligions" [(ngModel)]="checkAllReligions">
+          <label class="custom-control-label small" for="checkAllReligions">Show&nbsp;All</label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button type="button btn-sm" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body" style="max-height: 75vh; overflow-y: auto;">
+
+  <div class="container" style="font-family: 'Patua One', cursive;">
+    <div class="row pb-3">
+
+      <div>
+
+        <div class="card w-100 mb-2" *ngFor="let religion of getFilteredReligions()">
+          <div class="card-body">
+            <div class="d-flex">
+              <div class="flex-column">
+                <img class="d-inline img-thumbnail border-secondary" style="min-width: 100px; max-width: 100px;" src="{{ religion.image }}">
+              </div>
+              <div class="w-100 ml-3">
+                <div class="flex-row mb-2">
+                  <div class="">
+                    <div class="">
+                      <h3 class="m-0">{{ religion.name }}</h3>
+                      <span class="align-self-center text-black-50" style="font-size: 0.7em;">
+                        &quot;{{ religion.titles.sort().toString().split(',').join(', ') }}&quot;
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="flex-row mb-2">
+                  <div class="d-flex">
+                    <div class="w-25">
+                      <span class="d-block small text-muted">Dominion:</span>
+                      <span>
+                        {{ religion.deityOf.toString().split(',').join(', ') }}
+                      </span>
+                    </div>
+                    <div class="w-25 pl-3">
+                      <span class="d-block small text-muted">Alignment:</span>
+                      <span class="badge font-weight-normal" [ngClass]="religion.alignment.includes('Good') ? 'badge-success' : religion.alignment.includes('Evil') ? 'badge-danger' : 'badge-info'">
+                        {{ religion.alignment }}
+                      </span>
+                    </div>
+                    <div class="w-25 pl-3">
+                      <span class="d-block small text-muted">Favored Weapon:</span>
+                      <span>
+                        {{ religion.favoredWeapon }}
+                      </span>
+                    </div>
+                    <div class="w-25 pl-3">
+                      <span class="d-block small text-muted">Domains:</span>
+                      <span>
+                        {{ religion.domains.toString().split(',').join(', ') }}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="flex-row">
+                  <div class="d-flex">
+                    <div class="w-50">
+                      <span class="d-block small text-muted">Worshippers (Race):</span>
+                      <span>
+                        {{ religion.worshipedBy.races !== undefined ? getWorshipedByRaceText(religion.worshipedBy.races) : '-' }}
+                      </span>
+                    </div>
+                    <div class="w-50 pl-3">
+                      <span class="d-block small text-muted">Worshippers (Class):</span>
+                      <span>
+                        {{ religion.worshipedBy.classes !== undefined ? getWorshipedByClassText(religion.worshipedBy.classes) : '-' }}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer p-2">
+            <div class="d-flex flex-row-reverse">
+              <button class="btn btn-sm btn-primary" (click)="selectedReligion(religion.id)">
+                Accept &apos;{{ religion.name }}&apos; as your Lord and Saviour <i class="fas fa-pray"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div> <!-- Scrollspy Close -->
+
+    </div>
+  </div>
+
+</div>
+<div class="modal-footer bg-light p-2">
+  <button type="button" ngbAutofocus class="btn btn-sm btn-outline-danger" (click)="removeReligions()"
+          title="Your character does not does worship any patron deity, all previously selected relgions will be removed.">
+    <i class="fas fa-ban"></i> Irreligion / Nontheism
+  </button>
+  <button type="button" ngbAutofocus class="btn btn-sm btn-outline-dark" (click)="activeModal.close('Close click')">Cancel</button>
+</div>

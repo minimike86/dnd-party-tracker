@@ -7,15 +7,19 @@ export interface ReligionId extends Religion {
 export interface Religion {
 
   name: string;
-  deityOf: [string];
-  titles?: [string];
-  image?: [string];
-  domains: [string];
+  deityOf: string[]; // Portfolio
+  titles?: string[];
+  image?: string;
+  domains: string[];
   alignment: string;
+  clericAlignments: string[];
+  homePlane?: string;
+  holySymbol?: string;
+  holyNumber?: number;
   favoredWeapon: string;
   worshipedBy: {
-    classes?:  [string],
-    races?: [string]
+    classes?: string[],
+    races?: string[]
   };
 
 }

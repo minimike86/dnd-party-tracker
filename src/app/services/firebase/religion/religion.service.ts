@@ -10,7 +10,7 @@ import { Religion, ReligionId } from '../../../models/character/religion';
 export class ReligionService {
 
   private religionCollection: AngularFirestoreCollection<Religion>;
-  private religions: ReligionId[];
+  private religions: Array<ReligionId>;
 
   constructor(public db: AngularFirestore) {
     this.religionCollection = db.collection<Religion>('/religions');
@@ -27,6 +27,10 @@ export class ReligionService {
         return { id, ...data };
       }))
     );
+  }
+
+  addReligion(religion: Religion): void {
+    this.religionCollection.doc(religion.name.toUpperCase().replace(' ', '')).set(religion);
   }
 
 }

@@ -19,6 +19,8 @@ import { environment } from '../environments/environment';
 // Components
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { AdminComponent } from './components/admin/admin.component';
+import { AddDeityComponent } from './components/admin/add-deity/add-deity.component';
 import { CharacterComponent } from './components/character/character.component';
 import { PartyComponent } from './components/party/party.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
@@ -49,6 +51,8 @@ import { ReligionPickerComponent } from './components/character/modals/religion-
     FooterComponent,
     PageNotFoundComponent,
     HomeComponent,
+    AdminComponent,
+    AddDeityComponent,
     CharacterComponent,
     NewCharacterComponent,
     PartyComponent,
