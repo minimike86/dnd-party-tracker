@@ -125,6 +125,7 @@ export class ReligionPickerComponent implements OnInit {
   selectedReligion(religionId: string): void {
     if (!this.characterService.tempCharacter.religion.includes(religionId)) {
       this.characterService.tempCharacter.religion.push(religionId);
+      this.characterService.tempCharacter.religion.sort();
     }
     this.activeModal.close();
   }

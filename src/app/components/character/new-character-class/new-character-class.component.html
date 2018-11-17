@@ -8,7 +8,7 @@
 
   <div class="d-flex">
 
-    <div class="d-inline-flex w-50 mb-3">
+    <div class="d-inline-flex w-50 mb-3 pr-1">
       <div class="flex-fill">
         <label for="typeahead-focus">Class:</label>
         <input
@@ -33,69 +33,73 @@
       </div>
     </div>
 
-    <div class="d-inline-flex w-25 ml-2">
-      <div class="flex-fill">
-        <div class="form-group" *ngIf="characterService.tempCharacter.alignment !== null; else showSelectAlignmentBtn">
-          <label for="alignment">Alignment:</label>
-          <button class="d-inline-flex align-items-center btn btn-outline-info btn-sm ml-1 py-0"
-                  title="Select your characters alignment."
-                  (click)="openSelectAlignmentModal()">
-            <i class="fas fa-undo"></i><span class="small ml-1">Change</span>
-          </button>
-          <div class="d-flex">
-            <div class="flex-fill">
-              <input type="text" class="form-control" id="alignment"
-                     [value]="characterService.tempCharacter.alignment"
-                     readonly required>
-            </div>
-          </div>
-        </div>
-        <ng-template #showSelectAlignmentBtn>
-          <div class="form-group">
-            <label for="alignment">Alignment:</label>
-            <button class="btn btn-block" [ngClass]=" characterService.tempCharacter.alignment === null ? 'btn-primary' : '' "
-                    (click)="openSelectAlignmentModal()">
-              Select Alignment <i class="fas fa-balance-scale"></i>
-            </button>
-          </div>
-        </ng-template>
-      </div>
-    </div>
+    <div class="w-100 pl-1">
 
-    <div class="d-inline-flex w-25 ml-2">
-      <div class="flex-fill">
-        <div class="form-group" *ngIf="characterService.tempCharacter.religion.length !== 0; else showSelectReligionBtn">
-          <label for="alignment">Religion:</label>
-          <button class="d-inline-flex align-items-center btn btn-outline-info btn-sm ml-1 py-0"
-                  title="Select your characters Religion or Patron Deity."
-                  (click)="openSelectReligionModal()">
-            <i class="fas fa-undo"></i><span class="small ml-1">Change Religion</span>
-          </button>
-          <div class="d-flex">
-            <div class="flex-fill">
-              <input type="text" class="form-control" id="religion"
-                     [value]="characterService.tempCharacter.religion"
-                     readonly required>
+      <div class="d-inline-flex w-25 pr-1">
+        <div class="flex-fill">
+          <div class="form-group" *ngIf="characterService.tempCharacter.alignment !== null; else showSelectAlignmentBtn">
+            <label for="alignment">Alignment:</label>
+            <button class="d-inline-flex align-items-center btn btn-outline-info btn-sm ml-1 py-0"
+                    title="Select your characters alignment."
+                    (click)="openSelectAlignmentModal()">
+              <i class="fas fa-undo"></i><span class="small ml-1">Change</span>
+            </button>
+            <div class="d-flex">
+              <div class="flex-fill">
+                <input type="text" class="form-control" id="alignment"
+                       [value]="characterService.tempCharacter.alignment"
+                       readonly required>
+              </div>
             </div>
           </div>
+          <ng-template #showSelectAlignmentBtn>
+            <div class="form-group">
+              <label for="alignment">Alignment:</label>
+              <button class="btn btn-block" [ngClass]=" characterService.tempCharacter.alignment === null ? 'btn-primary' : '' "
+                      (click)="openSelectAlignmentModal()">
+                Select Alignment <i class="fas fa-balance-scale"></i>
+              </button>
+            </div>
+          </ng-template>
         </div>
-        <ng-template #showSelectReligionBtn>
-          <div class="form-group">
-            <label for="alignment">Religion:</label>
-            <button class="btn btn-block" [ngClass]=" characterService.tempCharacter.alignment === null ? 'btn-secondary'
-                                                      : characterService.tempCharacter.religion.length === 0 ? 'btn-primary'
-                                                      : '' "
-                    (click)="openSelectReligionModal()">
-              Select Religion <i class="fas fa-church"></i>
-            </button>
-          </div>
-        </ng-template>
       </div>
+
+      <div class="d-inline-flex w-75 pl-1">
+        <div class="flex-fill">
+          <div class="form-group" *ngIf="characterService.tempCharacter.religion.length !== 0; else showSelectReligionBtn">
+            <label for="alignment">Religion:</label>
+            <button class="d-inline-flex align-items-center btn btn-outline-info btn-sm ml-1 py-0"
+                    title="Select your characters Religion or Patron Deity."
+                    (click)="openSelectReligionModal()">
+              <i class="fas fa-undo"></i><span class="small ml-1">Change Religion</span>
+            </button>
+            <div class="d-flex">
+              <div class="flex-fill">
+                <input type="text" class="form-control" id="religion"
+                       [value]="getReligionText()"
+                       readonly required>
+              </div>
+            </div>
+          </div>
+          <ng-template #showSelectReligionBtn>
+            <div class="form-group">
+              <label for="alignment">Religion:</label>
+              <button class="btn btn-block" [ngClass]=" characterService.tempCharacter.alignment === null ? 'btn-secondary'
+                                                        : characterService.tempCharacter.religion.length === 0 ? 'btn-primary'
+                                                        : '' "
+                      (click)="openSelectReligionModal()">
+                Select Religion(s) <i class="fas fa-church"></i>
+              </button>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+
     </div>
 
   </div>
 
-  <div class="d-flex">
+  <div class="d-flex d-block">
 
     <div class="d-inline-flex w-25">
       <div class="mr-2">
@@ -107,15 +111,23 @@
             <i class="fas fa-random"></i><span class="small ml-1">Random</span>
           </button>
           <div class="d-flex">
-            <div class="d-inline-flex w-50">
+            <div class="d-inline-flex w-50 mr-1">
+              <div class="input-group">
               <input type="number" class="form-control text-right" id="heightFeet" min="0"
                      [(ngModel)]="heightFeet" title="Feet" required>
-              <span class="d-block mx-2">&apos;</span>
+                <div class="input-group-append">
+                  <span class="input-group-text">&apos;</span>
+                </div>
+              </div>
             </div>
-            <div class="d-inline-flex w-50">
-              <input type="number" class="form-control text-right" id="heightInches" [min]="heightInchesMin" max="12"
-                     [(ngModel)]="heightInches" (ngModelChange)="heightInchesChanged()" title="Inches" required>
-              <span class="d-block ml-2">&quot;</span>
+            <div class="d-inline-flex w-50 ml-1">
+              <div class="input-group">
+                <input type="number" class="form-control text-right" id="heightInches" [min]="heightInchesMin" max="12"
+                       [(ngModel)]="heightInches" (ngModelChange)="heightInchesChanged()" title="Inches" required>
+                <div class="input-group-append">
+                  <span class="input-group-text">&quot;</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -131,10 +143,14 @@
                   (click)="generateRandomWeight()">
             <i class="fas fa-random"></i><span class="small ml-1">Random</span>
           </button>
-          <div class="d-inline-flex w-75">
-            <input type="number" class="form-control text-right" id="weight" min="0" max="999999"
-                   [(ngModel)]="weight" title="Pounds" required>
-            <span class="d-block align-self-center ml-1">lbs.</span>
+          <div class="d-inline-flex w-100">
+            <div class="input-group">
+              <input type="number" class="form-control text-right" id="weight" min="0" max="999999"
+                     [(ngModel)]="weight" title="Pounds" required>
+              <div class="input-group-append">
+                <span class="input-group-text">lbs.</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -149,13 +165,41 @@
                   (click)="generateRandomAge(4, 6)">
             <i class="fas fa-random"></i><span class="small ml-1">Random</span>
           </button>
-          <div class="d-inline-flex w-75">
-            <input type="number" class="form-control text-right" id="age" min="0" max="999999"
-                   [(ngModel)]="age" title="Age" required>
-            <span class="d-block align-self-center ml-1">Years</span>
+          <div class="d-inline-flex w-100">
+            <div class="input-group">
+              <input type="number" class="form-control text-right" id="age" min="0" max="999999"
+                     [(ngModel)]="age" title="Age" required>
+              <div class="input-group-append">
+                <span class="input-group-text">Years</span>
+              </div>
+            </div>
           </div>
         </div>
         <span class="d-block text-warning small ml-1" style="font-family: 'Roboto', sans-serif;">{{ ageCategory }}</span>
+      </div>
+    </div>
+
+    <div class="d-inline-flex w-25">
+      <div class="mr-2 w-50">
+        <div class="form-group">
+          <label class="" for="hitPoints">HP:</label>
+          <div class="">
+            <input type="number" class="form-control text-right bg-white" id="hitPoints" min="0" max="999"
+                   [(ngModel)]="characterService.tempCharacter.hitPoints" title="Hit Points" required disabled>
+          </div>
+        </div>
+      </div>
+      <div class="mr-2 w-50">
+        <div class="">
+          <label class="" for="hitDie">Hit Die:</label>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text">d</span>
+            </div>
+            <input type="number" class="form-control text-center bg-white" id="hitDie" min="4" max="12"
+                   [(ngModel)]="characterService.tempCharacter.hitDie[0].hitDie" title="HitDie" required disabled>
+          </div>
+        </div>
       </div>
     </div>
 

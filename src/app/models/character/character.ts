@@ -36,7 +36,7 @@ export interface Character {
 
   // HP
   hitPoints: number;
-  hitDie?: Array<{hitDie: string, dieValue: number}>;
+  hitDie?: Array<{hitDie: number, dieValue: number}>;
 
   // BAB
   baseAttackBonus: number;
