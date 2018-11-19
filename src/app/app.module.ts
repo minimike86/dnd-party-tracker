@@ -21,6 +21,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { AdminComponent } from './components/admin/admin.component';
 import { AddDeityComponent } from './components/admin/add-deity/add-deity.component';
+import { AddRaceComponent } from './components/admin/add-race/add-race.component';
 import { CharacterComponent } from './components/character/character.component';
 import { PartyComponent } from './components/party/party.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
@@ -53,6 +54,7 @@ import { ReligionPickerComponent } from './components/character/modals/religion-
     HomeComponent,
     AdminComponent,
     AddDeityComponent,
+    AddRaceComponent,
     CharacterComponent,
     NewCharacterComponent,
     PartyComponent,

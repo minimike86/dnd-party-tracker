@@ -30,4 +30,8 @@ export class RaceService {
     );
   }
 
+  addRace(race: Race): void {
+    this.raceCollection.doc(race.name.toUpperCase().replace(' ', '')).set(race);
+  }
+
 }

@@ -4,6 +4,7 @@ import { AuthGuardService as AuthGuard } from './services/firebase/auth/auth-gua
 
 // Components
 import { AdminComponent } from './components/admin/admin.component';
+import { AddRaceComponent } from './components/admin/add-race/add-race.component';
 import { AddDeityComponent } from './components/admin/add-deity/add-deity.component';
 import { LoginComponent } from './components/login/login.component';
 import { CharacterComponent } from './components/character/character.component';
@@ -17,6 +18,7 @@ const appRoutes: Routes = [
   { path: '',                     component: HomeComponent },
   { path: '',                     redirectTo: '/', pathMatch: 'full', },
   { path: 'admin',                component: AdminComponent,                  canActivate: [AuthGuard] },
+  { path: 'admin/add-race',       component: AddRaceComponent,                canActivate: [AuthGuard] },
   { path: 'admin/add-deity',      component: AddDeityComponent,               canActivate: [AuthGuard] },
   { path: 'login',                component: LoginComponent },
   { path: 'parties',              component: PartyComponent },

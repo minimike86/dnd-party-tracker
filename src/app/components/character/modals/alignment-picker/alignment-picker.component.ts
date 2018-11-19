@@ -36,6 +36,7 @@ export class AlignmentPickerComponent implements OnInit {
 
   selectedAlignment(alignment: string): void {
     this.characterService.tempCharacter.alignment = alignment;
+    this.characterService.tempCharacter.religion = [];
     this.activeModal.close();
   }
 
