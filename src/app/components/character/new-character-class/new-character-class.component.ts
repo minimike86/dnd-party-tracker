@@ -7,10 +7,11 @@ import { CharacterClassService } from '../../../services/firebase/character-clas
 import { CharacterClass, CharacterClassId } from '../../../models/character/character-class';
 import { Character } from '../../../models/character/character';
 import { AlignmentPickerComponent } from '../modals/alignment-picker/alignment-picker.component';
-import { AbilityScore } from '../../../models/character/ability-scores';
 import { ReligionPickerComponent } from '../modals/religion-picker/religion-picker.component';
 import { ReligionId } from '../../../models/character/religion';
-import {ReligionService} from '../../../services/firebase/religion/religion.service';
+import { ReligionService } from '../../../services/firebase/religion/religion.service';
+import {generateStartingAge, generateRandomHeight, generateRandomWeight, RaceId, getAgeCategory} from '../../../models/character/race';
+import { RaceService } from '../../../services/firebase/race/race.service';
 
 
 @Component({
@@ -22,6 +23,7 @@ export class NewCharacterClassComponent implements OnInit {
 
   public character: Character;
   public religions: ReligionId[];
+  public races: RaceId[];
 
   public classes: any;
   public typeAheadClass: any;
@@ -32,6 +34,7 @@ export class NewCharacterClassComponent implements OnInit {
   public hitDie: number;
   public hitPoints: number;
 
+  public height: [number, number];
   public heightFeet: number;
   public heightInches: number;
   public heightInchesMin: number;
@@ -46,12 +49,16 @@ export class NewCharacterClassComponent implements OnInit {
 
   constructor(public characterService: CharacterService,
               public religionService: ReligionService,
+              public raceService: RaceService,
               private classService: CharacterClassService,
               private modalService: NgbModal) {
     religionService.getReligions().subscribe(data => {
       this.religions = data;
     });
-    this.classes = classService.getClasses().subscribe(
+    raceService.getRaces().subscribe(data => {
+      this.races = data;
+    });
+    classService.getClasses().subscribe(
       value => {
         // Set races from firebase db
         this.classes = value;
@@ -73,12 +80,10 @@ export class NewCharacterClassComponent implements OnInit {
     this.characterService.tempCharacter.hitPoints = 0;
     this.characterService.tempCharacter.hitDie = [{ hitDie: 0, dieValue: 0 }];
     // TODO: Make default height and weight be the races random starting value
-    this.heightFeet = 0;
-    this.heightInches = 0;
-    this.heightInchesMin = 0;
-    this.weight = 0;
+    this.characterService.tempCharacter.height = { feet: 0, inches: 0 };
+    this.characterService.tempCharacter.weight = 0;
     // TODO: Make age the random starting age for a given race
-    this.age = 0;
+    this.characterService.tempCharacter.age = 0;
     this.ageCategory = '';
   }
 
@@ -95,14 +100,21 @@ export class NewCharacterClassComponent implements OnInit {
     );
   }
   setSelectedClass(selectedValue: any): void {
-    // Set selected race and emit updates back to parent component
     this.selectedClass = this.classes.find(race => race.name === selectedValue.name);
     this.character.classes = Array({
       classId: this.selectedClass.id,
       level: 1
     });
-    this.characterService.tempCharacter.alignment = null;
     this.playerHasSelectedClass = true;
+    this.characterService.tempCharacter.alignment = null;   // reset alignment
+    this.characterService.tempCharacter.religion = [];      // reset religion
+    this.characterService.tempCharacter.age =
+      generateStartingAge(this.races.filter(race => race.id === this.characterService.tempCharacter.raceId)[0], this.selectedClass);
+    this.characterService.tempCharacter.hitPoints = this.selectedClass.hitDie;
+    this.characterService.tempCharacter.hitDie[0] = {
+      hitDie: this.selectedClass.hitDie,
+      dieValue: this.characterService.tempCharacter.hitPoints
+    };
   }
 
   openSelectAlignmentModal(): void {
@@ -131,43 +143,30 @@ export class NewCharacterClassComponent implements OnInit {
   }
 
   heightInchesChanged(): void {
-    if (this.heightInches >= 12) {
-      this.heightFeet = this.heightFeet + 1;
-      this.heightInches = 0;
-    } else if (this.heightFeet >= 1 && this.heightInches <= -1) {
-      this.heightFeet = this.heightFeet - 1;
-      this.heightInches = 11;
+    if (this.characterService.tempCharacter.height.inches >= 12) {
+      this.characterService.tempCharacter.height.feet = this.characterService.tempCharacter.height.feet + 1;
+      this.characterService.tempCharacter.height.inches = 0;
+    } else if (this.characterService.tempCharacter.height.feet >= 1 && this.characterService.tempCharacter.height.inches <= -1) {
+      this.characterService.tempCharacter.height.feet = this.characterService.tempCharacter.height.feet - 1;
+      this.characterService.tempCharacter.height.inches = 11;
     }
-    if (this.heightFeet <= 0 && this.heightInches <= 1) {
+    if (this.characterService.tempCharacter.height.feet <= 0 && this.characterService.tempCharacter.height.inches <= 1) {
       this.heightInchesMin = 0;
     } else {
       this.heightInchesMin = -1;
     }
   }
 
-  generateRandomAge(dieCount: number, dieType: number): void {
-    const adulthoodAgeForRace = Math.floor((Math.random() * 110) + 14);
-    const ageForClass = (Math.floor((Math.random() * dieType) + 1) * dieCount);
-    this.age = adulthoodAgeForRace + ageForClass;
-  }
-
-  generateRandomHeight(): void {
+  generateRandomAge() {
     //
   }
 
-  generateRandomWeight(): void {
+  generateNewRandomHeight() {
     //
   }
 
-  getAgingEffects(race: any, age: number): AbilityScore {
-    if (age >= race.agingEffects.venerable) {
-      return new AbilityScore(-6, -6, -6, 3, 3, 3);
-    } else if (age >= race.agingEffects.old) {
-      return new AbilityScore(-3, -3, -3, 2, 2, 2);
-    } else if (age >= race.agingEffects.middleAge) {
-      return new AbilityScore(-1, -1, -1, 1, 1, 1);
-    }
-    return new AbilityScore(0, 0, 0, 0, 0, 0);
+  generateNewRandomWeight() {
+    //
   }
 
 }

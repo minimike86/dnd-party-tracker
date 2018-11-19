@@ -21,13 +21,13 @@ export interface Character {
   classes: Array<{classId: string, level: number}>;
   ecl?: number;
   raceId: string;
-  size: Size;
+  size: string;
   imageUrl?: string;
   gender: string;
   age: number;
   alignment: string;
   religion?: Array<string>;
-  height: [number, number]; // 5' 10"
+  height: { feet: number, inches: number }; // 5' 10"
   weight: number;           // 220 lbs.
   looks?: string;
 

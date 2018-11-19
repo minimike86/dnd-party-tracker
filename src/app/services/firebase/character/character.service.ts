@@ -39,7 +39,7 @@ export class CharacterService {
       age: null,
       alignment: null,
       religion: [],
-      height: [null, null], // 5' 10"
+      height: { feet: 5, inches: 10 }, // 5' 10"
       weight: null, // 220 lbs.
       looks: null,
       baseAbilityScores: new AbilityScore(0, 0, 0, 0,  0, 0),

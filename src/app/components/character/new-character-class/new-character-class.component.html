@@ -107,14 +107,14 @@
           <label for="heightFeet">Height:</label>
           <button class="d-inline-flex align-items-center btn btn-outline-info btn-sm ml-1 py-0"
                   title="Generate a random character aged based on the selected race."
-                  (click)="generateRandomHeight()">
+                  (click)="generateNewRandomHeight()">
             <i class="fas fa-random"></i><span class="small ml-1">Random</span>
           </button>
           <div class="d-flex">
             <div class="d-inline-flex w-50 mr-1">
               <div class="input-group">
               <input type="number" class="form-control text-right" id="heightFeet" min="0"
-                     [(ngModel)]="heightFeet" title="Feet" required>
+                     [(ngModel)]="characterService.tempCharacter.height.feet" title="Feet" required>
                 <div class="input-group-append">
                   <span class="input-group-text">&apos;</span>
                 </div>
@@ -123,7 +123,8 @@
             <div class="d-inline-flex w-50 ml-1">
               <div class="input-group">
                 <input type="number" class="form-control text-right" id="heightInches" [min]="heightInchesMin" max="12"
-                       [(ngModel)]="heightInches" (ngModelChange)="heightInchesChanged()" title="Inches" required>
+                       [(ngModel)]="characterService.tempCharacter.height.inches"
+                       (ngModelChange)="heightInchesChanged()" title="Inches" required>
                 <div class="input-group-append">
                   <span class="input-group-text">&quot;</span>
                 </div>
@@ -140,13 +141,13 @@
           <label for="weight">Weight:</label>
           <button class="d-inline-flex align-items-center btn btn-outline-info btn-sm ml-1 py-0"
                   title="Generate a random character aged based on the selected race."
-                  (click)="generateRandomWeight()">
+                  (click)="generateNewRandomWeight()">
             <i class="fas fa-random"></i><span class="small ml-1">Random</span>
           </button>
           <div class="d-inline-flex w-100">
             <div class="input-group">
               <input type="number" class="form-control text-right" id="weight" min="0" max="999999"
-                     [(ngModel)]="weight" title="Pounds" required>
+                     [(ngModel)]="characterService.tempCharacter.weight" title="Pounds" required>
               <div class="input-group-append">
                 <span class="input-group-text">lbs.</span>
               </div>
@@ -168,7 +169,7 @@
           <div class="d-inline-flex w-100">
             <div class="input-group">
               <input type="number" class="form-control text-right" id="age" min="0" max="999999"
-                     [(ngModel)]="age" title="Age" required>
+                     [(ngModel)]="characterService.tempCharacter.age" title="Age" required>
               <div class="input-group-append">
                 <span class="input-group-text">Years</span>
               </div>
@@ -184,8 +185,9 @@
         <div class="form-group">
           <label class="" for="hitPoints">HP:</label>
           <div class="">
-            <input type="number" class="form-control text-right bg-white" id="hitPoints" min="0" max="999"
-                   [(ngModel)]="characterService.tempCharacter.hitPoints" title="Hit Points" required disabled>
+            <input type="text" class="form-control text-center bg-white" id="hitPoints" min="0" max="999"
+                   [value]="this.selectedClass !== undefined ? characterService.tempCharacter.hitPoints : '-'"
+                   title="Hit Points" required disabled>
           </div>
         </div>
       </div>
@@ -196,8 +198,9 @@
             <div class="input-group-prepend">
               <span class="input-group-text">d</span>
             </div>
-            <input type="number" class="form-control text-center bg-white" id="hitDie" min="4" max="12"
-                   [(ngModel)]="characterService.tempCharacter.hitDie[0].hitDie" title="HitDie" required disabled>
+            <input type="text" class="form-control text-center bg-light" id="hitDie" min="4" max="12"
+                   [value]="this.selectedClass !== undefined ? characterService.tempCharacter.hitDie[0].hitDie : '-'"
+                   title="HitDie" required disabled>
           </div>
         </div>
       </div>

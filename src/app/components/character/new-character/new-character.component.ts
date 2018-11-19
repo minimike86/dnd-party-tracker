@@ -2,8 +2,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/firebase/auth/auth.service';
-import { AbilityScore } from '../../../models/character/ability-scores';
 import { CharacterService } from '../../../services/firebase/character/character.service';
+import { AbilityScore } from '../../../models/character/ability-scores';
+import { generateRandomHeight, generateRandomWeight, generateStartingAge, RaceId } from '../../../models/character/race';
 
 
 @Component({
@@ -19,7 +20,7 @@ export class NewCharacterComponent implements OnInit {
   public totalAbilityScores: AbilityScore;
   public playerHasRolledAllStats: boolean;
   public playerHasSelectedRace: boolean;
-  public selectedRace: any;
+  public selectedRace: RaceId;
   public readyToPickClass: boolean;
   @ViewChild('popover') public popover: NgbPopover;
 
@@ -220,14 +221,8 @@ export class NewCharacterComponent implements OnInit {
     this.playerHasRolledAllStats = playerHasRolledAllStats;
   }
 
-  selectedRaceChangedHandler(selectedRace: any) {
+  selectedRaceChangedHandler(selectedRace: RaceId) {
     this.selectedRace = selectedRace;
-  }
-
-  ageChanged(): void {
-    if (this.selectedRace !== undefined) {
-      // TODO: Get race age categories and set this.ageCategory text
-    }
   }
 
   playerHasSelectedRaceChangedHandler(playerHasSelectedRace: boolean) {
@@ -246,6 +241,8 @@ export class NewCharacterComponent implements OnInit {
       this.characterService.tempCharacter.playerName = this.playerName;
       this.characterService.tempCharacter.characterName = this.characterName;
       this.characterService.tempCharacter.gender = this.gender;
+      this.characterService.tempCharacter.height = generateRandomHeight(this.selectedRace, this.gender);
+      this.characterService.tempCharacter.weight = generateRandomWeight(this.selectedRace, this.gender);
       this.characterService.tempCharacter.baseAbilityScores = this.totalAbilityScores;
       this.characterService.tempCharacter.raceId = this.selectedRace.id;
       this.characterService.tempCharacter.size = this.selectedRace.size;

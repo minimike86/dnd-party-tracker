@@ -8,6 +8,7 @@ export interface CharacterClass {
 
   name: string;
   hitDie: number;
+  startingAgeType: string;
   alignmentWhitelist: [string];
   armorProficiency: [string];
   weaponProficiency: [string];

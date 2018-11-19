@@ -28,7 +28,7 @@ export class CharacterComponent implements OnInit {
     age: 50,
     alignment: Alignment.CN,
     religion: ['BOCCOB'],
-    height: [5, 10], // feet, inches
+    height: { feet: 5, inches: 10 }, // feet, inches
     weight: 220, // lbs.
     baseAbilityScores: new AbilityScore(8, 16, 12, 18, 6, 17),
     hitPoints: Math.floor(((Math.random() * 6) + 1) * 3 + (1 * 3)),
