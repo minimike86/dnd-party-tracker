@@ -11,10 +11,10 @@ export class AddRaceComponent implements OnInit {
   public automaticLanguages = [];
   public bonusLanguages = [];
   public special = [];
-  public savingThrowBonuses = {bonus: null, vs: null};
-  public attackRollBonuses = {bonus: null, vs: null};
+  public savingThrowBonuses = {bonus: null, type: null, vs: null};
+  public attackRollBonuses = {bonus: null, type: null, vs: null};
   public armorBonuses = {bonus: null, type: null, vs: null};
-  public skillRollBonuses = {bonus: null, vs: null};
+  public skillRollBonuses = {bonus: null, type: null, vs: null};
 
   public race = {
     name: null,

@@ -162,6 +162,22 @@
       <pre>{{ savingThrowBonuses | json }}</pre>
       <div class="d-flex">
         <input type="number" class="form-control" id="savingThrowBonuses.bonus" [(ngModel)]="savingThrowBonuses.bonus" placeholder="Bonus">
+        <select id="savingThrowBonuses.type" class="form-control" [(ngModel)]="savingThrowBonuses.type"  title="Modifier Type">
+          <option [value]="null" disabled>Modifier Type</option>
+          <option value="Alchemical">Alchemical</option>
+          <option value="Circumstance">Circumstance</option>
+          <option value="Competence">Competence</option>
+          <option value="Insight">Insight</option>
+          <option value="Luck">Luck</option>
+          <option value="Magic">Magic</option>
+          <option value="Morale">Morale</option>
+          <option value="Racial">Racial</option>
+          <option value="Resistance">Resistance</option>
+          <option value="Profane">Profane</option>
+          <option value="Sacred">Sacred</option>
+          <option value="Misc">Misc</option>
+          <option value="Temp">Temp</option>
+        </select>
         <input type="text" class="form-control" id="savingThrowBonuses.vs" [(ngModel)]="savingThrowBonuses.vs" placeholder="Vs.">
       </div>
       <button class="btn btn-sm btn-primary mr-1 mt-2" (click)="addSavingThrowBonuses()">Add</button>
@@ -172,6 +188,24 @@
       <pre>{{ attackRollBonuses | json }}</pre>
       <div class="d-flex">
         <input type="number" class="form-control" id="attackRollBonuses.bonus" [(ngModel)]="attackRollBonuses.bonus" placeholder="Bonus">
+        <select id="attackRollBonuses.type" class="form-control" [(ngModel)]="attackRollBonuses.type"  title="Modifier Type">
+          <option [value]="null" disabled>Modifier Type</option>
+          <option value="Alchemical">Alchemical</option>
+          <option value="Circumstance">Circumstance</option>
+          <option value="Competence">Competence</option>
+          <option value="Enhancement">Enhancement</option>
+          <option value="Insight">Insight</option>
+          <option value="Luck">Luck</option>
+          <option value="Magic">Magic</option>
+          <option value="Morale">Morale</option>
+          <option value="Racial">Racial</option>
+          <option value="Resistance">Resistance</option>
+          <option value="Size">Size</option>
+          <option value="Profane">Profane</option>
+          <option value="Sacred">Sacred</option>
+          <option value="Misc">Misc</option>
+          <option value="Temp">Temp</option>
+        </select>
         <input type="text" class="form-control" id="attackRollBonuses.vs" [(ngModel)]="attackRollBonuses.vs" placeholder="Vs.">
       </div>
       <button class="btn btn-sm btn-primary mr-1 mt-2" (click)="addAttackRollBonuses()">Add</button>
@@ -182,17 +216,28 @@
       <pre>{{ armorBonuses | json }}</pre>
       <div class="d-flex">
         <input type="number" class="form-control" id="armorBonuses.bonus" [(ngModel)]="armorBonuses.bonus" placeholder="Bonus">
-        <select id="armorBonuses.type" class="form-control" [(ngModel)]="armorBonuses.type"  title="AC Type">
-          <option [value]="null" disabled>AC Type</option>
+        <select id="armorBonuses.type" class="form-control" [(ngModel)]="armorBonuses.type"  title="Modifier Type">
+          <option [value]="null" disabled>Modifier Type</option>
+          <option value="Alchemical">Alchemical</option>
           <option value="Armor">Armor</option>
-          <option value="Shield">Shield</option>
+          <option value="Circumstance">Circumstance</option>
+          <option value="Competence">Competence</option>
+          <option value="Deflection">Deflection</option>
           <option value="Dexterity">Dexterity</option>
           <option value="Dodge">Dodge</option>
-          <option value="Size">Size</option>
-          <option value="Natural">Natural</option>
-          <option value="Deflection">Deflection</option>
           <option value="Enhancement">Enhancement</option>
+          <option value="Insight">Insight</option>
+          <option value="Luck">Luck</option>
+          <option value="Magic">Magic</option>
+          <option value="Morale">Morale</option>
+          <option value="Natural">Natural</option>
+          <option value="Racial">Racial</option>
+          <option value="Shield">Shield</option>
+          <option value="Size">Size</option>
+          <option value="Profane">Profane</option>
+          <option value="Sacred">Sacred</option>
           <option value="Misc">Misc</option>
+          <option value="Temp">Temp</option>
         </select>
         <input type="text" class="form-control" id="armorBonuses.vs" [(ngModel)]="armorBonuses.vs" placeholder="Vs.">
       </div>
@@ -204,6 +249,20 @@
       <pre>{{ skillRollBonuses | json }}</pre>
       <div class="d-flex">
         <input type="number" class="form-control" id="skillRollBonuses.bonus" [(ngModel)]="skillRollBonuses.bonus" placeholder="Bonus">
+        <select id="skillRollBonuses.type" class="form-control" [(ngModel)]="skillRollBonuses.type"  title="Modifier Type">
+          <option [value]="null" disabled>Modifier Type</option>
+          <option value="Alchemical">Alchemical</option>
+          <option value="Circumstance">Circumstance</option>
+          <option value="Competence">Competence</option>
+          <option value="Insight">Insight</option>
+          <option value="Luck">Luck</option>
+          <option value="Magic">Magic</option>
+          <option value="Racial">Racial</option>
+          <option value="Profane">Profane</option>
+          <option value="Sacred">Sacred</option>
+          <option value="Misc">Misc</option>
+          <option value="Temp">Temp</option>
+        </select>
         <input type="text" class="form-control" id="skillRollBonuses.vs" [(ngModel)]="skillRollBonuses.vs" placeholder="Vs.">
       </div>
       <button class="btn btn-sm btn-primary mr-1 mt-2" (click)="addSkillRollBonuses()">Add</button>

@@ -23,16 +23,15 @@ export interface Race {
   extraFeatFirstLevel?: number;
   extraSkillPointsFirstLevel?: number;
   extraSkillPointsEachLevel?: number;
-  special?: Array<string>;
   icon: string;
   size: string;
   automaticLanguages?: Array<string>;
   bonusLanguages?: Array<string>;
   baseLandSpeed: number;
-  savingThrowBonuses?: Array<{bonus: number, vs?: string}>;
-  attackRollBonuses?: Array<{bonus: number, vs?: string}>;
+  savingThrowBonuses?: Array<{bonus: number, type: string, vs?: string}>;
+  attackRollBonuses?: Array<{bonus: number, type: string, vs?: string}>;
   armorBonuses?: Array<{bonus: number, type: string, vs?: string}>;
-  skillRollBonuses?: Array<{bonus: number, vs?: string}>;
+  skillRollBonuses?: Array<{bonus: number, type: string, vs?: string}>;
   movementModes?: {
     burrow: number,
     climb: number,
@@ -107,6 +106,7 @@ export interface Race {
     }
   };
   favoredClass: string;
+  special?: Array<string>;
   levelAdjustment?: number;
 
 }
