@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { RaceService } from '../../../services/firebase/race/race.service';
-import { Race } from '../../../models/character/race';
 
 @Component({
   selector: 'app-add-race',
@@ -9,8 +8,18 @@ import { Race } from '../../../models/character/race';
 })
 export class AddRaceComponent implements OnInit {
 
+  public automaticLanguages = [];
+  public bonusLanguages = [];
+  public special = [];
+  public savingThrowBonuses = {bonus: null, vs: null};
+  public attackRollBonuses = {bonus: null, vs: null};
+  public armorBonuses = {bonus: null, type: null, vs: null};
+  public skillRollBonuses = {bonus: null, vs: null};
+
   public race = {
     name: null,
+    type: 'Humanoid',
+    subType: 'Human',
     abilityScoreAdjustments: {
       strength: null,
       dexterity: null,
@@ -19,6 +28,10 @@ export class AddRaceComponent implements OnInit {
       wisdom: null,
       charisma: null
     },
+    special: null,
+    extraFeatFirstLevel: null,
+    extraSkillPointsFirstLevel: null,
+    extraSkillPointsEachLevel: null,
     icon: null,
     size: 'Medium',
     automaticLanguages: null,
@@ -37,6 +50,10 @@ export class AddRaceComponent implements OnInit {
       lowLight: null,
       dark: null
     },
+    savingThrowBonuses: null,
+    attackRollBonuses: null,
+    armorBonuses: null,
+    skillRollBonuses: null,
     startingAges: {
       adulthood: null,
       classAges: {
@@ -98,6 +115,7 @@ export class AddRaceComponent implements OnInit {
       }
     },
     favoredClass: null,
+    levelAdjustment: null
   };
 
   constructor(public raceService: RaceService) {
@@ -106,8 +124,64 @@ export class AddRaceComponent implements OnInit {
   ngOnInit() {
   }
 
+  addAutomaticLanguage() {
+    //
+  }
+
+  clearAutomaticLanguages() {
+    //
+  }
+
+  addBonusLanguage() {
+    //
+  }
+
+  clearBonusLanguages() {
+    //
+  }
+
+  addSavingThrowBonuses() {
+    //
+  }
+
+  clearSavingThrowBonuses() {
+    //
+  }
+
+  addAttackRollBonuses() {
+    //
+  }
+
+  clearAttackRollBonuses() {
+    //
+  }
+
+  addArmorBonuses() {
+    //
+  }
+
+  clearArmorBonuses() {
+    //
+  }
+
+  addSkillRollBonuses() {
+    //
+  }
+
+  clearSkillRollBonuses() {
+    //
+  }
+
+  addSpecial() {
+    //
+  }
+
+  clearSpecial() {
+    //
+  }
+
   addRace() {
-    // this.raceService.addRace(this.race);
+    this.raceService.addRace(this.race);
   }
 
 }

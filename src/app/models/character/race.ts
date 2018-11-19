@@ -10,6 +10,8 @@ export interface RaceId extends Race {
 export interface Race {
 
   name: string;
+  type: string;
+  subType: string;
   abilityScoreAdjustments?: {
     strength: number,
     dexterity: number,
@@ -18,11 +20,19 @@ export interface Race {
     wisdom: number,
     charisma: number
   };
+  extraFeatFirstLevel?: number;
+  extraSkillPointsFirstLevel?: number;
+  extraSkillPointsEachLevel?: number;
+  special?: Array<string>;
   icon: string;
   size: string;
   automaticLanguages?: Array<string>;
   bonusLanguages?: Array<string>;
   baseLandSpeed: number;
+  savingThrowBonuses?: Array<{bonus: number, vs?: string}>;
+  attackRollBonuses?: Array<{bonus: number, vs?: string}>;
+  armorBonuses?: Array<{bonus: number, type: string, vs?: string}>;
+  skillRollBonuses?: Array<{bonus: number, vs?: string}>;
   movementModes?: {
     burrow: number,
     climb: number,
@@ -97,6 +107,7 @@ export interface Race {
     }
   };
   favoredClass: string;
+  levelAdjustment?: number;
 
 }
 

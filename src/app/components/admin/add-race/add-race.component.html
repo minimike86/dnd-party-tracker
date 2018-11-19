@@ -6,8 +6,8 @@
   <div class="row p-0">
 
     <div class="form-group col-6">
-      <label for="deityName">Race Name</label>
-      <input type="text" class="form-control" id="deityName" [(ngModel)]="race.name" placeholder="Deity Name">
+      <label for="race.name">Race Name</label>
+      <input type="text" class="form-control" id="race.name" [(ngModel)]="race.name" placeholder="Race Name">
     </div>
     <div class="form-group col-6">
       <label>Ability Score Adjustments</label>
@@ -21,9 +21,71 @@
       </div>
     </div>
     <div class="form-group col-6">
+      <label for="race.type">Type</label>
+      <select id="race.type" class="form-control" [(ngModel)]="race.type" placeholder="Race Type">
+        <option value="Aberration">Aberration</option>
+        <option value="Animal">Animal</option>
+        <option value="Celestial">Celestial</option>
+        <option value="Construct">Construct</option>
+        <option value="Dragon">Dragon</option>
+        <option value="Elemental">Elemental</option>
+        <option value="Fey">Fey</option>
+        <option value="Fiend">Fiend</option>
+        <option value="Giant">Giant</option>
+        <option value="Humanoid" selected>Humanoid</option>
+        <option value="Magical Beast">Magical Beast</option>
+        <option value="Monstrous Humanoid">Monstrous Humanoid</option>
+        <option value="Ooze">Ooze</option>
+        <option value="Outsider">Outsider</option>
+        <option value="Plant">Plant</option>
+        <option value="Undead">Undead</option>
+        <option value="Vermin">Vermin</option>
+      </select>
+    </div>
+    <div class="form-group col-6">
+      <label for="race.type">SubType</label>
+      <select id="race.subType" class="form-control" [(ngModel)]="race.subType" placeholder="Race SubType">
+        <optgroup label="Creature Subtypes">
+          <option value="Air">Air</option>
+          <option value="Angel">Angel</option>
+          <option value="Aquatic">Aquatic</option>
+          <option value="Archon">Archon</option>
+          <option value="Augmented">Augmented</option>
+          <option value="Chaotic">Chaotic</option>
+          <option value="Cold">Cold</option>
+          <option value="Demon">Demon</option>
+          <option value="Devil">Devil</option>
+          <option value="Earth">Earth</option>
+          <option value="Evil">Evil</option>
+          <option value="Extraplanar">Extraplanar</option>
+          <option value="Fire">Fire</option>
+          <option value="Good">Good</option>
+          <option value="Incorporeal">Incorporeal</option>
+          <option value="Lawful">Lawful</option>
+          <option value="Native">Native</option>
+          <option value="Psionic">Psionic</option>
+          <option value="Shapechanger">Shapechanger</option>
+          <option value="Swarm">Swarm</option>
+          <option value="Water">Water</option>
+        </optgroup>
+        <optgroup label="Humanoid Subtype">
+          <option value="Aquatic">Aquatic</option>
+          <option value="Dwarf">Dwarf</option>
+          <option value="Elf">Elf</option>
+          <option value="Gnoll">Gnoll</option>
+          <option value="Gnome">Gnome</option>
+          <option value="Goblinoid">Goblinoid</option>
+          <option value="Halfling">Halfling</option>
+          <option value="Human">Human</option>
+          <option value="Orc">Orc</option>
+          <option value="Reptilian">Reptilian</option>
+        </optgroup>
+      </select>
+    </div>
+    <div class="form-group col-6">
       <label for="icon">Icon</label>
       <div class="d-flex">
-        <img class="img-thumbnail mr-2" style="min-height: 100px; max-height: 100px; min-width: 100px; max-width: 100px;"
+        <img class="img-thumbnail mr-1 mt-2" style="min-height: 100px; max-height: 100px; min-width: 100px; max-width: 100px;"
              src="{{ race.icon !== null ? race.icon : 'https://via.placeholder.com/100' }}">
         <input type="text" class="align-self-center form-control" id="icon" [(ngModel)]="race.icon" placeholder="Icon">
       </div>
@@ -65,87 +127,163 @@
     </div>
     <div class="form-group col-6">
       <label for="automaticLanguages">Automatic Languages</label>
-      <input type="text" class="form-control" id="automaticLanguages" [(ngModel)]="race.automaticLanguages" placeholder="Automatic Languages">
+      <pre>{{ automaticLanguages | json }}</pre>
+      <input type="text" class="form-control" id="automaticLanguages" [(ngModel)]="automaticLanguages" placeholder="Automatic Languages">
+      <button class="btn btn-sm btn-primary mr-1 mt-2" (click)="addAutomaticLanguage()">Add</button>
+      <button class="btn btn-sm btn-danger mt-2" (click)="clearAutomaticLanguages()">Clear</button>
     </div>
     <div class="form-group col-6">
       <label for="bonusLanguages">Bonus Languages</label>
-      <input type="text" class="form-control" id="bonusLanguages" [(ngModel)]="race.bonusLanguages" placeholder="Bonus Languages">
+      <pre>{{ bonusLanguages | json }}</pre>
+      <input type="text" class="form-control" id="bonusLanguages" [(ngModel)]="bonusLanguages" placeholder="Bonus Languages">
+      <button class="btn btn-sm btn-primary mr-1 mt-2" (click)="addBonusLanguage()">Add</button>
+      <button class="btn btn-sm btn-danger mt-2" (click)="clearBonusLanguages()">Clear</button>
     </div>
     <div class="form-group col-6">
       <label>Vision</label>
       <div class="d-flex">
-        <input type="text" class="form-control" id="vision.lowLight" [(ngModel)]="race.vision.lowLight" placeholder="Low Light Vision">
-        <input type="text" class="form-control" id="vision.dark" [(ngModel)]="race.vision.dark" placeholder="Darkvision">
+        <input type="number" class="form-control" id="vision.lowLight" [(ngModel)]="race.vision.lowLight" placeholder="Low Light Vision">
+        <input type="number" class="form-control" id="vision.dark" [(ngModel)]="race.vision.dark" placeholder="Darkvision">
       </div>
+    </div>
+    <div class="form-group col-6">
+      <label>Extra Feats</label>
+      <input type="number" class="form-control" id="extraFeatFirstLevel" [(ngModel)]="race.extraFeatFirstLevel" placeholder="Extra Feats First Level">
+    </div>
+    <div class="form-group col-6">
+      <label>Extra Skill Points</label>
+      <div class="d-flex">
+        <input type="number" class="form-control" id="extraSkillPointsFirstLevel" [(ngModel)]="race.extraSkillPointsFirstLevel" placeholder="Extra Skill Points First Level">
+        <input type="number" class="form-control" id="extraSkillPointsEachLevel" [(ngModel)]="race.extraSkillPointsEachLevel" placeholder="Extra Skill Points Each Level">
+      </div>
+    </div>
+    <div class="form-group col-6">
+      <label>Saving Throw Bonuses</label>
+      <pre>{{ savingThrowBonuses | json }}</pre>
+      <div class="d-flex">
+        <input type="number" class="form-control" id="savingThrowBonuses.bonus" [(ngModel)]="savingThrowBonuses.bonus" placeholder="Bonus">
+        <input type="text" class="form-control" id="savingThrowBonuses.vs" [(ngModel)]="savingThrowBonuses.vs" placeholder="Vs.">
+      </div>
+      <button class="btn btn-sm btn-primary mr-1 mt-2" (click)="addSavingThrowBonuses()">Add</button>
+      <button class="btn btn-sm btn-danger mt-2" (click)="clearSavingThrowBonuses()">Clear</button>
+    </div>
+    <div class="form-group col-6">
+      <label>Attack Roll Bonuses</label>
+      <pre>{{ attackRollBonuses | json }}</pre>
+      <div class="d-flex">
+        <input type="number" class="form-control" id="attackRollBonuses.bonus" [(ngModel)]="attackRollBonuses.bonus" placeholder="Bonus">
+        <input type="text" class="form-control" id="attackRollBonuses.vs" [(ngModel)]="attackRollBonuses.vs" placeholder="Vs.">
+      </div>
+      <button class="btn btn-sm btn-primary mr-1 mt-2" (click)="addAttackRollBonuses()">Add</button>
+      <button class="btn btn-sm btn-danger mt-2" (click)="clearAttackRollBonuses()">Clear</button>
+    </div>
+    <div class="form-group col-6">
+      <label>Armor Class Bonuses</label>
+      <pre>{{ armorBonuses | json }}</pre>
+      <div class="d-flex">
+        <input type="number" class="form-control" id="armorBonuses.bonus" [(ngModel)]="armorBonuses.bonus" placeholder="Bonus">
+        <select id="armorBonuses.type" class="form-control" [(ngModel)]="armorBonuses.type"  title="AC Type">
+          <option [value]="null" disabled>AC Type</option>
+          <option value="Armor">Armor</option>
+          <option value="Shield">Shield</option>
+          <option value="Dexterity">Dexterity</option>
+          <option value="Dodge">Dodge</option>
+          <option value="Size">Size</option>
+          <option value="Natural">Natural</option>
+          <option value="Deflection">Deflection</option>
+          <option value="Enhancement">Enhancement</option>
+          <option value="Misc">Misc</option>
+        </select>
+        <input type="text" class="form-control" id="armorBonuses.vs" [(ngModel)]="armorBonuses.vs" placeholder="Vs.">
+      </div>
+      <button class="btn btn-sm btn-primary mr-1 mt-2" (click)="addArmorBonuses()">Add</button>
+      <button class="btn btn-sm btn-danger mt-2" (click)="clearArmorBonuses()">Clear</button>
+    </div>
+    <div class="form-group col-6">
+      <label>Skill Roll Bonuses</label>
+      <pre>{{ skillRollBonuses | json }}</pre>
+      <div class="d-flex">
+        <input type="number" class="form-control" id="skillRollBonuses.bonus" [(ngModel)]="skillRollBonuses.bonus" placeholder="Bonus">
+        <input type="text" class="form-control" id="skillRollBonuses.vs" [(ngModel)]="skillRollBonuses.vs" placeholder="Vs.">
+      </div>
+      <button class="btn btn-sm btn-primary mr-1 mt-2" (click)="addSkillRollBonuses()">Add</button>
+      <button class="btn btn-sm btn-danger mt-2" (click)="clearSkillRollBonuses()">Clear</button>
     </div>
     <div class="form-group col-6">
       <label for="startingAges">Starting Ages</label>
       <input type="text" class="form-control" id="startingAges" [(ngModel)]="race.startingAges.adulthood" placeholder="Adulthood">
       <div class="d-flex">
-        <input type="text" class="form-control" id="simple.dieCount" [(ngModel)]="race.startingAges.classAges.simple.dieCount" placeholder="Simple dieCount">
-        <input type="text" class="form-control" id="simple.dieType" [(ngModel)]="race.startingAges.classAges.simple.dieType" placeholder="Simple dieType">
+        <input type="number" class="form-control" id="simple.dieCount" [(ngModel)]="race.startingAges.classAges.simple.dieCount" placeholder="Simple dieCount">
+        <input type="number" class="form-control" id="simple.dieType" [(ngModel)]="race.startingAges.classAges.simple.dieType" placeholder="Simple dieType">
       </div>
       <div class="d-flex">
-        <input type="text" class="form-control" id="moderate.dieCount" [(ngModel)]="race.startingAges.classAges.moderate.dieCount" placeholder="Moderate dieCount">
-        <input type="text" class="form-control" id="moderate.dieType" [(ngModel)]="race.startingAges.classAges.moderate.dieType" placeholder="Moderate dieType">
+        <input type="number" class="form-control" id="moderate.dieCount" [(ngModel)]="race.startingAges.classAges.moderate.dieCount" placeholder="Moderate dieCount">
+        <input type="number" class="form-control" id="moderate.dieType" [(ngModel)]="race.startingAges.classAges.moderate.dieType" placeholder="Moderate dieType">
       </div>
       <div class="d-flex">
-        <input type="text" class="form-control" id="complex.dieCount" [(ngModel)]="race.startingAges.classAges.complex.dieCount" placeholder="Complex dieCount">
-        <input type="text" class="form-control" id="complex.dieType" [(ngModel)]="race.startingAges.classAges.complex.dieType" placeholder="Complex dieType">
+        <input type="number" class="form-control" id="complex.dieCount" [(ngModel)]="race.startingAges.classAges.complex.dieCount" placeholder="Complex dieCount">
+        <input type="number" class="form-control" id="complex.dieType" [(ngModel)]="race.startingAges.classAges.complex.dieType" placeholder="Complex dieType">
       </div>
     </div>
     <div class="form-group col-6">
       <label>Aging Effects</label>
-      <input type="text" class="form-control" id="agingEffects.middleAge" [(ngModel)]="race.agingEffects.middleAge" placeholder="Middle Age">
-      <input type="text" class="form-control" id="agingEffects.old" [(ngModel)]="race.agingEffects.old" placeholder="Old">
-      <input type="text" class="form-control" id="agingEffects.venerable" [(ngModel)]="race.agingEffects.venerable" placeholder="Venerable">
+      <input type="number" class="form-control" id="agingEffects.middleAge" [(ngModel)]="race.agingEffects.middleAge" placeholder="Middle Age">
+      <input type="number" class="form-control" id="agingEffects.old" [(ngModel)]="race.agingEffects.old" placeholder="Old">
+      <input type="number" class="form-control" id="agingEffects.venerable" [(ngModel)]="race.agingEffects.venerable" placeholder="Venerable">
       <div class="d-flex">
-        <input type="text" class="form-control" id="maximum.dieCount" [(ngModel)]="race.agingEffects.maximum.dieCount" placeholder="Maximum dieCount">
-        <input type="text" class="form-control" id="maximum.dieType" [(ngModel)]="race.agingEffects.maximum.dieType" placeholder="Maximum dieType">
+        <input type="number" class="form-control" id="maximum.dieCount" [(ngModel)]="race.agingEffects.maximum.dieCount" placeholder="Maximum dieCount">
+        <input type="number" class="form-control" id="maximum.dieType" [(ngModel)]="race.agingEffects.maximum.dieType" placeholder="Maximum dieType">
       </div>
     </div>
     <div class="form-group col-6">
       <label>Base Height</label>
-      <input type="text" class="form-control" id="male.feet" [(ngModel)]="race.baseHeight.male.feet" placeholder="Male Feet">
-      <input type="text" class="form-control" id="male.inches" [(ngModel)]="race.baseHeight.male.inches" placeholder="Male Inches">
-      <input type="text" class="form-control" id="female.feet" [(ngModel)]="race.baseHeight.female.feet" placeholder="Female Feet">
-      <input type="text" class="form-control" id="female.inches" [(ngModel)]="race.baseHeight.female.inches" placeholder="Female Inches">
+      <input type="number" class="form-control" id="male.feet" [(ngModel)]="race.baseHeight.male.feet" placeholder="Male Feet">
+      <input type="number" class="form-control" id="male.inches" [(ngModel)]="race.baseHeight.male.inches" placeholder="Male Inches">
+      <input type="number" class="form-control" id="female.feet" [(ngModel)]="race.baseHeight.female.feet" placeholder="Female Feet">
+      <input type="number" class="form-control" id="female.inches" [(ngModel)]="race.baseHeight.female.inches" placeholder="Female Inches">
     </div>
     <div class="form-group col-6">
       <label>Height Modifier</label>
       <div class="d-flex">
-        <input type="text" class="form-control" id="male.heightModifier.dieCount" [(ngModel)]="race.heightModifier.male.dieCount" placeholder="Height Mod Male dieCount">
-        <input type="text" class="form-control" id="male.heightModifier.dieType" [(ngModel)]="race.heightModifier.male.dieType" placeholder="Height Mod Male dieType">
+        <input type="number" class="form-control" id="male.heightModifier.dieCount" [(ngModel)]="race.heightModifier.male.dieCount" placeholder="Height Mod Male dieCount">
+        <input type="number" class="form-control" id="male.heightModifier.dieType" [(ngModel)]="race.heightModifier.male.dieType" placeholder="Height Mod Male dieType">
       </div>
       <div class="d-flex">
-        <input type="text" class="form-control" id="female.heightModifier.dieCount" [(ngModel)]="race.heightModifier.female.dieCount" placeholder="Height Mod Female dieCount">
-        <input type="text" class="form-control" id="female.heightModifier.dieType" [(ngModel)]="race.heightModifier.female.dieType" placeholder="Height Mod Female dieType">
+        <input type="number" class="form-control" id="female.heightModifier.dieCount" [(ngModel)]="race.heightModifier.female.dieCount" placeholder="Height Mod Female dieCount">
+        <input type="number" class="form-control" id="female.heightModifier.dieType" [(ngModel)]="race.heightModifier.female.dieType" placeholder="Height Mod Female dieType">
       </div>
     </div>
     <div class="form-group col-6">
       <label>Base Weight</label>
       <div class="d-flex">
-        <input type="text" class="form-control" id="baseWeight.male" [(ngModel)]="race.baseWeight.male" placeholder="Base Weight Male">
-        <input type="text" class="form-control" id="baseWeight.female" [(ngModel)]="race.baseWeight.female" placeholder="Base Weight Female">
+        <input type="number" class="form-control" id="baseWeight.male" [(ngModel)]="race.baseWeight.male" placeholder="Base Weight Male">
+        <input type="number" class="form-control" id="baseWeight.female" [(ngModel)]="race.baseWeight.female" placeholder="Base Weight Female">
       </div>
     </div>
     <div class="form-group col-6">
       <label>Weight Modifier</label>
       <div class="d-flex">
-        <input type="text" class="form-control" id="weightModifier.male.dieCount" [(ngModel)]="race.weightModifier.male.dieCount" placeholder="Weight Mod Male dieCount">
-        <input type="text" class="form-control" id="weightModifier.male.dieType" [(ngModel)]="race.weightModifier.male.dieType" placeholder="Weight Mod Male dieType">
+        <input type="number" class="form-control" id="weightModifier.male.dieCount" [(ngModel)]="race.weightModifier.male.dieCount" placeholder="Weight Mod Male dieCount">
+        <input type="number" class="form-control" id="weightModifier.male.dieType" [(ngModel)]="race.weightModifier.male.dieType" placeholder="Weight Mod Male dieType">
       </div>
       <div class="d-flex">
-        <input type="text" class="form-control" id="weightModifier.female.dieCount" [(ngModel)]="race.weightModifier.female.dieCount" placeholder="Weight Mod Female dieCount">
-        <input type="text" class="form-control" id="weightModifier.female.dieType" [(ngModel)]="race.weightModifier.female.dieType" placeholder="Weight Mod Female dieType">
+        <input type="number" class="form-control" id="weightModifier.female.dieCount" [(ngModel)]="race.weightModifier.female.dieCount" placeholder="Weight Mod Female dieCount">
+        <input type="number" class="form-control" id="weightModifier.female.dieType" [(ngModel)]="race.weightModifier.female.dieType" placeholder="Weight Mod Female dieType">
       </div>
+    </div>
+    <div class="form-group col-6">
+      <label for="special">Special</label>
+      <pre>{{ special | json }}</pre>
+      <input type="text" class="form-control" id="special" [(ngModel)]="special" placeholder="Special">
+      <button class="btn btn-sm btn-primary mr-1 mt-2" (click)="addSpecial()">Add</button>
+      <button class="btn btn-sm btn-danger mt-2" (click)="clearSpecial()">Clear</button>
     </div>
     <div class="form-group col-6">
       <label for="favoredClass">Favored Class</label>
       <input type="text" class="form-control" id="favoredClass" [(ngModel)]="race.favoredClass" placeholder="Favored Class">
     </div>
 
-    <button class="btn btn-primary btn-block m-3" (click)="addRace()">Add Race</button>
+    <button class="btn btn-lg btn-primary btn-block m-3" (click)="addRace()">Add Race</button>
   </div>
 
   <div class="d-flex w-25 mr-auto">
