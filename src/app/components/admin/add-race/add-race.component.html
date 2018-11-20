@@ -10,6 +10,10 @@
       <input type="text" class="form-control" id="race.name" [(ngModel)]="race.name" placeholder="Race Name">
     </div>
     <div class="form-group col-6">
+      <label for="race.variety">Race Variety</label>
+      <input type="text" class="form-control" id="race.variety" [(ngModel)]="race.variety" placeholder="Race Variety">
+    </div>
+    <div class="form-group col-6">
       <label>Ability Score Adjustments</label>
       <div class="d-flex">
         <input type="number" class="form-control" id="abilityScoreAdjustments.strength" [(ngModel)]="race.abilityScoreAdjustments.strength" placeholder="STR">
@@ -128,22 +132,34 @@
     <div class="form-group col-6">
       <label for="automaticLanguages">Automatic Languages</label>
       <pre>{{ automaticLanguages | json }}</pre>
-      <input type="text" class="form-control" id="automaticLanguages" [(ngModel)]="automaticLanguages" placeholder="Automatic Languages">
+      <input type="text" class="form-control" id="automaticLanguages" [(ngModel)]="automaticLanguagesTemp" placeholder="Automatic Languages">
       <button class="btn btn-sm btn-primary mr-1 mt-2" (click)="addAutomaticLanguage()">Add</button>
       <button class="btn btn-sm btn-danger mt-2" (click)="clearAutomaticLanguages()">Clear</button>
     </div>
     <div class="form-group col-6">
       <label for="bonusLanguages">Bonus Languages</label>
       <pre>{{ bonusLanguages | json }}</pre>
-      <input type="text" class="form-control" id="bonusLanguages" [(ngModel)]="bonusLanguages" placeholder="Bonus Languages">
+      <input type="text" class="form-control" id="bonusLanguages" [(ngModel)]="bonusLanguagesTemp" placeholder="Bonus Languages">
       <button class="btn btn-sm btn-primary mr-1 mt-2" (click)="addBonusLanguage()">Add</button>
       <button class="btn btn-sm btn-danger mt-2" (click)="clearBonusLanguages()">Clear</button>
     </div>
     <div class="form-group col-6">
       <label>Vision</label>
       <div class="d-flex">
-        <input type="number" class="form-control" id="vision.lowLight" [(ngModel)]="race.vision.lowLight" placeholder="Low Light Vision">
-        <input type="number" class="form-control" id="vision.dark" [(ngModel)]="race.vision.dark" placeholder="Darkvision">
+        <select id="vision.lowLight" class="form-control" [(ngModel)]="race.vision.lowLight"  title="Low Light Vision">
+          <option [value]="null" disabled>Low Light Vision</option>
+          <option [value]="true">true</option>
+          <option [value]="null">false</option>
+        </select>
+        <select id="vision.dark" class="form-control" [(ngModel)]="race.vision.dark"  title="Darkvision">
+          <option [value]="null" disabled>Darkvision</option>
+          <option [value]="30">30 ft.</option>
+          <option [value]="60">60 ft.</option>
+          <option [value]="90">90 ft.</option>
+          <option [value]="120">120 ft.</option>
+          <option [value]="150">150 ft.</option>
+          <option [value]="null">false</option>
+        </select>
       </div>
     </div>
     <div class="form-group col-6">
@@ -161,8 +177,8 @@
       <label>Saving Throw Bonuses</label>
       <pre>{{ savingThrowBonuses | json }}</pre>
       <div class="d-flex">
-        <input type="number" class="form-control" id="savingThrowBonuses.bonus" [(ngModel)]="savingThrowBonuses.bonus" placeholder="Bonus">
-        <select id="savingThrowBonuses.type" class="form-control" [(ngModel)]="savingThrowBonuses.type"  title="Modifier Type">
+        <input type="number" class="form-control" id="savingThrowBonuses.bonus" [(ngModel)]="savingThrowBonusesTemp.bonus" placeholder="Bonus">
+        <select id="savingThrowBonuses.type" class="form-control" [(ngModel)]="savingThrowBonusesTemp.type"  title="Modifier Type">
           <option [value]="null" disabled>Modifier Type</option>
           <option value="Alchemical">Alchemical</option>
           <option value="Circumstance">Circumstance</option>
@@ -178,7 +194,7 @@
           <option value="Misc">Misc</option>
           <option value="Temp">Temp</option>
         </select>
-        <input type="text" class="form-control" id="savingThrowBonuses.vs" [(ngModel)]="savingThrowBonuses.vs" placeholder="Vs.">
+        <input type="text" class="form-control" id="savingThrowBonuses.vs" [(ngModel)]="savingThrowBonusesTemp.vs" placeholder="Vs.">
       </div>
       <button class="btn btn-sm btn-primary mr-1 mt-2" (click)="addSavingThrowBonuses()">Add</button>
       <button class="btn btn-sm btn-danger mt-2" (click)="clearSavingThrowBonuses()">Clear</button>
@@ -187,8 +203,8 @@
       <label>Attack Roll Bonuses</label>
       <pre>{{ attackRollBonuses | json }}</pre>
       <div class="d-flex">
-        <input type="number" class="form-control" id="attackRollBonuses.bonus" [(ngModel)]="attackRollBonuses.bonus" placeholder="Bonus">
-        <select id="attackRollBonuses.type" class="form-control" [(ngModel)]="attackRollBonuses.type"  title="Modifier Type">
+        <input type="number" class="form-control" id="attackRollBonuses.bonus" [(ngModel)]="attackRollBonusesTemp.bonus" placeholder="Bonus">
+        <select id="attackRollBonuses.type" class="form-control" [(ngModel)]="attackRollBonusesTemp.type"  title="Modifier Type">
           <option [value]="null" disabled>Modifier Type</option>
           <option value="Alchemical">Alchemical</option>
           <option value="Circumstance">Circumstance</option>
@@ -206,7 +222,7 @@
           <option value="Misc">Misc</option>
           <option value="Temp">Temp</option>
         </select>
-        <input type="text" class="form-control" id="attackRollBonuses.vs" [(ngModel)]="attackRollBonuses.vs" placeholder="Vs.">
+        <input type="text" class="form-control" id="attackRollBonuses.vs" [(ngModel)]="attackRollBonusesTemp.vs" placeholder="Vs.">
       </div>
       <button class="btn btn-sm btn-primary mr-1 mt-2" (click)="addAttackRollBonuses()">Add</button>
       <button class="btn btn-sm btn-danger mt-2" (click)="clearAttackRollBonuses()">Clear</button>
@@ -215,8 +231,8 @@
       <label>Armor Class Bonuses</label>
       <pre>{{ armorBonuses | json }}</pre>
       <div class="d-flex">
-        <input type="number" class="form-control" id="armorBonuses.bonus" [(ngModel)]="armorBonuses.bonus" placeholder="Bonus">
-        <select id="armorBonuses.type" class="form-control" [(ngModel)]="armorBonuses.type"  title="Modifier Type">
+        <input type="number" class="form-control" id="armorBonuses.bonus" [(ngModel)]="armorBonusesTemp.bonus" placeholder="Bonus">
+        <select id="armorBonuses.type" class="form-control" [(ngModel)]="armorBonusesTemp.type"  title="Modifier Type">
           <option [value]="null" disabled>Modifier Type</option>
           <option value="Alchemical">Alchemical</option>
           <option value="Armor">Armor</option>
@@ -239,7 +255,7 @@
           <option value="Misc">Misc</option>
           <option value="Temp">Temp</option>
         </select>
-        <input type="text" class="form-control" id="armorBonuses.vs" [(ngModel)]="armorBonuses.vs" placeholder="Vs.">
+        <input type="text" class="form-control" id="armorBonuses.vs" [(ngModel)]="armorBonusesTemp.vs" placeholder="Vs.">
       </div>
       <button class="btn btn-sm btn-primary mr-1 mt-2" (click)="addArmorBonuses()">Add</button>
       <button class="btn btn-sm btn-danger mt-2" (click)="clearArmorBonuses()">Clear</button>
@@ -248,22 +264,158 @@
       <label>Skill Roll Bonuses</label>
       <pre>{{ skillRollBonuses | json }}</pre>
       <div class="d-flex">
-        <input type="number" class="form-control" id="skillRollBonuses.bonus" [(ngModel)]="skillRollBonuses.bonus" placeholder="Bonus">
-        <select id="skillRollBonuses.type" class="form-control" [(ngModel)]="skillRollBonuses.type"  title="Modifier Type">
-          <option [value]="null" disabled>Modifier Type</option>
-          <option value="Alchemical">Alchemical</option>
-          <option value="Circumstance">Circumstance</option>
-          <option value="Competence">Competence</option>
-          <option value="Insight">Insight</option>
-          <option value="Luck">Luck</option>
-          <option value="Magic">Magic</option>
-          <option value="Racial">Racial</option>
-          <option value="Profane">Profane</option>
-          <option value="Sacred">Sacred</option>
-          <option value="Misc">Misc</option>
-          <option value="Temp">Temp</option>
+        <input type="number" class="form-control" id="skillRollBonuses.bonus" [(ngModel)]="skillRollBonusesTemp.bonus" placeholder="Bonus">
+        <select id="skillRollBonuses.type" class="form-control" [(ngModel)]="skillRollBonusesTemp.skill"  title="Skill">
+          <option [value]="null" disabled>Skill</option>
+          <option value="Appraise">Appraise</option>
+          <option value="Balance">Balance</option>
+          <option value="Bluff">Bluff</option>
+          <option value="Climb">Climb</option>
+          <option value="Concentration">Concentration</option>
+          <optgroup label="Craft">
+            <option value="Craft (any)">Craft (any)</option>
+            <option value="Craft (alchemy)">Craft (alchemy)</option>
+            <option value="Craft (armorsmithing)">Craft (armorsmithing)</option>
+            <option value="Craft (blacksmithing)">Craft (blacksmithing)</option>
+            <option value="Craft (bookbinding)">Craft (bookbinding)</option>
+            <option value="Craft (bowmaking)">Craft (bowmaking)</option>
+            <option value="Craft (brassmaking)">Craft (brassmaking)</option>
+            <option value="Craft (brewing)">Craft (brewing)</option>
+            <option value="Craft (candlemaking)">Craft (candlemaking)</option>
+            <option value="Craft (coppersmithing)">Craft (coppersmithing)</option>
+            <option value="Craft (dyemaking)">Craft (dyemaking)</option>
+            <option value="Craft (gemcutting)">Craft (gemcutting)</option>
+            <option value="Craft (goldsmithing)">Craft (goldsmithing)</option>
+            <option value="Craft (hatmaking)">Craft (hatmaking)</option>
+            <option value="Craft (hornworking)">Craft (hornworking)</option>
+            <option value="Craft (jewelmaking)">Craft (jewelmaking)</option>
+            <option value="Craft (locksmithing)">Craft (locksmithing)</option>
+            <option value="Craft (mapmaking)">Craft (mapmaking)</option>
+            <option value="Craft (milling)">Craft (milling)</option>
+            <option value="Craft (painting)">Craft (painting)</option>
+            <option value="Craft (parchmentmaking)">Craft (parchmentmaking)</option>
+            <option value="Craft (pewtermaking)">Craft (pewtermaking)</option>
+            <option value="Craft (potterymaking)">Craft (potterymaking)</option>
+            <option value="Craft (sculpting)">Craft (sculpting)</option>
+            <option value="Craft (shipmaking)">Craft (shipmaking)</option>
+            <option value="Craft (shoemaking)">Craft (shoemaking)</option>
+            <option value="Craft (silversmithing)">Craft (silversmithing)</option>
+            <option value="Craft (skinning)">Craft (skinning)</option>
+            <option value="Craft (soapmaking)">Craft (soapmaking)</option>
+            <option value="Craft (tanning)">Craft (tanning)</option>
+            <option value="Craft (trapmaking)">Craft (trapmaking)</option>
+            <option value="Craft (weaponsmithing)">Craft (weaponsmithing)</option>
+            <option value="Craft (weaving)">Craft (weaving)</option>
+            <option value="Craft (wheelmaking)">Craft (wheelmaking)</option>
+            <option value="Craft (winemaking)">Craft (winemaking)</option>
+            <option value="Craft (woodworking)">Craft (woodworking)</option>
+            <option value="Craft (varies)">Craft (varies)</option>
+          </optgroup>
+          <option value="Decipher Script">Decipher Script</option>
+          <option value="Diplomacy">Diplomacy</option>
+          <option value="Disable Device">Disable Device</option>
+          <option value="Disguise">Disguise</option>
+          <option value="Escape Artist">Escape Artist</option>
+          <option value="Forgery ">Forgery </option>
+          <option value="Gather Information">Gather Information</option>
+          <option value="Handle Animal">Handle Animal</option>
+          <option value="Heal">Heal</option>
+          <option value="Hide">Hide</option>
+          <option value="Intimidate">Intimidate</option>
+          <option value="Jump">Jump</option>
+          <optgroup label="Knowledge">
+            <option value="Knowledge (any)">Knowledge (any)</option>
+            <option value="Knowledge (arcana)">Knowledge (arcana)</option>
+            <option value="Knowledge (architecture and engineering)">Knowledge (architecture and engineering)</option>
+            <option value="Knowledge (dungeoneering)">Knowledge (dungeoneering)</option>
+            <option value="Knowledge (geography)">Knowledge (geography)</option>
+            <option value="Knowledge (history)">Knowledge (history)</option>
+            <option value="Knowledge (local)">Knowledge (local)</option>
+            <option value="Knowledge (nature)">Knowledge (nature)</option>
+            <option value="Knowledge (nobility and royalty)">Knowledge (nobility and royalty)</option>
+            <option value="Knowledge (religion)">Knowledge (religion)</option>
+            <option value="Knowledge (the planes)">Knowledge (the planes)</option>
+            <option value="Knowledge (varies)">Knowledge (varies)</option>
+          </optgroup>
+          <option value="Listen">Listen</option>
+          <option value="Move Silently">Move Silently</option>
+          <option value="Open Lock">Open Lock</option>
+          <optgroup label="Perform">
+            <option value="Perform (any)">Perform (any)</option>
+            <option value="Perform (act)">Perform (act)</option>
+            <option value="Perform (comedy)">Perform (comedy)</option>
+            <option value="Perform (dance)">Perform (dance)</option>
+            <option value="Perform (keyboard instruments)">Perform (keyboard instruments)</option>
+            <option value="Perform (percussion instruments)">Perform (percussion instruments)</option>
+            <option value="Perform (string instruments)">Perform (string instruments)</option>
+            <option value="Perform (wind instruments)">Perform (wind instruments)</option>
+            <option value="Perform (oratory)">Perform (oratory)</option>
+            <option value="Perform (sing)">Perform (sing)</option>
+            <option value="Perform (varies)">Perform (varies)</option>
+          </optgroup>
+          <optgroup label="Profession">
+            <option value="Profession (any)">Profession (any)</option>
+            <option value="Profession (arbitrator)">Profession (arbitrator)</option>
+            <option value="Profession (armorer)">Profession (armorer)</option>
+            <option value="Profession (artist)">Profession (artist)</option>
+            <option value="Profession (architect)">Profession (architect)</option>
+            <option value="Profession (barrister)">Profession (barrister)</option>
+            <option value="Profession (butler)">Profession (butler)</option>
+            <option value="Profession (cleaner)">Profession (cleaner)</option>
+            <option value="Profession (clerk)">Profession (clerk)</option>
+            <option value="Profession (cartographer)">Profession (cartographer)</option>
+            <option value="Profession (chimney sweep)">Profession (chimney sweep)</option>
+            <option value="Profession (chirurgeon/doctor/surgeon)">Profession (chirurgeon/doctor/surgeon)</option>
+            <option value="Profession (cook)">Profession (cook)</option>
+            <option value="Profession (courtier/courtesan)">Profession (courtier/courtesan)</option>
+            <option value="Profession (councellor)">Profession (councellor)</option>
+            <option value="Profession (dentist)">Profession (dentist)</option>
+            <option value="Profession (engineer)">Profession (engineer)</option>
+            <option value="Profession (entertainer)">Profession (entertainer)</option>
+            <option value="Profession (embalmer)">Profession (embalmer)</option>
+            <option value="Profession (ferrier)">Profession (ferrier)</option>
+            <option value="Profession (fence)">Profession (fence)</option>
+            <option value="Profession (hairdresser)">Profession (hairdresser)</option>
+            <option value="Profession (innkeeper)">Profession (innkeeper)</option>
+            <option value="Profession (interpreter)">Profession (interpreter)</option>
+            <option value="Profession (launderer)">Profession (launderer)</option>
+            <option value="Profession (landlord)">Profession (landlord)</option>
+            <option value="Profession (maid)">Profession (maid)</option>
+            <option value="Profession (masseuse)">Profession (masseuse)</option>
+            <option value="Profession (merchant)">Profession (merchant)</option>
+            <option value="Profession (messenger)">Profession (messenger)</option>
+            <option value="Profession (midwife)">Profession (midwife)</option>
+            <option value="Profession (money lender)">Profession (money lender)</option>
+            <option value="Profession (navigator)">Profession (navigator)</option>
+            <option value="Profession (noble)">Profession (noble)</option>
+            <option value="Profession (nursemaid)">Profession (nursemaid)</option>
+            <option value="Profession (pavier)">Profession (pavier)</option>
+            <option value="Profession (pilot)">Profession (pilot)</option>
+            <option value="Profession (plasterer)">Profession (plasterer)</option>
+            <option value="Profession (plumber)">Profession (plumber)</option>
+            <option value="Profession (priest)">Profession (priest)</option>
+            <option value="Profession (sailor)">Profession (sailor)</option>
+            <option value="Profession (scribe)">Profession (scribe)</option>
+            <option value="Profession (spy)">Profession (spy)</option>
+            <option value="Profession (trapper)">Profession (trapper)</option>
+            <option value="Profession (tutor)">Profession (tutor)</option>
+            <option value="Profession (vetrenarian)">Profession (vetrenarian)</option>
+            <option value="Profession (varies)">Profession (varies)</option>
+          </optgroup>
+          <option value="Ride">Ride</option>
+          <option value="Search">Search</option>
+          <option value="Sense Motive">Sense Motive</option>
+          <option value="Sleight Of Hand">Sleight Of Hand</option>
+          <option value="Speak Language">Speak Language</option>
+          <option value="Spellcraft">Spellcraft</option>
+          <option value="Spot">Spot</option>
+          <option value="Survival">Survival</option>
+          <option value="Swim">Swim</option>
+          <option value="Tumble">Tumble</option>
+          <option value="Use Magic Device">Use Magic Device</option>
+          <option value="Use Rope">Use Rope</option>
         </select>
-        <input type="text" class="form-control" id="skillRollBonuses.vs" [(ngModel)]="skillRollBonuses.vs" placeholder="Vs.">
+        <input type="text" class="form-control" id="skillRollBonuses.vs" [(ngModel)]="skillRollBonusesTemp.relatedTo" placeholder="Related to.">
       </div>
       <button class="btn btn-sm btn-primary mr-1 mt-2" (click)="addSkillRollBonuses()">Add</button>
       <button class="btn btn-sm btn-danger mt-2" (click)="clearSkillRollBonuses()">Clear</button>
@@ -333,13 +485,17 @@
     <div class="form-group col-6">
       <label for="special">Special</label>
       <pre>{{ special | json }}</pre>
-      <input type="text" class="form-control" id="special" [(ngModel)]="special" placeholder="Special">
+      <input type="text" class="form-control" id="special" [(ngModel)]="specialTemp" placeholder="Special">
       <button class="btn btn-sm btn-primary mr-1 mt-2" (click)="addSpecial()">Add</button>
       <button class="btn btn-sm btn-danger mt-2" (click)="clearSpecial()">Clear</button>
     </div>
     <div class="form-group col-6">
       <label for="favoredClass">Favored Class</label>
       <input type="text" class="form-control" id="favoredClass" [(ngModel)]="race.favoredClass" placeholder="Favored Class">
+    </div>
+    <div class="form-group col-6">
+      <label for="levelAdjustment">Level Adjustment</label>
+      <input type="text" class="form-control" id="levelAdjustment" [(ngModel)]="race.levelAdjustment" placeholder="Level Adjustment">
     </div>
 
     <button class="btn btn-lg btn-primary btn-block m-3" (click)="addRace()">Add Race</button>
