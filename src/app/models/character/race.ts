@@ -10,6 +10,7 @@ export interface RaceId extends Race {
 export interface Race {
 
   name: string;
+  variety?: string;
   type: string;
   subType: string;
   abilityScoreAdjustments?: {
