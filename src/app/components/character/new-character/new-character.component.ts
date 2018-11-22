@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../../services/firebase/auth/auth.service';
 import { CharacterService } from '../../../services/firebase/character/character.service';
 import { AbilityScore } from '../../../models/character/ability-scores';
-import { generateRandomHeight, generateRandomWeight, generateStartingAge, RaceId } from '../../../models/character/race';
+import { generateNewRandomHeight, generateNewRandomWeight, RaceId } from '../../../models/character/race';
 
 
 @Component({
@@ -241,12 +241,13 @@ export class NewCharacterComponent implements OnInit {
       this.characterService.tempCharacter.playerName = this.playerName;
       this.characterService.tempCharacter.characterName = this.characterName;
       this.characterService.tempCharacter.gender = this.gender;
-      this.characterService.tempCharacter.height = generateRandomHeight(this.selectedRace, this.gender);
-      this.characterService.tempCharacter.weight = generateRandomWeight(this.selectedRace, this.gender);
-      this.characterService.tempCharacter.baseAbilityScores = this.totalAbilityScores;
+      this.characterService.tempCharacter.height = generateNewRandomHeight(this.selectedRace, this.gender);
+      this.characterService.tempCharacter.weight = generateNewRandomWeight(this.selectedRace, this.gender);
+      this.characterService.tempCharacter.totalAbilityScores = this.totalAbilityScores;
       this.characterService.tempCharacter.raceId = this.selectedRace.id;
       this.characterService.tempCharacter.size = this.selectedRace.size;
-      this.router.navigateByUrl( '/character/new/class' );
+      this.characterService.tempCharacter.ecl = 1 + this.selectedRace.levelAdjustment;
+      this.router.navigate( ['/character/new/class'] );
     } else {
       this.popover.open();
     }

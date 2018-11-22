@@ -1,17 +1,18 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { merge, Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
 import { NgbModal, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
 import { CharacterService } from '../../../services/firebase/character/character.service';
-import { CharacterClassService } from '../../../services/firebase/character-class/character-class.service';
-import { CharacterClass, CharacterClassId } from '../../../models/character/character-class';
 import { Character } from '../../../models/character/character';
+import { CharacterClassService } from '../../../services/firebase/character-class/character-class.service';
+import { CharacterClassId } from '../../../models/character/character-class';
+import { ReligionService } from '../../../services/firebase/religion/religion.service';
+import { ReligionId } from '../../../models/character/religion';
+import { RaceService } from '../../../services/firebase/race/race.service';
+import {generateNewRandomHeight, generateNewRandomWeight, getAgeCategory, RaceId} from '../../../models/character/race';
 import { AlignmentPickerComponent } from '../modals/alignment-picker/alignment-picker.component';
 import { ReligionPickerComponent } from '../modals/religion-picker/religion-picker.component';
-import { ReligionId } from '../../../models/character/religion';
-import { ReligionService } from '../../../services/firebase/religion/religion.service';
-import {generateStartingAge, generateRandomHeight, generateRandomWeight, RaceId, getAgeCategory} from '../../../models/character/race';
-import { RaceService } from '../../../services/firebase/race/race.service';
 
 
 @Component({
@@ -35,8 +36,6 @@ export class NewCharacterClassComponent implements OnInit {
   public hitPoints: number;
 
   public height: [number, number];
-  public heightFeet: number;
-  public heightInches: number;
   public heightInchesMin: number;
   public weight: number;
 
@@ -47,7 +46,8 @@ export class NewCharacterClassComponent implements OnInit {
   focus$ = new Subject<string>();
   click$ = new Subject<string>();
 
-  constructor(public characterService: CharacterService,
+  constructor(private router: Router,
+              public characterService: CharacterService,
               public religionService: ReligionService,
               public raceService: RaceService,
               private classService: CharacterClassService,
@@ -71,17 +71,16 @@ export class NewCharacterClassComponent implements OnInit {
       },
       err => console.log('Error :: ' + err)
     );
+    if (this.characterService.tempCharacter.owner === null) {
+      console.log('tempCharacter owner is null, returning to character creation step 1.');
+      // router.navigate( ['/character/new/'] );
+    }
   }
 
   ngOnInit() {
-    this.character = this.characterService.tempCharacter;
     this.classes = [];
-    this.characterService.tempCharacter.ecl = 1; // TODO: Add Racial Level Adjustment
     this.characterService.tempCharacter.hitPoints = 0;
-    this.characterService.tempCharacter.hitDie = [{ hitDie: 0, dieValue: 0 }];
-    // TODO: Make default height and weight be the races random starting value
-    this.characterService.tempCharacter.height = { feet: 0, inches: 0 };
-    this.characterService.tempCharacter.weight = 0;
+    this.characterService.tempCharacter.hitDie = [{hitDie: 0, dieValue: 0}];
     // TODO: Make age the random starting age for a given race
     this.characterService.tempCharacter.age = 0;
     this.ageCategory = '';
@@ -101,15 +100,14 @@ export class NewCharacterClassComponent implements OnInit {
   }
   setSelectedClass(selectedValue: any): void {
     this.selectedClass = this.classes.find(race => race.name === selectedValue.name);
-    this.character.classes = Array({
+    this.characterService.tempCharacter.classes = Array({
       classId: this.selectedClass.id,
       level: 1
     });
     this.playerHasSelectedClass = true;
     this.characterService.tempCharacter.alignment = null;   // reset alignment
     this.characterService.tempCharacter.religion = [];      // reset religion
-    this.characterService.tempCharacter.age =
-      generateStartingAge(this.races.filter(race => race.id === this.characterService.tempCharacter.raceId)[0], this.selectedClass);
+    this.characterService.tempCharacter.age = this.generateNewRandomAge();
     this.characterService.tempCharacter.hitPoints = this.selectedClass.hitDie;
     this.characterService.tempCharacter.hitDie[0] = {
       hitDie: this.selectedClass.hitDie,
@@ -119,12 +117,14 @@ export class NewCharacterClassComponent implements OnInit {
 
   openSelectAlignmentModal(): void {
     const modalRef = this.modalService.open(AlignmentPickerComponent, { size: 'lg' });
-    modalRef.componentInstance.characterClass = this.character.classes.length >= 1 ? this.character.classes[0].classId : '';
+    modalRef.componentInstance.characterClass =
+      this.characterService.tempCharacter.classes.length >= 1 ? this.characterService.tempCharacter.classes[0].classId : '';
   }
 
   openSelectReligionModal(): void {
     const modalRef = this.modalService.open(ReligionPickerComponent, { size: 'lg' });
-    modalRef.componentInstance.characterClass = this.character.classes.length >= 1 ? this.character.classes[0].classId : '';
+    modalRef.componentInstance.characterClass =
+      this.characterService.tempCharacter.classes.length >= 1 ? this.characterService.tempCharacter.classes[0].classId : '';
   }
 
   getReligionText(): string {
@@ -142,6 +142,12 @@ export class NewCharacterClassComponent implements OnInit {
     return religionText;
   }
 
+  heightFeetChanged(): void {
+    if (this.characterService.tempCharacter.height.feet === null || this.characterService.tempCharacter.height.inches === null) {
+      this.randomHeight();
+    }
+  }
+
   heightInchesChanged(): void {
     if (this.characterService.tempCharacter.height.inches >= 12) {
       this.characterService.tempCharacter.height.feet = this.characterService.tempCharacter.height.feet + 1;
@@ -155,18 +161,69 @@ export class NewCharacterClassComponent implements OnInit {
     } else {
       this.heightInchesMin = -1;
     }
+    if (this.characterService.tempCharacter.height.feet === null || this.characterService.tempCharacter.height.inches === null) {
+      this.randomHeight();
+    }
   }
 
-  generateRandomAge() {
-    //
+  generateNewRandomAge(): number {
+    if (this.classes !== undefined && this.classes !== null && this.characterService.tempCharacter.classes.length >= 1
+        && this.races !== undefined && this.races !== null) {
+
+      const race: RaceId = this.races.find(data => data.id === this.characterService.tempCharacter.raceId);
+      let age = 0;
+      let rnd = 0;
+      switch (this.selectedClass.startingAgeType) {
+        case 'simple':
+          for (let i = 0; i < race.startingAges.classAges.simple.dieCount; i++) {
+            rnd = Math.floor(Math.random() * race.startingAges.classAges.simple.dieType) + 1;
+            age = age + rnd;
+          }
+          break;
+        case 'moderate':
+          for (let i = 0; i < race.startingAges.classAges.moderate.dieCount; i++) {
+            rnd = Math.floor(Math.random() * race.startingAges.classAges.moderate.dieType) + 1;
+            age = age + rnd;
+          }
+          break;
+        case 'complex':
+          for (let i = 0; i < race.startingAges.classAges.complex.dieCount; i++) {
+            rnd = Math.floor(Math.random() * race.startingAges.classAges.complex.dieType) + 1;
+            age = age + rnd;
+          }
+          break;
+      }
+      this.characterService.tempCharacter.age = age + race.startingAges.adulthood;
+      this.ageHasChanged();
+      return race.startingAges.adulthood + age;
+
+    } else {
+      console.log('No race and/or class selected unable to set starting age.');
+    }
   }
 
-  generateNewRandomHeight() {
-    //
+  ageHasChanged() {
+    const race: RaceId = this.races.find(data => data.id === this.characterService.tempCharacter.raceId);
+    this.ageCategory = getAgeCategory(race, this.characterService.tempCharacter.age);
+    if (this.characterService.tempCharacter.age === null) { this.characterService.tempCharacter.age = this.generateNewRandomAge(); }
   }
 
-  generateNewRandomWeight() {
-    //
+  randomHeight() {
+    this.characterService.tempCharacter.height = generateNewRandomHeight(
+      this.races.find(data => data.id === this.characterService.tempCharacter.raceId),
+      this.characterService.tempCharacter.gender
+    );
+  }
+
+  randomWeight() {
+    this.characterService.tempCharacter.weight = generateNewRandomWeight(
+      this.races.find(data => data.id === this.characterService.tempCharacter.raceId),
+      this.characterService.tempCharacter.gender
+    );
+  }
+
+  weightHasChanged() {
+    if (this.characterService.tempCharacter.weight === null) { this.randomWeight(); }
   }
 
 }

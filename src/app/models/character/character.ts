@@ -30,9 +30,12 @@ export interface Character {
   height: { feet: number, inches: number }; // 5' 10"
   weight: number;           // 220 lbs.
   looks?: string;
+  personality?: string;
+  background?: string;
 
   // Ability Scores
-  baseAbilityScores: AbilityScore;
+  tempAbilityScores: AbilityScore;
+  totalAbilityScores: AbilityScore;
 
   // HP
   hitPoints: number;
@@ -40,6 +43,9 @@ export interface Character {
 
   // BAB
   baseAttackBonus: number;
+
+  // Saves
+  saves: { fort: number, ref: number, will: number };
 
   // Inventory
   weaponsId: string;

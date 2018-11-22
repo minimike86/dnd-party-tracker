@@ -6,7 +6,8 @@
     <p class="text-muted" style="font-family: 'Special Elite', cursive;">Your character’s class is their profession or vocation determining: combat prowess, magical ability, skills, and more...</p>
   </div>
 
-  <div class="d-flex">
+  <!-- Class, Alignment, Religion -->
+  <div class="d-flex d-block">
 
     <div class="d-inline-flex w-50 mb-3 pr-1">
       <div class="flex-fill">
@@ -99,6 +100,7 @@
 
   </div>
 
+  <!-- Height, Weight, Age, HP -->
   <div class="d-flex d-block">
 
     <div class="d-inline-flex w-25">
@@ -107,14 +109,15 @@
           <label for="heightFeet">Height:</label>
           <button class="d-inline-flex align-items-center btn btn-outline-info btn-sm ml-1 py-0"
                   title="Generate a random character aged based on the selected race."
-                  (click)="generateNewRandomHeight()">
+                  (click)="randomHeight()">
             <i class="fas fa-random"></i><span class="small ml-1">Random</span>
           </button>
           <div class="d-flex">
             <div class="d-inline-flex w-50 mr-1">
               <div class="input-group">
               <input type="number" class="form-control text-right" id="heightFeet" min="0"
-                     [(ngModel)]="characterService.tempCharacter.height.feet" title="Feet" required>
+                     [(ngModel)]="characterService.tempCharacter.height.feet"
+                     (ngModelChange)="heightFeetChanged()" title="Feet" required>
                 <div class="input-group-append">
                   <span class="input-group-text">&apos;</span>
                 </div>
@@ -141,13 +144,14 @@
           <label for="weight">Weight:</label>
           <button class="d-inline-flex align-items-center btn btn-outline-info btn-sm ml-1 py-0"
                   title="Generate a random character aged based on the selected race."
-                  (click)="generateNewRandomWeight()">
+                  (click)="randomWeight()">
             <i class="fas fa-random"></i><span class="small ml-1">Random</span>
           </button>
           <div class="d-inline-flex w-100">
             <div class="input-group">
               <input type="number" class="form-control text-right" id="weight" min="0" max="999999"
-                     [(ngModel)]="characterService.tempCharacter.weight" title="Pounds" required>
+                     [(ngModel)]="characterService.tempCharacter.weight"
+                     (ngModelChange)="weightHasChanged()" title="Pounds" required>
               <div class="input-group-append">
                 <span class="input-group-text">lbs.</span>
               </div>
@@ -160,23 +164,41 @@
     <div class="d-inline-flex w-25">
       <div class="mr-2">
         <div class="form-group">
-          <label for="age">Age:</label>
-          <button class="d-inline-flex align-items-center btn btn-outline-info btn-sm ml-1 py-0"
-                  title="Generate a random character aged based on the selected race."
-                  (click)="generateRandomAge(4, 6)">
-            <i class="fas fa-random"></i><span class="small ml-1">Random</span>
-          </button>
+          <div class="d-inline w-50">
+            <label for="age">Age:</label>
+            <button class="d-inline-flex align-items-center btn btn-outline-info btn-sm ml-1 py-0"
+                    title="Generate a random character aged based on the selected race."
+                    (click)="generateNewRandomAge()">
+              <i class="fas fa-random"></i><span class="small ml-1 mr-auto">Random</span>
+            </button>
+          </div>
+          <div class="d-inline-flex w-50">
+            <span class="d-inline-flex badge small ml-auto mr-3"
+                  [ngClass]="
+                    ageCategory === 'venerable' ? 'badge-danger' :
+                    ageCategory === 'old' ? 'badge-warning' :
+                    ageCategory === 'middleAge' ? 'badge-info' :
+                    'badge-success'"
+                  style="font-family: 'Roboto', sans-serif;" title="Age Category">
+              {{
+              ageCategory === 'venerable' ? 'Venerable Age' :
+              ageCategory === 'old' ? 'Old Aged' :
+              ageCategory === 'middleAge' ? 'Middle Aged' :
+              'Adulthood'
+              }}
+            </span>
+          </div>
           <div class="d-inline-flex w-100">
             <div class="input-group">
               <input type="number" class="form-control text-right" id="age" min="0" max="999999"
-                     [(ngModel)]="characterService.tempCharacter.age" title="Age" required>
+                     [(ngModel)]="characterService.tempCharacter.age"
+                     (ngModelChange)="ageHasChanged()" title="Age" required>
               <div class="input-group-append">
                 <span class="input-group-text">Years</span>
               </div>
             </div>
           </div>
         </div>
-        <span class="d-block text-warning small ml-1" style="font-family: 'Roboto', sans-serif;">{{ ageCategory }}</span>
       </div>
     </div>
 
@@ -208,6 +230,79 @@
 
   </div>
 
-  <pre>{{ character | json }}</pre>
+  <!-- BAB, Saves -->
+  <div class="d-flex d-block">
+    <div class="w-25">
+      <div class="mr-2">
+        <div class="form-group">
+          <label for="bab">Base Attack Bonus:</label>
+          <input type="text" class="form-control text-center" id="bab"
+                    [(ngModel)]="characterService.tempCharacter.baseAttackBonus" title="Base Attack Bonus">
+        </div>
+      </div>
+    </div>
+    <div class="w-25">
+      <div class="mr-2">
+        <div class="form-group">
+          <label for="fortSave">Fort:</label>
+          <input type="text" class="form-control text-center" id="fortSave"
+                 [(ngModel)]="characterService.tempCharacter.saves.fort" title="Fortitude Save">
+        </div>
+      </div>
+    </div>
+    <div class="w-25">
+      <div class="mr-2">
+        <div class="form-group">
+          <label for="refSave">Ref:</label>
+          <input type="text" class="form-control text-center" id="refSave"
+                 [(ngModel)]="characterService.tempCharacter.saves.ref" title="Reflex Save">
+        </div>
+      </div>
+    </div>
+    <div class="w-25">
+      <div class="mr-2">
+        <div class="form-group">
+          <label for="willSave">Will:</label>
+          <input type="text" class="form-control text-center" id="willSave"
+                 [(ngModel)]="characterService.tempCharacter.saves.will" title="Will Save">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Looks, Personality, Background -->
+  <div class="d-flex d-block">
+    <div class="w-50">
+      <div class="mr-2">
+        <div class="form-group">
+          <label for="looks">Looks:</label>
+          <textarea type="text" class="form-control text-left" style="font: 0.8em 'Roboto', sans-serif; min-height: 10em;" id="looks"
+                   [(ngModel)]="characterService.tempCharacter.looks" title="Looks"
+                    placeholder="Decide what your character looks like. Is your character right- or left-handed? You can use your character’s looks to tell something about their personality and background"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="w-50">
+      <div class="mr-2">
+        <div class="form-group">
+          <label for="personality">Personality:</label>
+          <textarea type="text" class="form-control text-left" style="font: 0.8em 'Roboto', sans-serif; min-height: 10em;" id="personality"
+                    [(ngModel)]="characterService.tempCharacter.personality" title="Personality"
+                    placeholder="Decide how your character acts. What does they like? what do they want out of life? what scares them? and what makes them angry? Your character’s personality can change over time."></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="w-50">
+      <div class="mr-2">
+        <div class="form-group">
+          <label for="personality">Background:</label>
+          <textarea type="text" class="form-control text-left" style="font: 0.8em 'Roboto', sans-serif; min-height: 10em;" id="background"
+                    [(ngModel)]="characterService.tempCharacter.background" title="Background"
+                    placeholder="Decide what your character’s life has been like up until now. How did they decide to be an adventurer? How did they acquire her class? How did they get their starting equipment? What’s the best/worst thing that’s ever happened to them?"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
 
 </div>
+<pre>{{ this.characterService.tempCharacter | json }}</pre>
