@@ -385,6 +385,7 @@
             <option value="Profession (merchant)">Profession (merchant)</option>
             <option value="Profession (messenger)">Profession (messenger)</option>
             <option value="Profession (midwife)">Profession (midwife)</option>
+            <option value="Profession (miner)">Profession (miner)</option>
             <option value="Profession (money lender)">Profession (money lender)</option>
             <option value="Profession (navigator)">Profession (navigator)</option>
             <option value="Profession (noble)">Profession (noble)</option>
@@ -422,7 +423,7 @@
     </div>
     <div class="form-group col-6">
       <label for="startingAges">Starting Ages</label>
-      <input type="text" class="form-control" id="startingAges" [(ngModel)]="race.startingAges.adulthood" placeholder="Adulthood">
+      <input type="number" class="form-control" id="startingAges" [(ngModel)]="race.startingAges.adulthood" placeholder="Adulthood">
       <div class="d-flex">
         <input type="number" class="form-control" id="simple.dieCount" [(ngModel)]="race.startingAges.classAges.simple.dieCount" placeholder="Simple dieCount">
         <input type="number" class="form-control" id="simple.dieType" [(ngModel)]="race.startingAges.classAges.simple.dieType" placeholder="Simple dieType">
@@ -495,7 +496,7 @@
     </div>
     <div class="form-group col-6">
       <label for="levelAdjustment">Level Adjustment</label>
-      <input type="text" class="form-control" id="levelAdjustment" [(ngModel)]="race.levelAdjustment" placeholder="Level Adjustment">
+      <input type="number" class="form-control" id="levelAdjustment" [(ngModel)]="race.levelAdjustment" placeholder="Level Adjustment">
     </div>
 
     <button class="btn btn-lg btn-primary btn-block m-3" (click)="addRace()">Add Race</button>

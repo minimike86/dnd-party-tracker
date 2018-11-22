@@ -1,11 +1,12 @@
 import {AbilityScore} from './ability-scores';
-import {CharacterClass} from './character-class';
+
 
 export interface RaceId extends Race {
 
   id: string;
 
 }
+
 
 export interface Race {
 
@@ -112,6 +113,7 @@ export interface Race {
 
 }
 
+
 export function generateRandomHeight(race: Race, gender: string): { feet: number, inches: number } {
   let baseHeight = { feet: 0, inches: 0 };
   let baseHeightModifier = 0;
@@ -134,6 +136,7 @@ export function generateRandomHeight(race: Race, gender: string): { feet: number
   return baseHeight;
 }
 
+
 export function generateRandomWeight(race: Race, gender: string): number {
   let baseWeight = 0;
   let baseWeightMultiplier = 0;
@@ -154,63 +157,76 @@ export function generateRandomWeight(race: Race, gender: string): number {
   return baseWeight;
 }
 
-export function generateStartingAge(race: Race, charClass: CharacterClass): number {
-  if (race !== undefined && charClass !== undefined) {
-    let age = race.startingAges.adulthood;
-    console.log('adulthood: ', age);
-    switch (charClass.startingAgeType) {
-      case 'simple':
-        for (let i = 1; i <= race.startingAges.classAges.simple.dieCount; i++) {
-          age += Math.floor(Math.random() * race.startingAges.classAges.simple.dieType) + 1;
-          console.log('age(' + i + '): ', age);
-        }
-        console.log('charClass: ', charClass.name, ', startingAgeType: ', charClass.startingAgeType);
-        console.log('dieCount: ', race.startingAges.classAges.simple.dieCount);
-        console.log('dieType: ', race.startingAges.classAges.simple.dieType);
-        break;
-      case 'moderate':
-        for (let i = 1; i <= race.startingAges.classAges.moderate.dieCount; i++) {
-          age += Math.floor(Math.random() * race.startingAges.classAges.moderate.dieType) + 1;
-          console.log('age(' + i + '): ', age);
-        }
-        console.log('charClass: ', charClass.name, ', startingAgeType: ', charClass.startingAgeType);
-        console.log('dieCount: ', race.startingAges.classAges.moderate.dieCount);
-        console.log('dieType: ', race.startingAges.classAges.moderate.dieType);
-        break;
-      case 'complex':
-        for (let i = 1; i <= race.startingAges.classAges.complex.dieCount; i++) {
-          age += Math.floor(Math.random() * race.startingAges.classAges.complex.dieType) + 1;
-          console.log('age(' + i + '): ', age);
-        }
-        console.log('charClass: ', charClass.name, ', startingAgeType: ', charClass.startingAgeType);
-        console.log('dieCount: ', race.startingAges.classAges.complex.dieCount);
-        console.log('dieType: ', race.startingAges.classAges.complex.dieType);
-        break;
-    }
-    return age;
-  } else {
-    console.log('generateStartingAge() ERROR: ', 'race: ', race , 'charClass: ', charClass);
-  }
-}
 
 export function getAgeCategory(race: Race, age: number): string {
-  if (age >= race.agingEffects.venerable) {
+  if (age > 0 && age >= race.agingEffects.venerable && race.agingEffects.venerable !== null) {
     return 'venerable';
-  } else if (age >= race.agingEffects.old) {
+  } else if (age >= race.agingEffects.old && race.agingEffects.old !== null) {
     return 'old';
-  } else if (age >= race.agingEffects.middleAge) {
+  } else if (age >= race.agingEffects.middleAge && race.agingEffects.middleAge !== null) {
     return 'middleAge';
   }
   return 'adulthood';
 }
 
+
 export function getAgingEffects(race: Race, age: number): AbilityScore {
-  if (age >= race.agingEffects.venerable) {
+  if (age >= race.agingEffects.venerable && race.agingEffects.venerable !== null) {
     return new AbilityScore(-6, -6, -6, 3, 3, 3);
-  } else if (age >= race.agingEffects.old) {
+  } else if (age >= race.agingEffects.old && race.agingEffects.old !== null) {
     return new AbilityScore(-3, -3, -3, 2, 2, 2);
-  } else if (age >= race.agingEffects.middleAge) {
+  } else if (age >= race.agingEffects.middleAge && race.agingEffects.middleAge !== null) {
     return new AbilityScore(-1, -1, -1, 1, 1, 1);
   }
   return new AbilityScore(0, 0, 0, 0, 0, 0);
+}
+
+
+export function generateNewRandomHeight(race: RaceId, gender: string): { feet: number, inches: number } {
+  let height = 0;
+  let heightMod = 0;
+  if (gender !== undefined && gender !== null) {
+    switch (gender.toLowerCase()) {
+      case 'male':
+        for (let i = 0; i < race.heightModifier.male.dieCount; i++) {
+          heightMod = heightMod + (Math.floor(Math.random() * race.heightModifier.male.dieType) + 1);
+        }
+        height = (race.baseHeight.male.feet * 12) + race.baseHeight.male.inches + heightMod;
+        break;
+      case 'female':
+        for (let i = 0; i < race.heightModifier.female.dieCount; i++) {
+          heightMod = heightMod + (Math.floor(Math.random() * race.heightModifier.female.dieType) + 1);
+        }
+        height = (race.baseHeight.female.feet * 12) + race.baseHeight.female.inches + heightMod;
+        break;
+    }
+    return {feet: Math.floor(height / 12), inches: height - (Math.floor(height / 12) * 12)};
+  } else {
+    console.log('gender is not set unable to determine height');
+  }
+}
+
+
+export function generateNewRandomWeight(race: RaceId, gender: string): number {
+  let weight = 0;
+  let weightMod = 0;
+  if (gender !== undefined && gender !== null) {
+    switch (gender.toLowerCase()) {
+      case 'male':
+        for (let i = 0; i < race.weightModifier.male.dieCount; i++) {
+          weightMod = weightMod + (Math.floor(Math.random() * race.weightModifier.male.dieType) + 1);
+        }
+        weight = race.baseWeight.male + weightMod;
+        break;
+      case 'female':
+        for (let i = 0; i < race.weightModifier.female.dieCount; i++) {
+          weightMod = weightMod + (Math.floor(Math.random() * race.weightModifier.female.dieType) + 1);
+        }
+        weight = race.baseWeight.female + weightMod;
+        break;
+    }
+    return weight;
+  } else {
+    console.log('gender is not set unable to determine weight');
+  }
 }

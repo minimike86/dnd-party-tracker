@@ -42,10 +42,14 @@ export class CharacterService {
       height: { feet: 5, inches: 10 }, // 5' 10"
       weight: null, // 220 lbs.
       looks: null,
-      baseAbilityScores: new AbilityScore(0, 0, 0, 0,  0, 0),
+      personality: null,
+      background: null,
+      tempAbilityScores: new AbilityScore(0, 0, 0, 0,  0, 0),
+      totalAbilityScores: new AbilityScore(0, 0, 0, 0,  0, 0),
       hitPoints: null,
       hitDie: [],
       baseAttackBonus: null,
+      saves: { fort: null, ref: null, will: null },
       weaponsId: null,
       inventoryId: null,
     };

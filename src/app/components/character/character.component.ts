@@ -30,13 +30,15 @@ export class CharacterComponent implements OnInit {
     religion: ['BOCCOB'],
     height: { feet: 5, inches: 10 }, // feet, inches
     weight: 220, // lbs.
-    baseAbilityScores: new AbilityScore(8, 16, 12, 18, 6, 17),
+    tempAbilityScores: new AbilityScore(0, 0, 0, 0, 0, 0),
+    totalAbilityScores: new AbilityScore(8, 16, 12, 18, 6, 17),
     hitPoints: Math.floor(((Math.random() * 6) + 1) * 3 + (1 * 3)),
     hitDie: Array({hitDie: 6, dieValue: 6},
                         {hitDie: 6, dieValue: 4},
                         {hitDie: 4, dieValue: 2}
             ),
     baseAttackBonus: 20,
+    saves: { fort: 2, ref: 4, will: 6 },
     inventoryId: '',
     weaponsId: ''
   };

@@ -204,38 +204,53 @@ export class AbilityScoresNewComponent implements OnInit {
 
 
   updateTotalAbilityScores(): void {
+    if (this.selectedRace !== undefined) {
 
-    // Update total ability scores now that race has changed
-    // This is a one off event and should only be called again if race changes
-    if (  this.hasRolledStr || this.playerHasSelectedRace ) {
-      this.totalAbilityScores.strength = this.baseAbilityScores.strength + this.selectedRace.abilityScoreAdjustments.strength;
-      if (this.totalAbilityScores.strength < 1) { this.totalAbilityScores.strength = 1; }
-    }
-    if ( this.hasRolledDex || this.playerHasSelectedRace ) {
-      this.totalAbilityScores.dexterity = this.baseAbilityScores.dexterity + this.selectedRace.abilityScoreAdjustments.dexterity;
-      if (this.totalAbilityScores.dexterity < 1) { this.totalAbilityScores.dexterity = 1; }
-    }
-    if ( this.hasRolledCon || this.playerHasSelectedRace ) {
-      this.totalAbilityScores.constitution = this.baseAbilityScores.constitution + this.selectedRace.abilityScoreAdjustments.constitution;
-      if (this.totalAbilityScores.constitution < 1) { this.totalAbilityScores.constitution = 1; }
-    }
-    if ( this.hasRolledInt || this.playerHasSelectedRace ) {
-      this.totalAbilityScores.intelligence = this.baseAbilityScores.intelligence + this.selectedRace.abilityScoreAdjustments.intelligence;
-      if (this.totalAbilityScores.intelligence < 1) { this.totalAbilityScores.intelligence = 1; }
-    }
-    if ( this.hasRolledWis || this.playerHasSelectedRace ) {
-      this.totalAbilityScores.wisdom = this.baseAbilityScores.wisdom + this.selectedRace.abilityScoreAdjustments.wisdom;
-      if (this.totalAbilityScores.wisdom < 1) { this.totalAbilityScores.wisdom = 1; }
-    }
-    if ( this.hasRolledCha || this.playerHasSelectedRace ) {
-      this.totalAbilityScores.charisma = this.baseAbilityScores.charisma + this.selectedRace.abilityScoreAdjustments.charisma;
-      if (this.totalAbilityScores.charisma < 1) { this.totalAbilityScores.charisma = 1; }
-    }
+      // Update total ability scores now that race has changed
+      // This is a one off event and should only be called again if race changes
+      if (this.hasRolledStr || this.playerHasSelectedRace) {
+        this.totalAbilityScores.strength = this.baseAbilityScores.strength + this.selectedRace.abilityScoreAdjustments.strength;
+        if (this.totalAbilityScores.strength < 1) {
+          this.totalAbilityScores.strength = 1;
+        }
+      }
+      if (this.hasRolledDex || this.playerHasSelectedRace) {
+        this.totalAbilityScores.dexterity = this.baseAbilityScores.dexterity + this.selectedRace.abilityScoreAdjustments.dexterity;
+        if (this.totalAbilityScores.dexterity < 1) {
+          this.totalAbilityScores.dexterity = 1;
+        }
+      }
+      if (this.hasRolledCon || this.playerHasSelectedRace) {
+        this.totalAbilityScores.constitution = this.baseAbilityScores.constitution + this.selectedRace.abilityScoreAdjustments.constitution;
+        if (this.totalAbilityScores.constitution < 1) {
+          this.totalAbilityScores.constitution = 1;
+        }
+      }
+      if (this.hasRolledInt || this.playerHasSelectedRace) {
+        this.totalAbilityScores.intelligence = this.baseAbilityScores.intelligence + this.selectedRace.abilityScoreAdjustments.intelligence;
+        if (this.totalAbilityScores.intelligence < 1) {
+          this.totalAbilityScores.intelligence = 1;
+        }
+      }
+      if (this.hasRolledWis || this.playerHasSelectedRace) {
+        this.totalAbilityScores.wisdom = this.baseAbilityScores.wisdom + this.selectedRace.abilityScoreAdjustments.wisdom;
+        if (this.totalAbilityScores.wisdom < 1) {
+          this.totalAbilityScores.wisdom = 1;
+        }
+      }
+      if (this.hasRolledCha || this.playerHasSelectedRace) {
+        this.totalAbilityScores.charisma = this.baseAbilityScores.charisma + this.selectedRace.abilityScoreAdjustments.charisma;
+        if (this.totalAbilityScores.charisma < 1) {
+          this.totalAbilityScores.charisma = 1;
+        }
+      }
 
-    // update point buy and emit total score back to parent component
-    this.enforceRacialAbilityRules();
-    this.pointBuy = this.getPointBuyPoints();
-    this.totalAbilityScoresChanged.emit(this.totalAbilityScores);
+      // update point buy and emit total score back to parent component
+      this.enforceRacialAbilityRules();
+      this.pointBuy = this.getPointBuyPoints();
+      this.totalAbilityScoresChanged.emit(this.totalAbilityScores);
+
+    }
 
   }
 
