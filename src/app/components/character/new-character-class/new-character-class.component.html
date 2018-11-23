@@ -11,7 +11,12 @@
 
     <div class="d-inline-flex w-50 mb-3 pr-1">
       <div class="flex-fill">
-        <label for="typeahead-focus">Class:</label>
+        <div class="align-content-center ">
+          <label for="typeahead-focus">Class:</label>
+          <div class="btn btn-outline-info btn-sm ml-1 py-0 disabled">
+            <span class="small">Favored Class: {{ favoredClass }}</span>
+          </div>
+        </div>
         <input
           class="form-control input"
           type="text"
@@ -309,16 +314,16 @@
   </div>
 
   <div class="d-flex flex-row-reverse mt-3">
-    <button class="btn" [ngClass]="readyToPickFeatsAndSkills ? 'btn-primary' : 'btn-dark disabled'"
+    <button class="btn" [ngClass]="readyToPickSkillsAndFeats ? 'btn-primary' : 'btn-dark disabled'"
             [autoClose]="'outside'"
             placement="left"
             triggers="manual"
             popoverClass=""
-            (click)="selectFeatsAndSkills()"
-            popoverTitle="{{ !readyToPickFeatsAndSkills ? 'Missing Fields' : '' }}"
-            ngbPopover="{{ !playerHasSelectedClass ? 'Select your characters class.' : '' }}"
+            (click)="selectSkillsAndFeats()"
+            popoverTitle="{{ !readyToPickSkillsAndFeats ? 'Missing Fields' : '' }}"
+            ngbPopover="{{ !readyToPickSkillsAndFeats ? 'Select your characters class.' : '' }}"
             #popover="ngbPopover">
-      Next: Select Feats &amp; Skills <i class="fas fa-users-cog"></i>
+      Next: Select Skills &amp; Feats <i class="fas fa-users-cog"></i>
     </button>
   </div>
 

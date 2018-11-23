@@ -26,10 +26,11 @@ export class NewCharacterClassComponent implements OnInit {
   public religions: ReligionId[];
   public races: RaceId[];
 
-  public readyToPickFeatsAndSkills: boolean;
+  public readyToPickSkillsAndFeats: boolean;
   public playerHasSelectedClass: boolean;
 
-  public classes: any;
+  public classes: CharacterClassId[];
+  public favoredClass: string;
   public typeAheadClass: any;
   public selectedClass: CharacterClassId;
 
@@ -61,6 +62,7 @@ export class NewCharacterClassComponent implements OnInit {
     });
     raceService.getRaces().subscribe(data => {
       this.races = data;
+      this.favoredClass = this.races.find(race => race.id === this.characterService.tempCharacter.raceId).favoredClass;
     });
     classService.getClasses().subscribe(
       value => {
@@ -77,12 +79,12 @@ export class NewCharacterClassComponent implements OnInit {
     );
     if (this.characterService.tempCharacter.owner === null) {
       console.log('tempCharacter owner is null, returning to character creation step 1.');
-      router.navigate( ['/character/new/'] );
+      // router.navigate( ['/character/new/'] );
     }
   }
 
   ngOnInit() {
-    this.readyToPickFeatsAndSkills = false;
+    this.readyToPickSkillsAndFeats = false;
     this.playerHasSelectedClass = false;
     this.classes = [];
     this.characterService.tempCharacter.hitPoints = 0;
@@ -115,7 +117,7 @@ export class NewCharacterClassComponent implements OnInit {
       level: 1
     });
     this.playerHasSelectedClass = true;
-    this.readyToPickFeatsAndSkills = true;
+    this.readyToPickSkillsAndFeats = true;
     this.characterService.tempCharacter.alignment = null;   // reset alignment
     this.characterService.tempCharacter.religion = [];      // reset religion
     this.characterService.tempCharacter.age = this.generateNewRandomAge();
@@ -241,9 +243,8 @@ export class NewCharacterClassComponent implements OnInit {
     if (this.characterService.tempCharacter.weight === null) { this.randomWeight(); }
   }
 
-  selectFeatsAndSkills() {
-    if (this.readyToPickFeatsAndSkills) {
-      // this.characterService.tempCharacter;
+  selectSkillsAndFeats() {
+    if (this.readyToPickSkillsAndFeats) {
       this.router.navigate( ['/character/new/skills'] );
     } else {
       this.popover.open();
