@@ -15,5 +15,11 @@ export interface CharacterClass {
   classSkills?: [string];
   skillPointsFirstLevel: number;
   skillPointsEachLevel: number;
+  baseAttackBonus: number;
+  saves: {
+    fortitude: number,
+    reflex: number,
+    will: number,
+  };
 
 }

@@ -4,12 +4,19 @@
       <h4 class="d-block w-100 m-0" style="font-family: 'Fredericka the Great', cursive;">Join Adventuring Party</h4>
       <p class="d-block w-100 m-0"><small>Select a character to join this party:</small></p>
     </div>
-    <button type="button btn-sm" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <button class="btn btn-sm" (click)="activeModal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
     <div class="d-flex flex-wrap">
+
+      <div class="flex-fill" *ngIf=" characters !== undefined && characters.length === 0 ">
+        <div class="alert alert-warning">
+          <h4 class="alert-heading">No Characters!</h4>
+          <p class="mb-0">You have no characters on your account. Click to <a (click)="activeModal.dismiss('Cross click')" [routerLink]="['/character/new']" [routerLinkActive]="'active'" class="alert-link">here</a> to create a new character.</p>
+        </div>
+      </div>
 
       <div class="w-50" *ngFor="let character of characters" >
         <div class="card mb-1 mr-1">

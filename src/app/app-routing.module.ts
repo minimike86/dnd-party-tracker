@@ -21,10 +21,10 @@ const appRoutes: Routes = [
   { path: 'admin/add-race',       component: AddRaceComponent,                canActivate: [AuthGuard] },
   { path: 'admin/add-deity',      component: AddDeityComponent,               canActivate: [AuthGuard] },
   { path: 'login',                component: LoginComponent },
-  { path: 'parties',              component: PartyComponent },
-  { path: 'parties/:id',          component: PartyComponent },
+  { path: 'parties',              component: PartyComponent,                  canActivate: [AuthGuard] },
+  { path: 'parties/:id',          component: PartyComponent,                  canActivate: [AuthGuard] },
   { path: 'parties/owned/',       component: PartyComponent,                  canActivate: [AuthGuard] },
-  { path: 'character',            component: CharacterComponent },
+  { path: 'character',            component: CharacterComponent,              canActivate: [AuthGuard] },
   { path: 'character/new',        component: NewCharacterComponent,           canActivate: [AuthGuard] },
   { path: 'character/new/class',  component: NewCharacterClassComponent,      canActivate: [AuthGuard] },
   { path: '**',                   component: PageNotFoundComponent }

@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { merge, Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
-import { NgbModal, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbPopover, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
 import { CharacterService } from '../../../services/firebase/character/character.service';
 import { Character } from '../../../models/character/character';
 import { CharacterClassService } from '../../../services/firebase/character-class/character-class.service';
@@ -10,7 +10,7 @@ import { CharacterClassId } from '../../../models/character/character-class';
 import { ReligionService } from '../../../services/firebase/religion/religion.service';
 import { ReligionId } from '../../../models/character/religion';
 import { RaceService } from '../../../services/firebase/race/race.service';
-import {generateNewRandomHeight, generateNewRandomWeight, getAgeCategory, RaceId} from '../../../models/character/race';
+import { generateNewRandomHeight, generateNewRandomWeight, getAgeCategory, RaceId } from '../../../models/character/race';
 import { AlignmentPickerComponent } from '../modals/alignment-picker/alignment-picker.component';
 import { ReligionPickerComponent } from '../modals/religion-picker/religion-picker.component';
 
@@ -26,10 +26,12 @@ export class NewCharacterClassComponent implements OnInit {
   public religions: ReligionId[];
   public races: RaceId[];
 
+  public readyToPickFeatsAndSkills: boolean;
+  public playerHasSelectedClass: boolean;
+
   public classes: any;
   public typeAheadClass: any;
   public selectedClass: CharacterClassId;
-  public playerHasSelectedClass: boolean;
 
   public alignment: string;
   public hitDie: number;
@@ -41,6 +43,8 @@ export class NewCharacterClassComponent implements OnInit {
 
   public age: number;
   public ageCategory: string;
+
+  @ViewChild('popover') public popover: NgbPopover;
 
   @ViewChild('instance') instance: NgbTypeahead;
   focus$ = new Subject<string>();
@@ -73,17 +77,23 @@ export class NewCharacterClassComponent implements OnInit {
     );
     if (this.characterService.tempCharacter.owner === null) {
       console.log('tempCharacter owner is null, returning to character creation step 1.');
-      // router.navigate( ['/character/new/'] );
+      router.navigate( ['/character/new/'] );
     }
   }
 
   ngOnInit() {
+    this.readyToPickFeatsAndSkills = false;
+    this.playerHasSelectedClass = false;
     this.classes = [];
     this.characterService.tempCharacter.hitPoints = 0;
     this.characterService.tempCharacter.hitDie = [{hitDie: 0, dieValue: 0}];
     // TODO: Make age the random starting age for a given race
     this.characterService.tempCharacter.age = 0;
     this.ageCategory = '';
+    this.characterService.tempCharacter.baseAttackBonus = 0;
+    this.characterService.tempCharacter.saves.fort = 0;
+    this.characterService.tempCharacter.saves.ref = 0;
+    this.characterService.tempCharacter.saves.will = 0;
   }
 
   formatMatches = (matchedValue: any) => matchedValue.name || '';
@@ -105,6 +115,7 @@ export class NewCharacterClassComponent implements OnInit {
       level: 1
     });
     this.playerHasSelectedClass = true;
+    this.readyToPickFeatsAndSkills = true;
     this.characterService.tempCharacter.alignment = null;   // reset alignment
     this.characterService.tempCharacter.religion = [];      // reset religion
     this.characterService.tempCharacter.age = this.generateNewRandomAge();
@@ -113,6 +124,10 @@ export class NewCharacterClassComponent implements OnInit {
       hitDie: this.selectedClass.hitDie,
       dieValue: this.characterService.tempCharacter.hitPoints
     };
+    this.characterService.tempCharacter.baseAttackBonus = this.selectedClass.baseAttackBonus[0];
+    this.characterService.tempCharacter.saves.fort = this.selectedClass.saves.fortitude[0];
+    this.characterService.tempCharacter.saves.ref = this.selectedClass.saves.reflex[0];
+    this.characterService.tempCharacter.saves.will = this.selectedClass.saves.will[0];
   }
 
   openSelectAlignmentModal(): void {
@@ -224,6 +239,15 @@ export class NewCharacterClassComponent implements OnInit {
 
   weightHasChanged() {
     if (this.characterService.tempCharacter.weight === null) { this.randomWeight(); }
+  }
+
+  selectFeatsAndSkills() {
+    if (this.readyToPickFeatsAndSkills) {
+      // this.characterService.tempCharacter;
+      this.router.navigate( ['/character/new/skills'] );
+    } else {
+      this.popover.open();
+    }
   }
 
 }

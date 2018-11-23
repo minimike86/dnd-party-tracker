@@ -9,7 +9,7 @@ import { CharacterId } from '../../models/character/character';
 import { AddPartyComponent } from './modals/add-party/add-party.component';
 import { ConfirmDeletePartyComponent } from './modals/confirm-delete-party/confirm-delete-party.component';
 import { CharacterJoinPartyComponent } from './modals/character-join-party/character-join-party.component';
-import {ConfirmRemoveCharacterFromPartyComponent} from './modals/confirm-remove-character-from-party/confirm-remove-character-from-party.component';
+import { ConfirmRemoveCharacterFromPartyComponent } from './modals/confirm-remove-character-from-party/confirm-remove-character-from-party.component';
 
 
 @Component({
@@ -34,8 +34,12 @@ export class PartyComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getCharacters(); // Must call characters first
-    this.getParties();
+    if (this.authService.authenticated) {
+      this.getCharacters(); // Must call characters first
+      this.getParties();
+    } else {
+      this.router.navigate( ['/login'] );
+    }
   }
 
   // Party Functions
@@ -51,7 +55,7 @@ export class PartyComponent implements OnInit {
           if (this.routerParamId !== undefined && this.routerParamId !== null) {
             switch (this.routerParamId) {
               case 'owned':
-                this.parties = this.parties.filter(party => party.partyLeader === this.authService.getCurrentUser());
+                this.parties = this.parties.filter(party => party.partyLeader === this.authService.currentUser());
                 break;
               default:
                 this.parties = this.parties.filter(party => party.id === this.routerParamId);
@@ -93,7 +97,7 @@ export class PartyComponent implements OnInit {
     if (this.parties !== undefined && this.characters !== undefined) {
       for (const partyItem of parties) {
         for (const member of partyItem.members) {
-          if (this.getCharacter(member).owner === this.authService.getCurrentUser()) {
+          if (this.getCharacter(member).owner === this.authService.currentUser()) {
             this.partiesUserHasPlayerCharacter.push(partyItem.id);
           }
         }
