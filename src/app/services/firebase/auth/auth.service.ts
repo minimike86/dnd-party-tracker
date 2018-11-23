@@ -3,7 +3,7 @@ import { FirebaseApp } from '@angular/fire';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { auth } from 'firebase/app';
-import {Router} from '@angular/router';
+import { Router } from '@angular/router';
 
 
 @Injectable({
@@ -11,28 +11,29 @@ import {Router} from '@angular/router';
 })
 export class AuthService {
 
-  private currentUser;
+  private authState: any = null;
 
   constructor(private app: FirebaseApp,
               public afAuth: AngularFireAuth,
               private db: AngularFirestore,
               private router: Router) {
 
-    app.auth().onAuthStateChanged(user => {
-      if (user) {
-        // User is signed in.
-        this.db.collection('users').doc(user.email).set(user.toJSON());
-        this.currentUser = user.email;
-      } else {
-        // No user is signed in.
-        this.currentUser = null;
+    this.afAuth.authState.subscribe( data => {
+      this.authState = data;
+      if ( data !== undefined && data !== null ) {
+        this.db.collection('users').doc(data.email.toUpperCase()).set(data.toJSON());
       }
     });
 
   }
 
-  getCurrentUser(): string {
-    return this.currentUser;
+  // Returns true if user is logged in
+  get authenticated(): boolean {
+    return this.authState !== null;
+  }
+
+  get currentUser(): any {
+    return this.authenticated ? this.authState : null;
   }
 
   login(provider: string) {

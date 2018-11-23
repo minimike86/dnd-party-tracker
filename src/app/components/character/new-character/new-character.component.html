@@ -80,8 +80,8 @@
             popoverClass=""
             (click)="selectCharacterClass()"
             popoverTitle="{{ !readyToPickClass ? 'Missing Fields' : '' }}"
-            ngbPopover="{{ playerName.length === 0 ? '\'Player Name\' cannot be blank.' :
-              characterName.length === 0 ? '\'Character Name\' cannot be blank.' :
+            ngbPopover="{{ playerName === '' ? '\'Player Name\' cannot be blank.' :
+              characterName === '' ? '\'Character Name\' cannot be blank.' :
               !playerHasSelectedRace ? 'Select your characters race.' :
               !playerHasRolledAllStats ? 'Roll your characters ability scores.' : '' }}"
             #popover="ngbPopover">

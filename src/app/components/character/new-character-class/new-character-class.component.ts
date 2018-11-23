@@ -73,7 +73,7 @@ export class NewCharacterClassComponent implements OnInit {
     );
     if (this.characterService.tempCharacter.owner === null) {
       console.log('tempCharacter owner is null, returning to character creation step 1.');
-      // router.navigate( ['/character/new/'] );
+      router.navigate( ['/character/new/'] );
     }
   }
 

@@ -30,15 +30,17 @@ export class NewCharacterComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.playerName = '';
-    this.authService.afAuth.user.subscribe(data => {
-      this.playerName = data !== null ? data.displayName : '';
-    });
-    this.characterName = '';
-    this.gender = 'Male';
-    this.readyToPickClass = false;
-    this.playerHasRolledAllStats = false;
-    this.playerHasSelectedRace = false;
+    if (this.authService.authenticated) {
+      this.playerName = '';
+      this.playerName = this.authService.currentUser.displayName;
+      this.characterName = '';
+      this.gender = 'Male';
+      this.readyToPickClass = false;
+      this.playerHasRolledAllStats = false;
+      this.playerHasSelectedRace = false;
+    } else {
+      this.router.navigate( ['/login'] );
+    }
   }
 
   // TODO: Add names to Firestore
@@ -205,12 +207,8 @@ export class NewCharacterComponent implements OnInit {
   }
 
   checkPlayerIsReadyToPickClass(): void {
-    if ( (this.playerName.length >= 1)
-      && (this.characterName.length >= 1)
-      && this.gender
-      && this.playerHasSelectedRace
-      && this.playerHasRolledAllStats
-    ) {
+    if ( this.playerName.length >= 1 && this.characterName.length >= 1
+      && this.gender && this.playerHasSelectedRace && this.playerHasRolledAllStats ) {
       this.readyToPickClass = true;
     } else {
       this.readyToPickClass = false;
@@ -237,7 +235,7 @@ export class NewCharacterComponent implements OnInit {
   selectCharacterClass() {
     if (this.readyToPickClass) {
       this.characterService.newCharacter();
-      this.characterService.tempCharacter.owner = this.authService.getCurrentUser();
+      this.characterService.tempCharacter.owner = this.authService.currentUser.email;
       this.characterService.tempCharacter.playerName = this.playerName;
       this.characterService.tempCharacter.characterName = this.characterName;
       this.characterService.tempCharacter.gender = this.gender;
