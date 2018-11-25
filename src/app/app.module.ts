@@ -22,6 +22,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { AdminComponent } from './components/admin/admin.component';
 import { AddDeityComponent } from './components/admin/add-deity/add-deity.component';
 import { AddRaceComponent } from './components/admin/add-race/add-race.component';
+import { AddSkillComponent } from './components/admin/add-skill/add-skill.component';
 import { CharacterComponent } from './components/character/character.component';
 import { PartyComponent } from './components/party/party.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
@@ -33,6 +34,8 @@ import { ArmorClassComponent } from './components/character/armor-class/armor-cl
 import { HitPointsComponent } from './components/character/hit-points/hit-points.component';
 import { WeaponsComponent } from './components/weapons/weapons.component';
 import { NewCharacterComponent } from './components/character/new-character/new-character.component';
+import { NewCharacterClassComponent } from './components/character/new-character-class/new-character-class.component';
+import { NewCharacterSkillComponent } from './components/character/new-character-skill/new-character-skill.component';
 import { AbilityScoresNewComponent } from './components/character/ability-scores-new/ability-scores-new.component';
 import { AddPartyComponent } from './components/party/modals/add-party/add-party.component';
 import { ConfirmDeletePartyComponent } from './components/party/modals/confirm-delete-party/confirm-delete-party.component';
@@ -40,7 +43,6 @@ import { CharacterJoinPartyComponent } from './components/party/modals/character
 import {
   ConfirmRemoveCharacterFromPartyComponent
 } from './components/party/modals/confirm-remove-character-from-party/confirm-remove-character-from-party.component';
-import { NewCharacterClassComponent } from './components/character/new-character-class/new-character-class.component';
 import { LoginComponent } from './components/login/login.component';
 import { AlignmentPickerComponent } from './components/character/modals/alignment-picker/alignment-picker.component';
 import { ReligionPickerComponent } from './components/character/modals/religion-picker/religion-picker.component';
@@ -55,8 +57,11 @@ import { ReligionPickerComponent } from './components/character/modals/religion-
     AdminComponent,
     AddDeityComponent,
     AddRaceComponent,
+    AddSkillComponent,
     CharacterComponent,
     NewCharacterComponent,
+    NewCharacterClassComponent,
+    NewCharacterSkillComponent,
     PartyComponent,
     CombatOptionsComponent,
     SavingThrowsComponent,
@@ -69,7 +74,6 @@ import { ReligionPickerComponent } from './components/character/modals/religion-
     ConfirmDeletePartyComponent,
     CharacterJoinPartyComponent,
     ConfirmRemoveCharacterFromPartyComponent,
-    NewCharacterClassComponent,
     LoginComponent,
     AlignmentPickerComponent,
     ReligionPickerComponent

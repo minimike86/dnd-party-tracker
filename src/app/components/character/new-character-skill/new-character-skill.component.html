@@ -1,0 +1,120 @@
+<app-navbar></app-navbar>
+<div class="container pb-3" style="font-family: 'Patua One', cursive;">
+
+  <div>
+    <h2 class="mt-3" style="font-family: 'Fredericka the Great', cursive;">What can your do?</h2>
+    <p class="text-muted" style="font-family: 'Special Elite', cursive;">
+      As a character advances in level, they gets better at using some or all of their skills.
+    </p>
+  </div>
+
+  <!-- Skills -->
+  <div class="">
+
+    <div class="d-flex flex-row-reverse bg-dark">
+      <div class="d-flex">
+        <div class="flex-grow-1 text-white align-self-center" style="font-size: x-small;">
+          <div class="text-right d-block">Max Ranks:</div>
+          <div class="text-right d-block">(Class/Cross-Class)</div>
+        </div>
+        <div class="form-inline">
+          <div class="input-group input-group-sm m-1">
+            <input type="text" class="form-control form-control-sm bg-light text-center"
+                   style="max-width: 3em;" title="Max Class Ranks" disabled
+                   [value]="maxClassRanks">
+            <div class="input-group-prepend input-group-append">
+              <span class="input-group-text small text-muted">/</span>
+            </div>
+            <input type="text" class="form-control form-control-sm bg-light text-center"
+                   style="max-width: 3em;" title="Max Cross-Class Ranks" disabled
+                   [value]="maxCrossClassRanks">
+          </div>
+        </div>
+      </div>
+      <div class="d-flex mr-2">
+        <div class="flex-grow-1 text-white align-self-center" style="font-size: x-small;">
+          <div class="text-right d-block">Skill Points:</div>
+          <div class="text-right d-block">(Spent/to Spend)</div>
+        </div>
+        <div class="form-inline">
+          <div class="input-group input-group-sm m-1">
+            <input type="text" class="form-control form-control-sm bg-light text-center"
+                   style="max-width: 3em;" title="Spent Class Ranks" disabled
+                   [value]="toSpendSkillPoints">
+            <div class="input-group-prepend input-group-append">
+              <span class="input-group-text small text-muted">/</span>
+            </div>
+            <input type="text" class="form-control form-control-sm bg-light text-center"
+                   style="max-width: 3em;" title="Class Ranks to Spend" disabled
+                   [value]="maxSkillPoints">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex bg-dark">
+      <div class="text-white" style="min-height: 1.75em; min-width: 45px;">
+        <div style="margin-top: -1em; font-size: xx-small; transform: rotate(270deg);">Class Skill?</div>
+      </div>
+      <div class="d-flex flex-fill justify-content-center text-center text-white">
+        <div class="col-4 px-1">Skill Name</div>
+        <div class="col-1 px-1 align-self-center small" title="Key Ability">Key Ability</div>
+        <div class="col-2 px-1">Skill Modifier</div>
+        <div class="text-dark w-auto">=</div>
+        <div class="col-1 px-1 align-self-center small" title="Ability Modifier">Ab. Modifier</div>
+        <div class="text-dark w-auto">+</div>
+        <div class="col-2 px-1">Ranks</div>
+        <div class="text-dark w-auto">+</div>
+        <div class="col-2 px-1">Misc</div>
+      </div>
+    </div>
+    <div class="d-flex text-center my-1" *ngFor="let skill of skills">
+      <div class="flex-grow-1 align-self-center" style="min-width: 45px;">
+        <input type="checkbox" class="custom-checkbox">
+      </div>
+      <div class="d-flex">
+        <div class="col-4 px-1" style="margin-left: -15px;">
+          <input type="text" class="form-control form-control-plaintext form-control-sm bg-light pl-2"
+                 [value]="skill.name"
+                 disabled>
+        </div>
+        <div class="col-1 px-1">
+          <input type="text" class="form-control form-control-plaintext form-control-sm bg-light text-center"
+                 [value]="skill.keyAbility === 'strength' ? 'STR'
+                 : skill.keyAbility === 'dexterity' ? 'DEX'
+                 : skill.keyAbility === 'constitution' ? 'CON'
+                 : skill.keyAbility === 'intelligence' ? 'INT'
+                 : skill.keyAbility === 'wisdom' ? 'WIS'
+                 : skill.keyAbility === 'charisma' ? 'CHA' : 'NONE'"
+                 disabled>
+        </div>
+        <div class="col-2 px-1">
+          <input type="number" class="form-control form-control-sm bg-light border-dark text-center"
+                 disabled>
+        </div>
+        <div class="text-dark w-auto">=</div>
+        <div class="col-1 px-1">
+          <input type="text" class="form-control form-control-plaintext form-control-sm bg-light text-center"
+                 [value]="skill.keyAbility === 'strength' ? getAbilityModifier(characterService.tempCharacter.totalAbilityScores.strength)
+                 : skill.keyAbility === 'dexterity' ? getAbilityModifier(characterService.tempCharacter.totalAbilityScores.dexterity)
+                 : skill.keyAbility === 'constitution' ? getAbilityModifier(characterService.tempCharacter.totalAbilityScores.constitution)
+                 : skill.keyAbility === 'intelligence' ? getAbilityModifier(characterService.tempCharacter.totalAbilityScores.intelligence)
+                 : skill.keyAbility === 'wisdom' ? getAbilityModifier(characterService.tempCharacter.totalAbilityScores.wisdom)
+                 : skill.keyAbility === 'charisma' ? getAbilityModifier(characterService.tempCharacter.totalAbilityScores.charisma) : '-'"
+                 disabled>
+        </div>
+        <div class="text-dark w-auto">+</div>
+        <div class="col-2 px-1">
+          <input type="number" class="form-control form-control-sm text-center">
+        </div>
+        <div class="text-dark w-auto">+</div>
+        <div class="col-2 px-1">
+          <input type="number" class="form-control form-control-sm text-center">
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<pre>{{ characterService.tempCharacter | json }}</pre>

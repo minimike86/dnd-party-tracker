@@ -4,7 +4,6 @@ import { merge, Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
 import { NgbModal, NgbPopover, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
 import { CharacterService } from '../../../services/firebase/character/character.service';
-import { Character } from '../../../models/character/character';
 import { CharacterClassService } from '../../../services/firebase/character-class/character-class.service';
 import { CharacterClassId } from '../../../models/character/character-class';
 import { ReligionService } from '../../../services/firebase/religion/religion.service';
@@ -22,14 +21,15 @@ import { ReligionPickerComponent } from '../modals/religion-picker/religion-pick
 })
 export class NewCharacterClassComponent implements OnInit {
 
-  public character: Character;
+  // public character: Character;
   public religions: ReligionId[];
   public races: RaceId[];
 
-  public readyToPickFeatsAndSkills: boolean;
+  public readyToPickSkillsAndFeats: boolean;
   public playerHasSelectedClass: boolean;
 
-  public classes: any;
+  public classes: CharacterClassId[];
+  public favoredClass: string;
   public typeAheadClass: any;
   public selectedClass: CharacterClassId;
 
@@ -61,6 +61,7 @@ export class NewCharacterClassComponent implements OnInit {
     });
     raceService.getRaces().subscribe(data => {
       this.races = data;
+      this.favoredClass = this.races.find(race => race.id === this.characterService.tempCharacter.raceId).favoredClass;
     });
     classService.getClasses().subscribe(
       value => {
@@ -82,7 +83,7 @@ export class NewCharacterClassComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.readyToPickFeatsAndSkills = false;
+    this.readyToPickSkillsAndFeats = false;
     this.playerHasSelectedClass = false;
     this.classes = [];
     this.characterService.tempCharacter.hitPoints = 0;
@@ -115,11 +116,14 @@ export class NewCharacterClassComponent implements OnInit {
       level: 1
     });
     this.playerHasSelectedClass = true;
-    this.readyToPickFeatsAndSkills = true;
+    this.readyToPickSkillsAndFeats = true;
     this.characterService.tempCharacter.alignment = null;   // reset alignment
     this.characterService.tempCharacter.religion = [];      // reset religion
     this.characterService.tempCharacter.age = this.generateNewRandomAge();
-    this.characterService.tempCharacter.hitPoints = this.selectedClass.hitDie;
+    this.characterService.tempCharacter.hitPoints = this.getHitPointsForClass(
+      this.selectedClass,
+      this.characterService.tempCharacter.totalAbilityScores.constitution
+    );
     this.characterService.tempCharacter.hitDie[0] = {
       hitDie: this.selectedClass.hitDie,
       dieValue: this.characterService.tempCharacter.hitPoints
@@ -128,6 +132,18 @@ export class NewCharacterClassComponent implements OnInit {
     this.characterService.tempCharacter.saves.fort = this.selectedClass.saves.fortitude[0];
     this.characterService.tempCharacter.saves.ref = this.selectedClass.saves.reflex[0];
     this.characterService.tempCharacter.saves.will = this.selectedClass.saves.will[0];
+  }
+
+  getHitPointsForClass(clsId: CharacterClassId, constitution: number): number {
+    let hp = clsId.hitDie + this.getAbilityModifier(constitution);
+    if ( hp <= 0 ) {
+      hp = 1;
+    }
+    return hp;
+  }
+
+  getAbilityModifier(abilityScore: number): number {
+    return Math.floor(abilityScore / 2) - 5;
   }
 
   openSelectAlignmentModal(): void {
@@ -241,10 +257,9 @@ export class NewCharacterClassComponent implements OnInit {
     if (this.characterService.tempCharacter.weight === null) { this.randomWeight(); }
   }
 
-  selectFeatsAndSkills() {
-    if (this.readyToPickFeatsAndSkills) {
-      // this.characterService.tempCharacter;
-      this.router.navigate( ['/character/new/skills'] );
+  selectSkillsAndFeats() {
+    if (this.readyToPickSkillsAndFeats) {
+      this.router.navigate( ['/character/new/skill'] );
     } else {
       this.popover.open();
     }

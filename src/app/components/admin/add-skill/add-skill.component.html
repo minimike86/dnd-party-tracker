@@ -1,0 +1,61 @@
+<app-navbar></app-navbar>
+<div class="container pb-3" style="font-family: 'Patua One', cursive;">
+  <div>
+    <h2 class="mt-3" style="font-family: 'Fredericka the Great', cursive;">Add Skill</h2>
+  </div>
+  <div class="row p-0">
+
+    <div class="form-group col-8">
+      <label for="skillName">Skill Name</label>
+      <input type="text" class="form-control" id="skillName" [(ngModel)]="skill.name" placeholder="Skill Name">
+    </div>
+
+    <div class="form-group col-4">
+      <label for="keyAbility">Key Ability</label>
+      <select class="form-control" id="keyAbility" [(ngModel)]="skill.keyAbility">
+        <option value="strength">STR</option>
+        <option value="dexterity">DEX</option>
+        <option value="constitution">CON</option>
+        <option value="intelligence">INT</option>
+        <option value="wisdom">WIS</option>
+        <option value="charisma">CHA</option>
+      </select>
+    </div>
+
+    <div class="form-group col-4">
+      <label for="untrained">Untrained</label>
+      <select class="form-control" id="untrained" [(ngModel)]="skill.untrained">
+        <option [value]="true">true</option>
+        <option [value]="false">false</option>
+      </select>
+    </div>
+
+    <div class="form-group col-4">
+      <label for="armorCheckPenaltyApplies">AC Penalty Applies</label>
+      <select class="form-control" id="armorCheckPenaltyApplies" [(ngModel)]="skill.armorCheckPenaltyApplies">
+        <option [value]="true">true</option>
+        <option [value]="false">false</option>
+      </select>
+    </div>
+
+    <div class="form-group col-4">
+      <label for="dblAcPenaltyApplies">Double AC Penalty Applies</label>
+      <select class="form-control" id="dblAcPenaltyApplies" [(ngModel)]="skill.dblAcPenaltyApplies">
+        <option [value]="true">true</option>
+        <option [value]="false">false</option>
+      </select>
+    </div>
+
+    <div class="form-group col-12">
+      <label for="synergies">Synergies</label>
+      <input type="text" class="form-control" id="synergies" [(ngModel)]="synergies" placeholder="Synergies">
+    </div>
+
+    <button class="btn btn-primary btn-block m-3" (click)="addSkill()">Add Skill</button>
+  </div>
+
+  <div class="d-flex w-25 mr-auto">
+    <button class="btn btn-lg btn-block btn-secondary" [routerLink]="['/admin']" [routerLinkActive]="['active']">Back</button>
+  </div>
+
+</div>
