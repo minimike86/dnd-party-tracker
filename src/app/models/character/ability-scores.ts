@@ -36,13 +36,8 @@ export class AbilityScore {
     this.charisma = charisma;
   }
 
-  getAbilityModifier(abilityScore: number): string {
-    const modifier = Math.floor(abilityScore / 2) - 5;
-    if (modifier < 0) {
-      return '' + modifier; // '-' is already present in negative number
-    } else {
-      return '+' + modifier;
-    }
-  }
+}
 
+export function getAbilityModifier(abilityScore: number): number {
+  return Math.floor(abilityScore / 2) - 5;
 }

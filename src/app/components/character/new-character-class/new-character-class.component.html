@@ -210,7 +210,15 @@
     <div class="d-inline-flex w-25">
       <div class="mr-2 w-50">
         <div class="form-group">
-          <label class="" for="hitPoints">HP:</label>
+          <label class="" for="hitPoints">HP:
+            <div class="btn btn-outline-info btn-sm ml-1 py-0 disabled">
+              <span class="small" title="You add your constitution modifier to your HP each level">
+                CON {{ getAbilityModifier(characterService.tempCharacter.totalAbilityScores.constitution) < 0 ?
+                getAbilityModifier(characterService.tempCharacter.totalAbilityScores.constitution) :
+                '+' + getAbilityModifier(characterService.tempCharacter.totalAbilityScores.constitution)}}
+              </span>
+            </div>
+          </label>
           <div class="">
             <input type="text" class="form-control text-center bg-white" id="hitPoints" min="0" max="999"
                    [value]="this.selectedClass !== undefined ? characterService.tempCharacter.hitPoints : '-'"

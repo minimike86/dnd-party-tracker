@@ -4,7 +4,6 @@ import { merge, Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
 import { NgbModal, NgbPopover, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
 import { CharacterService } from '../../../services/firebase/character/character.service';
-import { Character } from '../../../models/character/character';
 import { CharacterClassService } from '../../../services/firebase/character-class/character-class.service';
 import { CharacterClassId } from '../../../models/character/character-class';
 import { ReligionService } from '../../../services/firebase/religion/religion.service';
@@ -22,7 +21,7 @@ import { ReligionPickerComponent } from '../modals/religion-picker/religion-pick
 })
 export class NewCharacterClassComponent implements OnInit {
 
-  public character: Character;
+  // public character: Character;
   public religions: ReligionId[];
   public races: RaceId[];
 
@@ -79,7 +78,7 @@ export class NewCharacterClassComponent implements OnInit {
     );
     if (this.characterService.tempCharacter.owner === null) {
       console.log('tempCharacter owner is null, returning to character creation step 1.');
-      // router.navigate( ['/character/new/'] );
+      router.navigate( ['/character/new/'] );
     }
   }
 
@@ -121,7 +120,10 @@ export class NewCharacterClassComponent implements OnInit {
     this.characterService.tempCharacter.alignment = null;   // reset alignment
     this.characterService.tempCharacter.religion = [];      // reset religion
     this.characterService.tempCharacter.age = this.generateNewRandomAge();
-    this.characterService.tempCharacter.hitPoints = this.selectedClass.hitDie;
+    this.characterService.tempCharacter.hitPoints = this.getHitPointsForClass(
+      this.selectedClass,
+      this.characterService.tempCharacter.totalAbilityScores.constitution
+    );
     this.characterService.tempCharacter.hitDie[0] = {
       hitDie: this.selectedClass.hitDie,
       dieValue: this.characterService.tempCharacter.hitPoints
@@ -130,6 +132,18 @@ export class NewCharacterClassComponent implements OnInit {
     this.characterService.tempCharacter.saves.fort = this.selectedClass.saves.fortitude[0];
     this.characterService.tempCharacter.saves.ref = this.selectedClass.saves.reflex[0];
     this.characterService.tempCharacter.saves.will = this.selectedClass.saves.will[0];
+  }
+
+  getHitPointsForClass(clsId: CharacterClassId, constitution: number): number {
+    let hp = clsId.hitDie + this.getAbilityModifier(constitution);
+    if ( hp <= 0 ) {
+      hp = 1;
+    }
+    return hp;
+  }
+
+  getAbilityModifier(abilityScore: number): number {
+    return Math.floor(abilityScore / 2) - 5;
   }
 
   openSelectAlignmentModal(): void {
@@ -245,7 +259,7 @@ export class NewCharacterClassComponent implements OnInit {
 
   selectSkillsAndFeats() {
     if (this.readyToPickSkillsAndFeats) {
-      this.router.navigate( ['/character/new/skills'] );
+      this.router.navigate( ['/character/new/skill'] );
     } else {
       this.popover.open();
     }

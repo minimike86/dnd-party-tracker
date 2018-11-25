@@ -1,9 +1,4 @@
-import { Size } from '../../enums/enum-size';
-import { Alignment } from '../../enums/enum-alignment';
 import { AbilityScore } from './ability-scores';
-import { Item } from '../item/item';
-import { Weapon } from '../item/weapon';
-import {Religion} from './religion';
 
 export interface CharacterId extends Character {
 
