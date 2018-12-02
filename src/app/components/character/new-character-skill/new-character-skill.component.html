@@ -125,7 +125,8 @@
                  [min]="getRacialSkillMiscBonus(skill).bonus"
                  [value]="getRacialSkillMiscBonus(skill).bonus"
                  [title]="getRacialSkillMiscBonus(skill).bonus !== 0 ? (getRacialSkillMiscBonus(skill).bonus >= 0 ? '+' : '') + getRacialSkillMiscBonus(skill).bonus + ' Racial Bonus (' + getRacialSkillMiscBonus(skill).vs + ')' : ''"
-                 (input)="updateSkillMiscs(skill, i, $event.target.valueAsNumber)">
+                 (input)="updateSkillMiscs(skill, i, $event.target.valueAsNumber)"
+                 [ngClass]="getRacialSkillMiscBonus(skill).bonus < 0 ? 'is-invalid text-white bg-danger' : getRacialSkillMiscBonus(skill).bonus > 0 ? 'is-valid text-white bg-success' : ''">
         </div>
       </div>
     </div>
