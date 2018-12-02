@@ -1,0 +1,258 @@
+<app-navbar></app-navbar>
+<div class="container pb-3" style="font-family: 'Patua One', cursive;">
+  <div class="d-flex w-100 px-3">
+    <h2 class="mt-3" style="font-family: 'Fredericka the Great', cursive;">Add Character Class</h2>
+  </div>
+  <div class="d-flex w-100 p-0">
+
+    <div class="form-group w-50 px-3 pt-1">
+      <label for="cls.name">Class Name</label>
+      <input type="text" class="form-control" id="cls.name"
+             [(ngModel)]="cls.name" (ngModelChange)="checkCanAddCharClass()"
+             placeholder="Class Name">
+    </div>
+
+    <div class="form-group w-50 px-3 pt-1">
+      <label for="cls.hitDie">Hit Die</label>
+      <select id="cls.hitDie" class="form-control"
+              [(ngModel)]="cls.hitDie" (ngModelChange)="checkCanAddCharClass()">
+        <option [value]="null" disabled>Hit Die</option>
+        <option [ngValue]="4">d4</option>
+        <option [ngValue]="6">d6</option>
+        <option [ngValue]="8">d8</option>
+        <option [ngValue]="10">d10</option>
+        <option [ngValue]="12">d12</option>
+      </select>
+    </div>
+
+    <div class="form-group w-50 px-3 pt-1">
+      <label for="cls.startingAgeType">Starting Age Type</label>
+      <select id="cls.startingAgeType" class="form-control"
+              [(ngModel)]="cls.startingAgeType" (ngModelChange)="checkCanAddCharClass()">
+        <option [value]="null" disabled>Starting Age Type</option>
+        <option [value]="'simple'">Simple</option>
+        <option [value]="'moderate'">Moderate</option>
+        <option [value]="'complex'">Complex</option>
+      </select>
+    </div>
+
+  </div>
+
+  <div class="d-flex w-100 p-0">
+
+    <div class="form-group w-25 px-3 pt-1">
+      <img class="img-thumbnail embed-responsive-1by1" [src]="cls.icon !== undefined && cls.icon !== null && cls.icon !== '' ? cls.icon : '../assets/img/class-icons/dm.png'" alt="404 (Not Found)">
+    </div>
+
+    <div class="form-group w-75 px-3 pt-1">
+      <label for="cls.icon">Class Icon</label>
+      <input type="text" class="form-control" id="cls.icon" [(ngModel)]="cls.icon" placeholder="http://{{hostname}}/assets/img/class-icons/dm.png">
+    </div>
+
+  </div>
+
+  <div class="d-flex w-100 p-0">
+
+    <div class="form-group w-50 px-3 pt-1">
+
+      <select multiple id="abilities" class="form-control" style="min-height: 10.25em;"
+              [(ngModel)]="abilities" (ngModelChange)="abilitiesChanged()">
+        <option [value]="null" disabled>Important Ability Scores</option>
+        <option [value]="'Strength'">Strength</option>
+        <option [value]="'Dexterity'">Dexterity</option>
+        <option [value]="'Constitution'">Constitution</option>
+        <option [value]="'Intelligence'">Intelligence</option>
+        <option [value]="'Wisdom'">Wisdom</option>
+        <option [value]="'Charisma'">Charisma</option>
+      </select>
+
+    </div>
+
+    <div class="d-block w-50">
+
+      <div class="d-flex form-group px-3 my-1">
+        <label for="cls.baseAttackBonus" class="w-25">BAB:</label>
+        <select id="cls.baseAttackBonus" class="form-control w-75"
+                [(ngModel)]="cls.baseAttackBonus" (ngModelChange)="checkCanAddCharClass()">
+          <option [value]="null" disabled>Base Attack Bonus</option>
+          <option [ngValue]="baseAttackBonusGood">Good (1-20)</option>
+          <option [ngValue]="baseAttackBonusAverage">Average (0-15)</option>
+          <option [ngValue]="baseAttackBonusPoor">Poor (0-10)</option>
+        </select>
+      </div>
+
+      <div class="d-flex form-group px-3 my-1">
+        <label for="cls.saves.fortitude" class="w-25">Fort Save:</label>
+        <select id="cls.saves.fortitude" class="form-control w-75"
+                [(ngModel)]="cls.saves.fortitude" (ngModelChange)="checkCanAddCharClass()">
+          <option [value]="null" disabled>Fortitude Save</option>
+          <option [ngValue]="baseSaveBonusGood">Good (2-12)</option>
+          <option [ngValue]="baseSaveBonusPoor">Poor (0-6)</option>
+        </select>
+      </div>
+
+      <div class="d-flex form-group px-3 my-1">
+        <label for="cls.saves.reflex" class="w-25">Ref Save:</label>
+        <select id="cls.saves.reflex" class="form-control w-75"
+                [(ngModel)]="cls.saves.reflex" (ngModelChange)="checkCanAddCharClass()">
+          <option [value]="null" disabled>Reflex Save</option>
+          <option [ngValue]="baseSaveBonusGood">Good (2-12)</option>
+          <option [ngValue]="baseSaveBonusPoor">Poor (0-6)</option>
+        </select>
+      </div>
+
+      <div class="d-flex form-group px-3 my-1">
+        <label for="cls.saves.will" class="w-25">Will Save:</label>
+        <select id="cls.saves.will" class="form-control w-75"
+                [(ngModel)]="cls.saves.will" (ngModelChange)="checkCanAddCharClass()">
+          <option [value]="null" disabled>Will Save</option>
+          <option [ngValue]="baseSaveBonusGood">Good (2-12)</option>
+          <option [ngValue]="baseSaveBonusPoor">Poor (0-6)</option>
+        </select>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="d-flex w-100 p-0">
+
+    <div class="d-block w-50">
+
+      <div class="form-group w-100 px-3 pt-1">
+        <label>Alignment Whitelist</label>
+        <select multiple id="alignmentWhitelist" class="form-control" style="min-height: 14em;"
+                [(ngModel)]="alignmentWhitelist" (ngModelChange)="alignmentWhitelistChanged()">
+          <option [value]="null" disabled>Alignment Whitelist</option>
+          <option *ngFor="let awv of alignmentWhitelistValues;" [value]="getAlignmentWhitelistAcronym(awv)">{{ awv }}</option>
+        </select>
+      </div>
+
+      <div class="form-group w-100 px-3 pt-1">
+        <label for="armorProficiency">Armor Proficiency</label>
+        <select multiple id="armorProficiency" class="form-control" style="min-height: 12em;"
+                [(ngModel)]="armorProficiency" (ngModelChange)="armorProficiencyChanged()">
+          <option [value]="null" disabled>Armor Proficiency</option>
+          <optgroup label="Armor">
+            <option [value]="'Armor Proficiency (Light) [General]'">Armor Proficiency (Light) [General]</option>
+            <option [value]="'Armor Proficiency (Medium) [General]'">Armor Proficiency (Medium) [General]</option>
+            <option [value]="'Armor Proficiency (Heavy) [General]'">Armor Proficiency (Heavy) [General]</option>
+          </optgroup>
+          <optgroup label="Shields">
+            <option [value]="'Shield Proficiency [General]'">Shield Proficiency [General]</option>
+            <option [value]="'Tower Shield Proficiency [General]'">Tower Shield Proficiency [General]</option>
+          </optgroup>
+        </select>
+      </div>
+
+    </div>
+
+    <div class="form-group w-50 px-3 pt-1">
+
+      <label for="weaponProficiency">Weapon Proficiency</label>
+      <select multiple id="weaponProficiency" class="form-control" style="min-height: 29.25em;"
+              [(ngModel)]="weaponProficiency" (ngModelChange)="weaponProficiencyChanged()">
+        <option [value]="null" disabled>Weapon Proficiency</option>
+        <optgroup label="Simple Weapon Proficiency">
+          <option [value]="'Simple Weapon Proficiency [General]'">All Simple Weapons</option>
+        </optgroup>
+        <optgroup label="Martial Weapon Proficiency">
+          <option [value]="'Martial Weapon Proficiency [General] (Axe, throwing)'">Axe, throwing</option>
+          <option [value]="'Martial Weapon Proficiency [General] (Hammer, light)'">Hammer, light</option>
+          <option [value]="'Martial Weapon Proficiency [General] (Handaxe)'">Handaxe</option>
+          <option [value]="'Martial Weapon Proficiency [General] (Kukri)'">Kukri</option>
+          <option [value]="'Martial Weapon Proficiency [General] (Pick, light)'">Pick, light</option>
+          <option [value]="'Martial Weapon Proficiency [General] (Sap)'">Sap</option>
+          <option [value]="'Martial Weapon Proficiency [General] (Shield, light)'">Shield, light</option>
+          <option [value]="'Martial Weapon Proficiency [General] (Spiked armor)'">Spiked armor</option>
+          <option [value]="'Martial Weapon Proficiency [General] (Spiked shield, light)'">Spiked shield, light</option>
+          <option [value]="'Martial Weapon Proficiency [General] (Sword, short)'">Sword, short</option>
+          <option [value]="'Martial Weapon Proficiency [General] (Battleaxe)'">Battleaxe</option>
+          <option [value]="'Martial Weapon Proficiency [General] (Flail)'">Flail</option>
+          <option [value]="'Martial Weapon Proficiency [General] (Longsword)'">Longsword</option>
+          <option [value]="'Martial Weapon Proficiency [General] (Pick, heavy)'">Pick, heavy</option>
+          <option [value]="'Martial Weapon Proficiency [General] (Rapier)'">Rapier</option>
+          <option [value]="'Martial Weapon Proficiency [General] (Scimitar)'">Scimitar</option>
+          <option [value]="'Martial Weapon Proficiency [General] (Shield, heavy)'">Shield, heavy</option>
+          <option [value]="'Martial Weapon Proficiency [General] (Spiked shield, heavy)'">Spiked shield, heavy</option>
+          <option [value]="'Martial Weapon Proficiency [General] (Trident)'">Trident</option>
+          <option [value]="'Martial Weapon Proficiency [General] (Warhammer)'">Warhammer</option>
+          <option [value]="'Martial Weapon Proficiency [General] (Falchion)'">Falchion</option>
+          <option [value]="'Martial Weapon Proficiency [General] (Glaive)'">Glaive</option>
+          <option [value]="'Martial Weapon Proficiency [General] (Greataxe)'">Greataxe</option>
+          <option [value]="'Martial Weapon Proficiency [General] (Greatclub)'">Greatclub</option>
+          <option [value]="'Martial Weapon Proficiency [General] (Flail, heavy)'">Flail, heavy</option>
+          <option [value]="'Martial Weapon Proficiency [General] (Greatsword)'">Greatsword</option>
+          <option [value]="'Martial Weapon Proficiency [General] (Guisarme)'">Guisarme</option>
+          <option [value]="'Martial Weapon Proficiency [General] (Halberd)'">Halberd</option>
+          <option [value]="'Martial Weapon Proficiency [General] (Lance)'">Lance</option>
+          <option [value]="'Martial Weapon Proficiency [General] (Ranseur)'">Ranseur</option>
+          <option [value]="'Martial Weapon Proficiency [General] (Scythe)'">Scythe</option>
+          <option [value]="'Martial Weapon Proficiency [General] (Longbow)'">Longbow</option>
+          <option [value]="'Martial Weapon Proficiency [General] (Longbow, composite)'">Longbow, composite</option>
+          <option [value]="'Martial Weapon Proficiency [General] (Shortbow)'">Shortbow</option>
+          <option [value]="'Martial Weapon Proficiency [General] (Shortbow, composite)'">Shortbow, composite</option>
+        </optgroup>
+        <optgroup label="Exotic Weapon Proficiency">
+          <option [value]="'Exotic Weapon Proficiency [General] (Kama)'">Kama</option>
+          <option [value]="'Exotic Weapon Proficiency [General] (Nunchaku)'">Nunchaku</option>
+          <option [value]="'Exotic Weapon Proficiency [General] (Sai)'">Sai</option>
+          <option [value]="'Exotic Weapon Proficiency [General] (Siangham)'">Siangham</option>
+          <option [value]="'Exotic Weapon Proficiency [General] (Sword, bastard)'">Sword, bastard</option>
+          <option [value]="'Exotic Weapon Proficiency [General] (Waraxe, dwarven)'">Waraxe, dwarven</option>
+          <option [value]="'Exotic Weapon Proficiency [General] (Whip)'">Whip</option>
+          <option [value]="'Exotic Weapon Proficiency [General] (Axe, orc double)'">Axe, orc double</option>
+          <option [value]="'Exotic Weapon Proficiency [General] (Chain, spiked)'">Chain, spiked</option>
+          <option [value]="'Exotic Weapon Proficiency [General] (Flail, dire)'">Flail, dire</option>
+          <option [value]="'Exotic Weapon Proficiency [General] (Hammer, gnome hooked)'">Hammer, gnome hooked</option>
+          <option [value]="'Exotic Weapon Proficiency [General] (Sword, two-bladed)'">Sword, two-bladed</option>
+          <option [value]="'Exotic Weapon Proficiency [General] (Urgrosh, dwarven)'">Urgrosh, dwarven</option>
+          <option [value]="'Exotic Weapon Proficiency [General] (Bolas)'">Bolas</option>
+          <option [value]="'Exotic Weapon Proficiency [General] (Crossbow, hand)'">Crossbow, hand</option>
+          <option [value]="'Exotic Weapon Proficiency [General] (Crossbow, repeating heavy)'">Crossbow, repeating heavy</option>
+          <option [value]="'Exotic Weapon Proficiency [General] (Crossbow, repeating light)'">Crossbow, repeating light</option>
+          <option [value]="'Exotic Weapon Proficiency [General] (Net)'">Net</option>
+          <option [value]="'Exotic Weapon Proficiency [General] (Shuriken)'">Shuriken</option>
+        </optgroup>
+      </select>
+    </div>
+
+  </div>
+
+  <div class="d-flex w-100 p-0">
+
+    <div class="form-group w-50 px-3 pt-1">
+      <label for="cls.skillPointsPerLevel">Skill Points Per Level</label>
+      <select id="cls.skillPointsPerLevel" class="form-control"
+              [(ngModel)]="cls.skillPointsPerLevel" (ngModelChange)="checkCanAddCharClass()">
+        <option [value]="null" disabled>Skill Points Per Level</option>
+        <option [ngValue]="2">2</option>
+        <option [ngValue]="4">4</option>
+        <option [ngValue]="6">6</option>
+        <option [ngValue]="8">8</option>
+      </select>
+    </div>
+
+    <div class="form-group w-100 px-3 pt-1">
+      <label>Class Skills</label>
+      <select multiple id="classSkills" class="form-control" style="min-height: 30em;"
+              [(ngModel)]="classSkills" (ngModelChange)="classSkillsChanged()"
+              placeholder="Class Skills">
+        <option [value]="null" disabled>Class Skills</option>
+        <option *ngFor="let skill of skills" [value]="skill.id">{{ skill.name }}</option>
+      </select>
+    </div>
+
+  </div>
+
+  <div class="d-flex w-100">
+    <button class="btn btn-lg btn-block m-3"
+            [ngClass]="canAddCharClass ? 'btn-primary' : 'btn-outline-danger'"
+            [title]="canAddCharClass ? 'Click to add this character class' : 'Please complete the above form to save this character class'"
+            (click)="addCharacterClass()">Add Character Class</button>
+  </div>
+  <div class="d-flex w-25 px-3 mr-auto">
+    <button class="btn btn-lg btn-block btn-secondary" [routerLink]="['/admin']" [routerLinkActive]="['active']">Back</button>
+  </div>
+
+</div>

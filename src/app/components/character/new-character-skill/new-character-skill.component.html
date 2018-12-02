@@ -53,33 +53,35 @@
     </div>
 
     <div class="d-flex bg-dark">
-      <div class="text-white" style="min-height: 1.75em; min-width: 45px;">
-        <div style="margin-top: -1em; font-size: xx-small; transform: rotate(270deg);">Class Skill?</div>
+      <div class="text-white text-nowrap" style="min-height: 1.75em; min-width: 25px; max-width: 25px;">
+        <div style="margin-left: -0.25em; font-size: xx-small; transform: rotate(270deg);">Class Skill?</div>
       </div>
       <div class="d-flex flex-fill justify-content-center text-center text-white">
-        <div class="col-4 px-1">Skill Name</div>
-        <div class="col-1 px-1 align-self-center small" title="Key Ability">Key Ability</div>
-        <div class="col-2 px-1">Skill Modifier</div>
-        <div class="text-dark w-auto">=</div>
-        <div class="col-1 px-1 align-self-center small" title="Ability Modifier">Ab. Modifier</div>
-        <div class="text-dark w-auto">+</div>
-        <div class="col-2 px-1">Ranks</div>
-        <div class="text-dark w-auto">+</div>
-        <div class="col-2 px-1">Misc</div>
+        <div class="flex-grow-1 px-3 align-self-center small">Skill Name</div>
+        <div class="col-1 px-2 align-self-center small" title="Key Ability">Key Ability</div>
+        <div class="col-2 px-3 align-self-center small">Skill Modifier</div>
+        <div class="flex-shrink-0 text-dark w-auto">=</div>
+        <div class="col-1 px-3 align-self-center small" title="Ability Modifier">Ab. Mod</div>
+        <div class="flex-shrink-0 text-dark w-auto">+</div>
+        <div class="col-1 px-3 align-self-center small">Ranks</div>
+        <div class="flex-shrink-0 text-dark w-auto">+</div>
+        <div class="col-1 px-3 align-self-center small">Misc</div>
       </div>
     </div>
-    <div class="d-flex text-center my-1" *ngFor="let skill of skills">
-      <div class="flex-grow-1 align-self-center" style="min-width: 45px;">
-        <input type="checkbox" class="custom-checkbox">
+
+    <div class="d-flex text-center my-1" *ngFor="let skill of skills; index as i;">
+      <div class="align-self-center" style="min-width: 25px; max-width: 25px;">
+        <input type="checkbox" class="custom-checkbox"
+               [checked]="isClassSkill(skill)" disabled>
       </div>
       <div class="d-flex">
-        <div class="col-4 px-1" style="margin-left: -15px;">
-          <input type="text" class="form-control form-control-plaintext form-control-sm bg-light pl-2"
+        <div class="flex-grow-1 px-1">
+          <input type="text" class="form-control form-control-plaintext form-control-sm bg-white pl-3 pr-5"
                  [value]="skill.name"
                  disabled>
         </div>
         <div class="col-1 px-1">
-          <input type="text" class="form-control form-control-plaintext form-control-sm bg-light text-center"
+          <input type="text" class="form-control form-control-plaintext form-control-sm bg-white text-center"
                  [value]="skill.keyAbility === 'strength' ? 'STR'
                  : skill.keyAbility === 'dexterity' ? 'DEX'
                  : skill.keyAbility === 'constitution' ? 'CON'
@@ -89,12 +91,19 @@
                  disabled>
         </div>
         <div class="col-2 px-1">
-          <input type="number" class="form-control form-control-sm bg-light border-dark text-center"
+          <input type="number" class="form-control form-control-sm bg-light border-dark text-center px-3"
+                 [value]="getSkillModifier(skill)"
                  disabled>
         </div>
-        <div class="text-dark w-auto">=</div>
+        <div class="flex-shrink-0 text-dark w-auto">=</div>
         <div class="col-1 px-1">
           <input type="text" class="form-control form-control-plaintext form-control-sm bg-light text-center"
+                 [title]="skill.keyAbility === 'strength' ? 'Strength Modifier'
+                 : skill.keyAbility === 'dexterity' ? 'Dexterity Modifier'
+                 : skill.keyAbility === 'constitution' ? 'Constitution Modifier'
+                 : skill.keyAbility === 'intelligence' ? 'Intelligence Modifier'
+                 : skill.keyAbility === 'wisdom' ? 'Wisdom Modifier'
+                 : skill.keyAbility === 'charisma' ? 'Charisma Modifier' : '-'"
                  [value]="skill.keyAbility === 'strength' ? getAbilityModifier(characterService.tempCharacter.totalAbilityScores.strength)
                  : skill.keyAbility === 'dexterity' ? getAbilityModifier(characterService.tempCharacter.totalAbilityScores.dexterity)
                  : skill.keyAbility === 'constitution' ? getAbilityModifier(characterService.tempCharacter.totalAbilityScores.constitution)
@@ -103,18 +112,37 @@
                  : skill.keyAbility === 'charisma' ? getAbilityModifier(characterService.tempCharacter.totalAbilityScores.charisma) : '-'"
                  disabled>
         </div>
-        <div class="text-dark w-auto">+</div>
-        <div class="col-2 px-1">
-          <input type="number" class="form-control form-control-sm text-center">
+        <div class="flex-shrink-0 text-dark w-auto">+</div>
+        <div class="col-1 px-1" *ngIf="skillRanks.length > 0">
+          <input type="number" class="form-control form-control-sm text-center"
+                 min="0" max="4" [value]="0"
+                 (input)="updateSkillRanks(skill, i, $event.target.valueAsNumber)"
+                 [ngClass]="this.toSpendSkillPoints > this.maxSkillPoints ? 'is-invalid' : this.toSpendSkillPoints === this.maxSkillPoints ? 'is-valid' : ''">
         </div>
-        <div class="text-dark w-auto">+</div>
-        <div class="col-2 px-1">
-          <input type="number" class="form-control form-control-sm text-center">
+        <div class="flex-shrink-0 text-dark w-auto">+</div>
+        <div class="col-1 px-1" *ngIf="skillRanks.length > 0">
+          <input type="number" class="form-control form-control-sm text-center"
+                 [min]="getRacialSkillMiscBonus(skill).bonus"
+                 [value]="getRacialSkillMiscBonus(skill).bonus"
+                 [title]="getRacialSkillMiscBonus(skill).bonus !== 0 ? (getRacialSkillMiscBonus(skill).bonus >= 0 ? '+' : '') + getRacialSkillMiscBonus(skill).bonus + ' Racial Bonus (' + getRacialSkillMiscBonus(skill).vs + ')' : ''"
+                 (input)="updateSkillMiscs(skill, i, $event.target.valueAsNumber)">
         </div>
       </div>
     </div>
   </div>
 
-</div>
+  <div class="d-flex flex-row-reverse mt-3">
+    <button class="btn" [ngClass]="toSpendSkillPoints === maxSkillPoints ? 'btn-primary' : 'btn-dark disabled'"
+            [autoClose]="'outside'"
+            placement="left"
+            triggers="manual"
+            popoverClass=""
+            (click)="selectFeats()"
+            popoverTitle="{{ toSpendSkillPoints < maxSkillPoints ? 'Unspent Skill Points' : '' }}"
+            ngbPopover="{{ toSpendSkillPoints < maxSkillPoints ? 'Spend all of your skill points to continue.' : '' }}"
+            #popover="ngbPopover">
+      Next: Select Feats <i class="fas fa-users-cog"></i>
+    </button>
+  </div>
 
-<pre>{{ characterService.tempCharacter | json }}</pre>
+</div>

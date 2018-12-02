@@ -12,7 +12,7 @@ import { CharacterClass, CharacterClassId } from '../../../../models/character/c
 })
 export class AlignmentPickerComponent implements OnInit {
 
-  public alignmentWhitelist: [string];
+  public alignmentWhitelist: string[];
   public alignmentDescription: string;
   public classList: CharacterClassId[];
 
@@ -31,7 +31,7 @@ export class AlignmentPickerComponent implements OnInit {
 
   ngOnInit() {
     this.alignmentDescription = '';
-    this.alignmentWhitelist = [''];
+    this.alignmentWhitelist = [];
   }
 
   selectedAlignment(alignment: string): void {

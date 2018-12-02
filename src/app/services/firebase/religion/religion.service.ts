@@ -30,7 +30,7 @@ export class ReligionService {
   }
 
   addReligion(religion: Religion): void {
-    this.religionCollection.doc(religion.name.toUpperCase().replace(' ', '')).set(religion);
+    this.religionCollection.doc(religion.name.toUpperCase().replace(new RegExp(' ', 'gi'), '')).set(religion);
   }
 
 }

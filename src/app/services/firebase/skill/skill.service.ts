@@ -30,6 +30,6 @@ export class SkillService {
   }
 
   addSkill(skill: Skill): void {
-    this.skillCollection.doc(skill.name.toUpperCase().replace(' ', '')).set(skill);
+    this.skillCollection.doc(skill.name.toUpperCase().replace(new RegExp(' ', 'gi'), '')).set(skill);
   }
 }
