@@ -33,6 +33,7 @@ export class NewCharacterClassComponent implements OnInit {
   public typeAheadClass: any;
   public selectedClass: CharacterClassId;
 
+  public clericDomains: string[];
   public alignment: string;
   public hitDie: number;
   public hitPoints: number;
@@ -88,9 +89,9 @@ export class NewCharacterClassComponent implements OnInit {
     this.readyToPickSkills = false;
     this.playerHasSelectedClass = false;
     this.classes = [];
+    this.clericDomains = [];
     this.characterService.tempCharacter.hitPoints = 0;
     this.characterService.tempCharacter.hitDie = [{hitDie: 0, dieValue: 0}];
-    // TODO: Make age the random starting age for a given race
     this.characterService.tempCharacter.age = 0;
     this.ageCategory = '';
     this.characterService.tempCharacter.baseAttackBonus = 0;
@@ -173,6 +174,30 @@ export class NewCharacterClassComponent implements OnInit {
       }
     }
     return religionText;
+  }
+
+  getReligionDomains(): string[] {
+    let domains: string[] = [];
+    for (const rel of this.characterService.tempCharacter.religion) {
+      domains = domains.concat(this.religions.find(data => data.id === rel).domains);
+    }
+    return Array.from(new Set(domains.sort()));
+  }
+
+  isClericDomainsValid(): boolean {
+    console.log('isClericDomainsValid: ', this.clericDomains.length);
+    if (this.clericDomains.length === 2) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  updateClericDomains(): void {
+    console.log('updateClericDomains: ', this.clericDomains.length);
+    if (this.clericDomains.length === 2) {
+      this.characterService.tempCharacter.clericDomains = this.clericDomains;
+    }
   }
 
   heightFeetChanged(): void {

@@ -14,6 +14,7 @@ export interface Character {
   characterName: string;
   playerName: string;
   classes: Array<{classId: string, level: number}>;
+  clericDomains?: Array<string>;
   ecl?: number;
   raceId: string;
   size: string;
