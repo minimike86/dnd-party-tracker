@@ -7,14 +7,15 @@ export interface CharacterClassId extends CharacterClass {
 export interface CharacterClass {
 
   name: string;
+  icon: string;
   hitDie: number;
   startingAgeType: string;
-  alignmentWhitelist: [string];
-  armorProficiency: [string];
-  weaponProficiency: [string];
-  classSkills?: [string];
-  skillPointsFirstLevel: number;
-  skillPointsEachLevel: number;
+  abilities: string[];
+  alignmentWhitelist: string[];
+  armorProficiency: string[];
+  weaponProficiency: string[];
+  classSkills: string[];
+  skillPointsPerLevel: number;
   baseAttackBonus: number;
   saves: {
     fortitude: number,

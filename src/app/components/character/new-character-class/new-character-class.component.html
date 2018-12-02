@@ -322,16 +322,16 @@
   </div>
 
   <div class="d-flex flex-row-reverse mt-3">
-    <button class="btn" [ngClass]="readyToPickSkillsAndFeats ? 'btn-primary' : 'btn-dark disabled'"
+    <button class="btn" [ngClass]="readyToPickSkills ? 'btn-primary' : 'btn-dark disabled'"
             [autoClose]="'outside'"
             placement="left"
             triggers="manual"
             popoverClass=""
-            (click)="selectSkillsAndFeats()"
-            popoverTitle="{{ !readyToPickSkillsAndFeats ? 'Missing Fields' : '' }}"
-            ngbPopover="{{ !readyToPickSkillsAndFeats ? 'Select your characters class.' : '' }}"
+            (click)="selectSkills()"
+            popoverTitle="{{ !readyToPickSkills ? 'Missing Fields' : '' }}"
+            ngbPopover="{{ !readyToPickSkills ? 'Select your characters class.' : '' }}"
             #popover="ngbPopover">
-      Next: Select Skills &amp; Feats <i class="fas fa-users-cog"></i>
+      Next: Select Skills <i class="fas fa-users-cog"></i>
     </button>
   </div>
 

@@ -12,6 +12,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // App
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { WINDOW_PROVIDERS } from './window-provider';
 
 // Environment Variables
 import { environment } from '../environments/environment';
@@ -23,6 +24,7 @@ import { AdminComponent } from './components/admin/admin.component';
 import { AddDeityComponent } from './components/admin/add-deity/add-deity.component';
 import { AddRaceComponent } from './components/admin/add-race/add-race.component';
 import { AddSkillComponent } from './components/admin/add-skill/add-skill.component';
+import { AddClassComponent } from './components/admin/add-class/add-class.component';
 import { CharacterComponent } from './components/character/character.component';
 import { PartyComponent } from './components/party/party.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
@@ -58,6 +60,7 @@ import { ReligionPickerComponent } from './components/character/modals/religion-
     AddDeityComponent,
     AddRaceComponent,
     AddSkillComponent,
+    AddClassComponent,
     CharacterComponent,
     NewCharacterComponent,
     NewCharacterClassComponent,
@@ -97,7 +100,7 @@ import { ReligionPickerComponent } from './components/character/modals/religion-
     CharacterJoinPartyComponent,
     ConfirmRemoveCharacterFromPartyComponent
   ],
-  providers: [],
+  providers: [WINDOW_PROVIDERS],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
