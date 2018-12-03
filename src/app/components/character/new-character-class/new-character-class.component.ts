@@ -185,7 +185,6 @@ export class NewCharacterClassComponent implements OnInit {
   }
 
   isClericDomainsValid(): boolean {
-    console.log('isClericDomainsValid: ', this.clericDomains.length);
     if (this.clericDomains.length === 2) {
       return true;
     } else {
@@ -194,7 +193,6 @@ export class NewCharacterClassComponent implements OnInit {
   }
 
   updateClericDomains(): void {
-    console.log('updateClericDomains: ', this.clericDomains.length);
     if (this.clericDomains.length === 2) {
       this.characterService.tempCharacter.clericDomains = this.clericDomains;
     }
