@@ -46,6 +46,7 @@ export class NewCharacterClassComponent implements OnInit {
   public ageCategory: string;
 
   @ViewChild('popover') public popover: NgbPopover;
+  public nextSkillsBtnClass: string;
 
   @ViewChild('instance') instance: NgbTypeahead;
   focus$ = new Subject<string>();
@@ -62,7 +63,7 @@ export class NewCharacterClassComponent implements OnInit {
     });
     raceService.getRaces().subscribe(data => {
       this.races = data;
-      if (this.races.length >= 1) {
+      if (this.races.find(race => race.id === this.characterService.tempCharacter.raceId) !== undefined) {
         this.favoredClass = this.races.find(race => race.id === this.characterService.tempCharacter.raceId).favoredClass;
       }
     });
@@ -81,7 +82,7 @@ export class NewCharacterClassComponent implements OnInit {
     );
     if (this.characterService.tempCharacter.owner === null) {
       console.log('tempCharacter owner is null, returning to character creation step 1.');
-      router.navigate( ['/character/new/'] );
+     // router.navigate( ['/character/new/'] );
     }
   }
 
@@ -283,11 +284,33 @@ export class NewCharacterClassComponent implements OnInit {
   }
 
   selectSkills() {
-    if (this.readyToPickSkills) {
-      this.router.navigate( ['/character/new/skill'] );
+    if (this.characterService.tempCharacter.classes[0].classId === 'CLERIC') {
+
+      // Is a Cleric
+      if (this.characterService.tempCharacter.clericDomains !== undefined && this.characterService.tempCharacter.clericDomains.length === 2
+        && this.characterService.tempCharacter.alignment !== null
+        && this.characterService.tempCharacter.religion !== undefined && this.characterService.tempCharacter.religion.length > 0
+        && this.readyToPickSkills) {
+        this.router.navigate( ['/character/new/skill'] );
+      } else {
+        this.popover.ngbPopover = 'Cleric\'s must select an alignment and patron deity. Then select two of the deities divine domains.';
+        this.nextSkillsBtnClass = 'btn-secondary';
+        this.popover.open();
+      }
+
     } else {
-      this.popover.open();
+
+      // Not a Cleric
+      if (this.readyToPickSkills) {
+        this.router.navigate( ['/character/new/skill'] );
+      } else {
+        this.popover.ngbPopover = 'Select your characters class.';
+        this.nextSkillsBtnClass = 'btn-secondary';
+        this.popover.open();
+      }
+
     }
+
   }
 
 }
