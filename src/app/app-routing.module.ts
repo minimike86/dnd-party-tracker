@@ -15,6 +15,7 @@ import { HomeComponent } from './components/home/home.component';
 import { NewCharacterComponent } from './components/character/new-character/new-character.component';
 import { NewCharacterClassComponent } from './components/character/new-character-class/new-character-class.component';
 import { NewCharacterSkillComponent } from './components/character/new-character-skill/new-character-skill.component';
+import { NewCharacterFeatComponent } from './components/character/new-character-feat/new-character-feat.component';
 import { AddSkillComponent } from './components/admin/add-skill/add-skill.component';
 
 const appRoutes: Routes = [
@@ -33,6 +34,7 @@ const appRoutes: Routes = [
   { path: 'character/new',        component: NewCharacterComponent,           canActivate: [AuthGuard] },
   { path: 'character/new/class',  component: NewCharacterClassComponent,      canActivate: [AuthGuard] },
   { path: 'character/new/skill',  component: NewCharacterSkillComponent,      canActivate: [AuthGuard] },
+  { path: 'character/new/feats',  component: NewCharacterFeatComponent,       canActivate: [AuthGuard] },
   { path: '**',                   component: PageNotFoundComponent }
 ];
 

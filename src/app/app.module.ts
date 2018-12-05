@@ -48,6 +48,7 @@ import {
 import { LoginComponent } from './components/login/login.component';
 import { AlignmentPickerComponent } from './components/character/modals/alignment-picker/alignment-picker.component';
 import { ReligionPickerComponent } from './components/character/modals/religion-picker/religion-picker.component';
+import { NewCharacterFeatComponent } from './components/character/new-character-feat/new-character-feat.component';
 
 @NgModule({
   declarations: [
@@ -65,6 +66,7 @@ import { ReligionPickerComponent } from './components/character/modals/religion-
     NewCharacterComponent,
     NewCharacterClassComponent,
     NewCharacterSkillComponent,
+    NewCharacterFeatComponent,
     PartyComponent,
     CombatOptionsComponent,
     SavingThrowsComponent,

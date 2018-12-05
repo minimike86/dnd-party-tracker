@@ -9,57 +9,66 @@
   <!-- Class, Alignment, Religion -->
   <div class="d-flex d-block">
 
-    <div class="d-inline-flex w-50 mb-3 pr-1">
-      <div class="flex-fill">
-        <div class="align-content-center ">
-          <label for="typeahead-focus">Class:</label>
-          <div class="btn btn-outline-info btn-sm ml-1 py-0 disabled">
-            <span class="small">Favored Class: {{ favoredClass }}</span>
-          </div>
-        </div>
-        <input
-          class="form-control input"
-          type="text"
-          id="typeahead-focus"
-          placeholder="What is your character class?"
-          [(ngModel)]="typeAheadClass"
-          [ngbTypeahead]="search"
-          [resultTemplate]="rt"
-          [resultFormatter]="formatMatches"
-          [inputFormatter]="formatMatches"
-          (focus)="focus$.next($event.target.value)"
-          (click)="click$.next($event.target.value)"
-          (selectItem)="setSelectedClass($event.item)"
-          #instance="ngbTypeahead"
-        />
-        <ng-template #rt let-r="result" let-t="term">
-          <img [src]="r['icon']" class="mr-2" style="width: 1.5em">
-          <ngb-highlight [result]="r.name" [term]="t"></ngb-highlight>
-        </ng-template>
-      </div>
-    </div>
+    <div class="d-inline-flex w-50">
 
-    <div class="d-flex d-block" *ngIf="characterService.tempCharacter.classes.length > 0
-                                         && characterService.tempCharacter.classes[0].classId === 'CLERIC'
-                                         && characterService.tempCharacter.religion.length > 0">
-      <div class="">
-        <div class="form-group">
-          <label for="weight" title="Choose two domains from among those given from your chosen deities.">Cleric Domains:</label>
-          <div class="d-inline-flex w-100">
-            <div class="input-group">
-              <select multiple class="form-control" [ngClass]="isClericDomainsValid() ? 'is-valid' : ' is-invalid'" [(ngModel)]="clericDomains" (ngModelChange)="updateClericDomains()">
-                <option [ngValue]="doms" *ngFor="let doms of getReligionDomains();">{{ doms }}</option>
-              </select>
+      <div class="flex-grow-1 mb-3 mr-2">
+        <div class="">
+          <div class="align-content-center ">
+            <label for="typeahead-focus">Class:</label>
+            <div class="btn btn-outline-info btn-sm ml-1 py-0 disabled">
+              <span class="small">Favored Class: {{ favoredClass }}</span>
+            </div>
+          </div>
+          <input
+            class="form-control input"
+            type="text"
+            id="typeahead-focus"
+            placeholder="What is your character class?"
+            [(ngModel)]="typeAheadClass"
+            [ngbTypeahead]="search"
+            [resultTemplate]="rt"
+            [resultFormatter]="formatMatches"
+            [inputFormatter]="formatMatches"
+            (focus)="focus$.next($event.target.value)"
+            (click)="click$.next($event.target.value)"
+            (selectItem)="setSelectedClass($event.item)"
+            #instance="ngbTypeahead"
+          />
+          <ng-template #rt let-r="result" let-t="term">
+            <img [src]="r['icon']" class="mr-2" style="width: 1.5em">
+            <ngb-highlight [result]="r.name" [term]="t"></ngb-highlight>
+          </ng-template>
+        </div>
+      </div>
+
+      <div class="w-50 pr-1" *ngIf="characterService.tempCharacter.classes.length > 0 && characterService.tempCharacter.classes[0].classId === 'CLERIC'">
+        <div class="">
+          <div class="form-group">
+            <label for="weight" title="Choose two domains from among those given from your chosen deities.">Domains:</label>
+            <div class="btn btn-outline-info btn-sm ml-1 py-0 disabled">
+              <span class="small">{{ characterService.tempCharacter.alignment === null ? 'Select Alignment'
+                                   : characterService.tempCharacter.religion.length === 0 ? 'Select Religion'
+                                   : 'Select TWO divine domains' }}</span>
+            </div>
+            <div class="d-inline-flex w-100">
+              <div class="input-group">
+                <select multiple class="form-control"
+                        [ngClass]="characterService.tempCharacter.religion.length === 0 ? 'disabled' : isClericDomainsValid() ? 'is-valid' : ' is-invalid'"
+                        [(ngModel)]="clericDomains" (ngModelChange)="updateClericDomains()">
+                  <option [ngValue]="doms" *ngFor="let doms of getReligionDomains();">{{ doms }}</option>
+                </select>
+              </div>
             </div>
           </div>
         </div>
       </div>
+
     </div>
 
-    <div class="w-100 pl-1">
+    <div class="d-inline-flex w-50">
 
-      <div class="d-inline-flex w-25 pr-1">
-        <div class="flex-fill">
+      <div class="w-50 pr-1">
+        <div class="">
           <div class="form-group" *ngIf="characterService.tempCharacter.alignment !== null; else showSelectAlignmentBtn">
             <label for="alignment">Alignment:</label>
             <button class="d-inline-flex align-items-center btn btn-outline-info btn-sm ml-1 py-0"
@@ -87,8 +96,8 @@
         </div>
       </div>
 
-      <div class="d-inline-flex w-75 pl-1">
-        <div class="flex-fill">
+      <div class="w-50">
+        <div class="">
           <div class="form-group" *ngIf="characterService.tempCharacter.religion.length !== 0; else showSelectReligionBtn">
             <label for="alignment">Religion:</label>
             <button class="d-inline-flex align-items-center btn btn-outline-info btn-sm ml-1 py-0"
@@ -339,14 +348,14 @@
   </div>
 
   <div class="d-flex flex-row-reverse mt-3">
-    <button class="btn" [ngClass]="readyToPickSkills ? 'btn-primary' : 'btn-dark disabled'"
+    <button class="btn" [ngClass]="readyToPickSkills ? nextSkillsBtnClass : ''"
             [autoClose]="'outside'"
             placement="left"
             triggers="manual"
             popoverClass=""
             (click)="selectSkills()"
             popoverTitle="{{ !readyToPickSkills ? 'Missing Fields' : '' }}"
-            ngbPopover="{{ !readyToPickSkills ? 'Select your characters class.' : '' }}"
+            ngbPopover=""
             #popover="ngbPopover">
       Next: Select Skills <i class="fas fa-users-cog"></i>
     </button>

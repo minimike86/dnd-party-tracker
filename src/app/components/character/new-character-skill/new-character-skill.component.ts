@@ -5,7 +5,6 @@ import { CharacterService } from '../../../services/firebase/character/character
 import { RaceService } from '../../../services/firebase/race/race.service';
 import { CharacterClassService } from '../../../services/firebase/character-class/character-class.service';
 import { SkillService } from '../../../services/firebase/skill/skill.service';
-import { Character } from '../../../models/character/character';
 import { RaceId } from '../../../models/character/race';
 import { CharacterClassId } from '../../../models/character/character-class';
 import { SkillId } from '../../../models/character/skill';
@@ -98,7 +97,7 @@ export class NewCharacterSkillComponent implements OnInit {
       );
       this.toSpendSkillPoints = 0;
     } else {
-      this.maxSkillPoints = 0;
+      this.maxSkillPoints = 8;
       this.toSpendSkillPoints = 0;
     }
     this.skillRanks = [];
@@ -134,18 +133,45 @@ export class NewCharacterSkillComponent implements OnInit {
     return abilityMod + RANKS + MISC;
   }
 
-  updateSkillRanks(skill: SkillId, index: number, ranks: number): void {
-    const PRE_SKILL_RANK = this.skillRanks[index].ranks;
-    if (this.isClassSkill(skill)) {
-      this.skillRanks[index].ranks = ranks;
+  canBuySkillRank(skill: SkillId, index: number): boolean {
+    if (this.skillRanks.length > 0 && this.skillRanks[index] !== undefined
+      && this.skillRanks[index].ranks >= 0
+      && this.toSpendSkillPoints < this.maxSkillPoints
+    ) {
+      if (this.isClassSkill(skill) && this.skillRanks[index].ranks < this.maxClassRanks) { return true; }
+      if (!this.isClassSkill(skill) && this.skillRanks[index].ranks < this.maxCrossClassRanks) { return true; }
+      return false;
     } else {
-      this.skillRanks[index].ranks = ranks * 0.5;
+      return false;
     }
-    const POST_SKILL_RANK = this.skillRanks[index].ranks;
-    if ( PRE_SKILL_RANK > POST_SKILL_RANK ) {
-      this.toSpendSkillPoints = this.toSpendSkillPoints - 1;
-    } else if ( POST_SKILL_RANK > PRE_SKILL_RANK ) {
-      this.toSpendSkillPoints = this.toSpendSkillPoints + 1;
+  }
+
+  buyRank(skill: SkillId, index: number) {
+    this.toSpendSkillPoints += 1;
+    if (this.isClassSkill(skill)) {
+      this.skillRanks[index].ranks += 1;
+    } else {
+      this.skillRanks[index].ranks += 0.5;
+    }
+  }
+
+  canSellSkillRank(index: number): boolean {
+    if (this.skillRanks.length > 0 && this.skillRanks[index] !== undefined
+      && this.skillRanks[index].ranks > 0
+      && this.toSpendSkillPoints <= this.maxSkillPoints
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  sellRank(skill: SkillId, index: number) {
+    this.toSpendSkillPoints -= 1;
+    if (this.isClassSkill(skill)) {
+      this.skillRanks[index].ranks -= 1;
+    } else {
+      this.skillRanks[index].ranks -= 0.5;
     }
   }
 
@@ -169,6 +195,7 @@ export class NewCharacterSkillComponent implements OnInit {
 
   selectFeats() {
     if (this.toSpendSkillPoints === this.maxSkillPoints) {
+      this.characterService.tempCharacter.skillRanks = this.skillRanks;
       this.router.navigate( ['/character/new/feats'] );
     } else {
       this.popover.open();

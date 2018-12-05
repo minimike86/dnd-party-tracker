@@ -66,6 +66,7 @@
         <div class="col-1 px-3 align-self-center small">Ranks</div>
         <div class="flex-shrink-0 text-dark w-auto">+</div>
         <div class="col-1 px-3 align-self-center small">Misc</div>
+        <div class="align-self-center small" style="min-width: 35px; max-width: 35px;" title="Buy/Sell">B/S</div>
       </div>
     </div>
 
@@ -114,10 +115,8 @@
         </div>
         <div class="flex-shrink-0 text-dark w-auto">+</div>
         <div class="col-1 px-1" *ngIf="skillRanks.length > 0">
-          <input type="number" class="form-control form-control-sm text-center"
-                 min="0" max="4" [value]="0"
-                 (input)="updateSkillRanks(skill, i, $event.target.valueAsNumber)"
-                 [ngClass]="this.toSpendSkillPoints > this.maxSkillPoints ? 'is-invalid' : this.toSpendSkillPoints === this.maxSkillPoints ? 'is-valid' : ''">
+          <input type="number" class="form-control form-control-sm text-center bg-white disabled"
+                 min="0" max="4" [value]="skillRanks[i].ranks">
         </div>
         <div class="flex-shrink-0 text-dark w-auto">+</div>
         <div class="col-1 px-1" *ngIf="skillRanks.length > 0">
@@ -128,8 +127,34 @@
                  (input)="updateSkillMiscs(skill, i, $event.target.valueAsNumber)"
                  [ngClass]="getRacialSkillMiscBonus(skill).bonus < 0 ? 'is-invalid text-white bg-danger' : getRacialSkillMiscBonus(skill).bonus > 0 ? 'is-valid text-white bg-success' : ''">
         </div>
+
+        <div *ngIf="skill.id === 'SPEAKLANGUAGE'">
+          <button class="btn btn-sm p-1" style="min-width: 35px; max-width: 35px;"
+                  [disabled]="!canBuySkillRank(skill, i)"
+                  [ngClass]="canBuySkillRank(skill, i) ? 'btn-warning' : 'btn-secondary'"
+                  (click)="null"
+                  title="Learn to speak a new language">
+            +
+          </button>
+        </div>
+        <div *ngIf="skill.id !== 'SPEAKLANGUAGE'">
+          <button class="btn btn-sm p-1" style="min-width: 17px; max-width: 17px;"
+                  [disabled]="!canBuySkillRank(skill, i)"
+                  [ngClass]="canBuySkillRank(skill, i) ? 'btn-success' : 'btn-secondary'"
+                  (click)="buyRank(skill, i)">
+            +
+          </button>
+          <button class="btn btn-sm p-1" style="min-width: 17px; max-width: 17px; margin-left: 1px;"
+                  [disabled]="!canSellSkillRank(i)"
+                  [ngClass]="canSellSkillRank(i) ? 'btn-danger' : 'btn-secondary'"
+                  (click)="sellRank(skill, i)">
+            -
+          </button>
+        </div>
+
       </div>
     </div>
+
   </div>
 
   <div class="d-flex flex-row-reverse mt-3">
