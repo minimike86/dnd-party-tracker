@@ -46,7 +46,9 @@
           <div class="form-group">
             <label for="weight" title="Choose two domains from among those given from your chosen deities.">Domains:</label>
             <div class="btn btn-outline-info btn-sm ml-1 py-0 disabled">
-              <span class="small" *ngIf="!isClericDomainsValid()">Select two divine domains</span>
+              <span class="small">{{ characterService.tempCharacter.alignment === null ? 'Select Alignment'
+                                   : characterService.tempCharacter.religion.length === 0 ? 'Select Religion'
+                                   : 'Select TWO divine domains' }}</span>
             </div>
             <div class="d-inline-flex w-100">
               <div class="input-group">

@@ -82,7 +82,7 @@ export class NewCharacterClassComponent implements OnInit {
     );
     if (this.characterService.tempCharacter.owner === null) {
       console.log('tempCharacter owner is null, returning to character creation step 1.');
-     // router.navigate( ['/character/new/'] );
+      router.navigate( ['/character/new/'] );
     }
   }
 
@@ -120,7 +120,6 @@ export class NewCharacterClassComponent implements OnInit {
       level: 1
     });
     this.playerHasSelectedClass = true;
-    this.readyToPickSkills = true;
     this.characterService.tempCharacter.alignment = null;   // reset alignment
     this.characterService.tempCharacter.religion = [];      // reset religion
     this.characterService.tempCharacter.age = this.generateNewRandomAge();
@@ -136,6 +135,26 @@ export class NewCharacterClassComponent implements OnInit {
     this.characterService.tempCharacter.saves.fort = this.selectedClass.saves.fortitude[0];
     this.characterService.tempCharacter.saves.ref = this.selectedClass.saves.reflex[0];
     this.characterService.tempCharacter.saves.will = this.selectedClass.saves.will[0];
+    this.checkClassSelectionActionsPerformed();
+  }
+
+  checkClassSelectionActionsPerformed() {
+    if (this.selectedClass.id === 'CLERIC') {
+      if (this.characterService.tempCharacter.alignment !== null
+        && this.characterService.tempCharacter.religion !== undefined
+        && this.characterService.tempCharacter.religion.length > 0
+        && this.characterService.tempCharacter.clericDomains !== undefined
+        && this.characterService.tempCharacter.clericDomains.length === 2) {
+        this.readyToPickSkills = true;
+        this.nextSkillsBtnClass = 'btn-primary';
+      } else {
+        this.readyToPickSkills = false;
+        this.nextSkillsBtnClass = 'btn-secondary';
+      }
+    } else {
+      this.readyToPickSkills = true;
+      this.nextSkillsBtnClass = 'btn-primary';
+    }
   }
 
   getHitPointsForClass(clsId: CharacterClassId, constitution: number): number {
@@ -174,6 +193,7 @@ export class NewCharacterClassComponent implements OnInit {
           .find( rel => rel.id === this.characterService.tempCharacter.religion[i] ).name; break;
       }
     }
+    this.checkClassSelectionActionsPerformed();
     return religionText;
   }
 
@@ -224,8 +244,9 @@ export class NewCharacterClassComponent implements OnInit {
   }
 
   generateNewRandomAge(): number {
-    if (this.classes !== undefined && this.classes !== null && this.characterService.tempCharacter.classes.length >= 1
-        && this.races !== undefined && this.races !== null) {
+    if (this.classes !== undefined && this.classes !== null
+      && this.characterService.tempCharacter.classes.length >= 1
+      && this.races !== undefined && this.races !== null) {
 
       const race: RaceId = this.races.find(data => data.id === this.characterService.tempCharacter.raceId);
       let age = 0;
@@ -285,7 +306,6 @@ export class NewCharacterClassComponent implements OnInit {
 
   selectSkills() {
     if (this.characterService.tempCharacter.classes[0].classId === 'CLERIC') {
-
       // Is a Cleric
       if (this.characterService.tempCharacter.clericDomains !== undefined && this.characterService.tempCharacter.clericDomains.length === 2
         && this.characterService.tempCharacter.alignment !== null
@@ -294,23 +314,17 @@ export class NewCharacterClassComponent implements OnInit {
         this.router.navigate( ['/character/new/skill'] );
       } else {
         this.popover.ngbPopover = 'Cleric\'s must select an alignment and patron deity. Then select two of the deities divine domains.';
-        this.nextSkillsBtnClass = 'btn-secondary';
         this.popover.open();
       }
-
     } else {
-
       // Not a Cleric
       if (this.readyToPickSkills) {
         this.router.navigate( ['/character/new/skill'] );
       } else {
         this.popover.ngbPopover = 'Select your characters class.';
-        this.nextSkillsBtnClass = 'btn-secondary';
         this.popover.open();
       }
-
     }
-
   }
 
 }

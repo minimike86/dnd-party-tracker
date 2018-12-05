@@ -50,6 +50,7 @@ export class CharacterService {
       hitDie: [],
       baseAttackBonus: null,
       saves: { fort: null, ref: null, will: null },
+      skillRanks: [],
       weaponsId: null,
       inventoryId: null,
     };

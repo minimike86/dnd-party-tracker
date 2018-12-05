@@ -43,6 +43,13 @@ export interface Character {
   // Saves
   saves: { fort: number, ref: number, will: number };
 
+  // Skills
+  skillRanks: {
+    skillId: string,
+    ranks: number,
+    misc: number
+  }[];
+
   // Inventory
   weaponsId: string;
   inventoryId: string;
