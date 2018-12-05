@@ -111,7 +111,17 @@ export class NewCharacterSkillComponent implements OnInit {
 
   getMaxSkillPoints(cls: CharacterClassId, intelligence: number, race: RaceId): number {
     if (cls !== undefined) {
-      return ((cls.skillPointsPerLevel + this.getAbilityModifier(intelligence)) * 4) + race.extraSkillPointsFirstLevel;
+
+      console.log('Max Ranks: ', ((cls.skillPointsPerLevel + this.getAbilityModifier(intelligence)) * 4) + race.extraSkillPointsFirstLevel);
+      console.log('Class Skill Points: ', cls.skillPointsPerLevel);
+      console.log('Intelligence Modifier: ', this.getAbilityModifier(intelligence));
+      console.log('Racial Bonus Skill Points: ', race.extraSkillPointsFirstLevel);
+
+      if ( ((cls.skillPointsPerLevel + this.getAbilityModifier(intelligence)) * 4) + race.extraSkillPointsFirstLevel < 4 ) {
+        return 4;
+      } else {
+        return ((cls.skillPointsPerLevel + this.getAbilityModifier(intelligence)) * 4) + race.extraSkillPointsFirstLevel;
+      }
     } else {
       return 0;
     }
@@ -130,7 +140,7 @@ export class NewCharacterSkillComponent implements OnInit {
     }
     const RANKS = this.skillRanks.find(skill => skill.skillId === skillId.id).ranks;
     const MISC = this.skillRanks.find(skill => skill.skillId === skillId.id).misc;
-    return abilityMod + RANKS + MISC;
+    return Math.floor( abilityMod + RANKS + MISC );
   }
 
   canBuySkillRank(skill: SkillId, index: number): boolean {
