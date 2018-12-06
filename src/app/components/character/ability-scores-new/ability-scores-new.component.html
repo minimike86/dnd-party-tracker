@@ -145,29 +145,6 @@
 
     <div class="col-4 pr-0" *ngIf="charIsNew==true">
 
-      <div class="mb-3">
-        <label for="typeahead-focus">Race:</label>
-        <input
-          id="typeahead-focus"
-          type="text"
-          class="form-control form-inline text-left"
-          placeholder="What race are you?"
-          [(ngModel)]="typeAheadRace"
-          [ngbTypeahead]="search"
-          [resultTemplate]="rt"
-          [resultFormatter]="formatMatches"
-          [inputFormatter]="formatMatches"
-          (focus)="focus$.next($event.target.value)"
-          (click)="click$.next($event.target.value)"
-          (selectItem)="setSelectedRace($event.item)"
-          #instance="ngbTypeahead"
-        />
-        <ng-template #rt let-r="result" let-t="term">
-          <img [src]="r['icon']" class="mr-2" style="width: 1.5em">
-          <ngb-highlight [result]="r.name" [term]="t"></ngb-highlight>
-        </ng-template>
-      </div>
-
       <div class="jumbotron p-2 mb-1" style="text-align: center;">
         <h1 class="display-1">{{ (pointBuy <= 0 || pointBuy > 0) ? pointBuy : 0 }}</h1>
         <p class="lead">Point Buy Total</p>

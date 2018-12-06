@@ -1,10 +1,14 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import { NgbPopover, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/firebase/auth/auth.service';
 import { CharacterService } from '../../../services/firebase/character/character.service';
 import { AbilityScore } from '../../../models/character/ability-scores';
 import { generateNewRandomHeight, generateNewRandomWeight, RaceId } from '../../../models/character/race';
+import { RaceService } from '../../../services/firebase/race/race.service';
+import { merge, Observable, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
+import { AbilityScoresNewComponent } from '../ability-scores-new/ability-scores-new.component';
 
 
 @Component({
@@ -12,7 +16,7 @@ import { generateNewRandomHeight, generateNewRandomWeight, RaceId } from '../../
   templateUrl: './new-character.component.html',
   styleUrls: ['./new-character.component.css']
 })
-export class NewCharacterComponent implements OnInit {
+export class NewCharacterComponent implements OnInit, AfterViewInit {
 
   public playerName: string;
   public characterName: string;
@@ -20,18 +24,45 @@ export class NewCharacterComponent implements OnInit {
   public totalAbilityScores: AbilityScore;
   public playerHasRolledAllStats: boolean;
   public playerHasSelectedRace: boolean;
+  public races: any;
+  public typeAheadRace: any;
   public selectedRace: RaceId;
   public readyToPickClass: boolean;
+
   @ViewChild('popover') public popover: NgbPopover;
 
+  @ViewChild('instance') instance: NgbTypeahead;
+  focus$ = new Subject<string>();
+  click$ = new Subject<string>();
+
+  @ViewChild(AbilityScoresNewComponent)
+  private abilityScoresNewComponent: AbilityScoresNewComponent;
+
+
   constructor(private router: Router,
-              public characterService: CharacterService,
-              public authService: AuthService) {
+              private authService: AuthService,
+              private characterService: CharacterService,
+              private raceService: RaceService) {
+    raceService.getRaces().subscribe(
+      value => {
+        // Set races from firebase db
+        this.races = value;
+        // Sort races by name
+        this.races.sort((a, b) => {
+          const x = a.name.toLowerCase();
+          const y = b.name.toLowerCase();
+          return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+        });
+        // Set default selectedRace as Human
+        this.selectedRace = this.races.find(race => race.name === 'Human');
+        this.abilityScoresNewComponent.selectedRace = this.selectedRace;
+      },
+      err => console.log('Error :: ' + err)
+    );
   }
 
   ngOnInit() {
     if (this.authService.authenticated) {
-      this.playerName = '';
       this.playerName = this.authService.currentUser.displayName;
       this.characterName = '';
       this.gender = 'Male';
@@ -42,6 +73,34 @@ export class NewCharacterComponent implements OnInit {
       this.router.navigate( ['/login'] );
     }
   }
+
+
+  ngAfterViewInit() {
+  }
+
+
+  formatMatches = (matchedValue: any) => matchedValue.name || '';
+  search = (text$: Observable<string>) => {
+    const debouncedText$ = text$.pipe(debounceTime(200), distinctUntilChanged());
+    const clicksWithClosedPopup$ = this.click$.pipe(filter(() => !this.instance.isPopupOpen()));
+    const inputFocus$ = this.focus$;
+    return merge(debouncedText$, inputFocus$, clicksWithClosedPopup$).pipe(
+      map(term => (
+          term === '' ? this.races : this.races.filter( v => v.name.toString().toLowerCase().indexOf( term.toLowerCase() ) > -1  )
+        ).slice(0, 10)
+      )
+    );
+  }
+  setSelectedRace(selectedValue: any): void {
+    // Set selected race and emit updates back to parent component
+    this.selectedRace = this.races.find(race => race.name === selectedValue.name);
+    this.abilityScoresNewComponent.selectedRace = this.selectedRace;
+    this.playerHasSelectedRace = true;
+    this.abilityScoresNewComponent.playerHasSelectedRace = this.playerHasSelectedRace;
+    // update total ability scores
+    this.abilityScoresNewComponent.updateTotalAbilityScores();
+  }
+
 
   // TODO: Add names to Firestore
   generateRandomName(): void {
@@ -217,14 +276,6 @@ export class NewCharacterComponent implements OnInit {
 
   playerHasRolledAllStatsChanged(playerHasRolledAllStats: boolean) {
     this.playerHasRolledAllStats = playerHasRolledAllStats;
-  }
-
-  selectedRaceChangedHandler(selectedRace: RaceId) {
-    this.selectedRace = selectedRace;
-  }
-
-  playerHasSelectedRaceChangedHandler(playerHasSelectedRace: boolean) {
-    this.playerHasSelectedRace = playerHasSelectedRace;
   }
 
   totalAbilityScoresChangedHandler(totalAbilityScores: AbilityScore) {
