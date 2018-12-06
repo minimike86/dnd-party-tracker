@@ -1,10 +1,6 @@
-import { Component, Input, Output, OnInit, ViewChild, EventEmitter } from '@angular/core';
-import { Observable, Subject, merge } from 'rxjs';
-import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
-import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
+import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { AbilityScore, AbilityScoreAbbreviation  } from '../../../models/character/ability-scores';
-import { Race, RaceId } from '../../../models/character/race';
-import { RaceService } from '../../../services/firebase/race/race.service';
+import {RaceId} from '../../../models/character/race';
 
 
 @Component({
@@ -36,36 +32,13 @@ export class AbilityScoresNewComponent implements OnInit {
   public hasRolledCha: boolean;
   public hasRolledAllStats: boolean;
 
+  @Input() selectedRace: RaceId;
+  @Input() playerHasSelectedRace: boolean;
+
   @Output() playerHasRolledAllStatsChanged: EventEmitter<boolean> = new EventEmitter();
   public pointBuy: number;
 
-  public races: any;
-  public typeAheadRace: any;
-  public selectedRace: any;
-  @Output() selectedRaceChanged: EventEmitter<any> = new EventEmitter();
-  public playerHasSelectedRace: boolean;
-  @Output() playerHasSelectedRaceChanged: EventEmitter<boolean> = new EventEmitter();
-
-  @ViewChild('instance') instance: NgbTypeahead;
-  focus$ = new Subject<string>();
-  click$ = new Subject<string>();
-
-  constructor(raceService: RaceService) {
-    raceService.getRaces().subscribe(
-      value => {
-        // Set races from firebase db
-        this.races = value;
-        // Sort races by name
-        this.races.sort((a, b) => {
-          const x = a.name.toLowerCase();
-          const y = b.name.toLowerCase();
-          return ((x < y) ? -1 : ((x > y) ? 1 : 0));
-        });
-        // Set default selectedRace as Human
-        this.selectedRace = this.races.find(race => race.name === 'Human');
-      },
-      err => console.log('Error :: ' + err)
-    );
+  constructor() {
   }
 
   ngOnInit() {
@@ -83,7 +56,6 @@ export class AbilityScoresNewComponent implements OnInit {
       this.hasRolledWis = false;
       this.hasRolledCha = false;
       this.hasRolledAllStats = false;
-      this.playerHasSelectedRace = false;
       this.pointBuy = this.getPointBuyPoints();
     } else {
       // View an existing character
@@ -143,29 +115,6 @@ export class AbilityScoresNewComponent implements OnInit {
   }
 
 
-  formatMatches = (matchedValue: any) => matchedValue.name || '';
-  search = (text$: Observable<string>) => {
-    const debouncedText$ = text$.pipe(debounceTime(200), distinctUntilChanged());
-    const clicksWithClosedPopup$ = this.click$.pipe(filter(() => !this.instance.isPopupOpen()));
-    const inputFocus$ = this.focus$;
-    return merge(debouncedText$, inputFocus$, clicksWithClosedPopup$).pipe(
-      map(term => (
-          term === '' ? this.races : this.races.filter( v => v.name.toString().toLowerCase().indexOf( term.toLowerCase() ) > -1  )
-        ).slice(0, 10)
-      )
-    );
-  }
-  setSelectedRace(selectedValue: any): void {
-    // Set selected race and emit updates back to parent component
-    this.selectedRace = this.races.find(race => race.name === selectedValue.name);
-    this.selectedRaceChanged.emit(this.selectedRace);
-    this.playerHasSelectedRace = true;
-    this.playerHasSelectedRaceChanged.emit(this.playerHasSelectedRace);
-    // update total ability scores
-    this.updateTotalAbilityScores();
-  }
-
-
   enforceRacialAbilityRules() {
     // Enforce racial ability score rules
     if ( this.selectedRace !== undefined ) {
@@ -204,6 +153,7 @@ export class AbilityScoresNewComponent implements OnInit {
 
 
   updateTotalAbilityScores(): void {
+
     if (this.selectedRace !== undefined) {
 
       // Update total ability scores now that race has changed

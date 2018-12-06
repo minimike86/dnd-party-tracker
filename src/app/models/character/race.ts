@@ -22,6 +22,14 @@ export interface Race {
     wisdom: number,
     charisma: number
   };
+  abilityScoreMinimum?: {
+    strength?: number,
+    dexterity?: number,
+    constitution?: number,
+    intelligence?: number,
+    wisdom?: number,
+    charisma?: number
+  };
   extraFeatFirstLevel?: number;
   extraSkillPointsFirstLevel?: number;
   extraSkillPointsEachLevel?: number;
