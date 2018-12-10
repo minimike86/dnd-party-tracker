@@ -55,7 +55,7 @@ export class PartyComponent implements OnInit {
           if (this.routerParamId !== undefined && this.routerParamId !== null) {
             switch (this.routerParamId) {
               case 'owned':
-                this.parties = this.parties.filter(party => party.partyLeader === this.authService.currentUser());
+                this.parties = this.parties.filter(party => party.partyLeader === this.authService.currentUser().uid);
                 break;
               default:
                 this.parties = this.parties.filter(party => party.id === this.routerParamId);

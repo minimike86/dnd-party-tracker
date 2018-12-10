@@ -29,7 +29,7 @@ export class AddPartyComponent {
     };
 
     this.authService.afAuth.user.subscribe(data => {
-      this.party.partyLeader = data.email;
+      this.party.partyLeader = data.uid;
     });
 
   }
@@ -48,6 +48,10 @@ export class AddPartyComponent {
       this.partyService.addParty(this.party);
       this.activeModal.close('Party Added');
     }
+  }
+
+  getPartyLeaderEmail(): string {
+    return this.authService.currentUser.email;
   }
 
 }

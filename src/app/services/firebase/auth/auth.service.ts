@@ -21,7 +21,7 @@ export class AuthService {
     this.afAuth.authState.subscribe( data => {
       this.authState = data;
       if ( data !== undefined && data !== null ) {
-        this.db.collection('users').doc(data.email.toUpperCase()).set(data.toJSON());
+        this.db.collection('users').doc(data.uid).set(data.toJSON());
       }
     });
 
