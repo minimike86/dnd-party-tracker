@@ -106,7 +106,7 @@
         </div>
         <div class="card-footer p-2">
           <div class="d-flex h-50">
-            <div *ngIf="authService.currentUser === party.partyLeader">
+            <div *ngIf="authService.currentUser.uid === party.partyLeader">
               <small class="text-warning ml-2" title="This party is owned by you!"><i class="fas fa-crown"></i></small>
             </div>
             <div class="ml-auto" *ngIf="authService.currentUser; else showLogin">
@@ -117,7 +117,7 @@
               </button>
               <button class="btn btn-outline-danger btn-sm ml-1 py-0"
                       title="Delete &apos;{{ party.name }}&apos;"
-                      (click)="openDeletePartyModal(party)" *ngIf="authService.currentUser === party.partyLeader">
+                      (click)="openDeletePartyModal(party)" *ngIf="authService.currentUser.uid === party.partyLeader">
                 <i class="far fa-trash-alt"></i>
               </button>
             </div>
