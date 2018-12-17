@@ -10,6 +10,7 @@ import { AddPartyComponent } from './modals/add-party/add-party.component';
 import { ConfirmDeletePartyComponent } from './modals/confirm-delete-party/confirm-delete-party.component';
 import { CharacterJoinPartyComponent } from './modals/character-join-party/character-join-party.component';
 import { ConfirmRemoveCharacterFromPartyComponent } from './modals/confirm-remove-character-from-party/confirm-remove-character-from-party.component';
+import { User } from 'firebase';
 
 
 @Component({
@@ -23,6 +24,7 @@ export class PartyComponent implements OnInit {
   public characters: CharacterId[];
   public partiesUserHasPlayerCharacter: string[];
   public routerParamId: string;
+  public currentUser: User;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -31,15 +33,14 @@ export class PartyComponent implements OnInit {
               public characterService: CharacterService,
               private modalService: NgbModal) {
     this.routerParamId = this.route.snapshot.paramMap.get('id');
+    authService.user$.subscribe(user => {
+      this.currentUser = user;
+      this.getCharacters(); // Must call characters first
+      this.getParties();
+    });
   }
 
   ngOnInit() {
-    if (this.authService.authenticated) {
-      this.getCharacters(); // Must call characters first
-      this.getParties();
-    } else {
-      this.router.navigate( ['/login'] );
-    }
   }
 
   // Party Functions
@@ -55,7 +56,7 @@ export class PartyComponent implements OnInit {
           if (this.routerParamId !== undefined && this.routerParamId !== null) {
             switch (this.routerParamId) {
               case 'owned':
-                this.parties = this.parties.filter(party => party.partyLeader === this.authService.currentUser().uid);
+                this.parties = this.parties.filter(party => party.partyLeader === this.currentUser.uid);
                 break;
               default:
                 this.parties = this.parties.filter(party => party.id === this.routerParamId);
@@ -97,7 +98,7 @@ export class PartyComponent implements OnInit {
     if (this.parties !== undefined && this.characters !== undefined) {
       for (const partyItem of parties) {
         for (const member of partyItem.members) {
-          if (this.getCharacter(member).owner === this.authService.currentUser()) {
+          if (this.getCharacter(member).owner === this.currentUser.uid) {
             this.partiesUserHasPlayerCharacter.push(partyItem.id);
           }
         }

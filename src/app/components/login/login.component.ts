@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/firebase/auth/auth.service';
 import { Router } from '@angular/router';
+import { User } from 'firebase';
 
 @Component({
   selector: 'app-login',
@@ -9,25 +10,29 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
 
+  private currentUser: User;
+
   constructor(private authService: AuthService,
               private router: Router) {
-  }
 
-  checkIsLoggedIn() {
-    this.authService.afAuth.authState.subscribe(data => {
-      if (data !== undefined && data !== null) {
-        this.router.navigate(['/']);
-      }
+    this.authService.user$.subscribe(user => {
+      console.log('LoginComponent', user);
+      this.currentUser = user;
     });
+
+    if (this.currentUser !== undefined && this.currentUser !== null) {
+      console.log('logged in');
+    } else if (this.currentUser === undefined || this.currentUser === null) {
+      console.log('not logged in');
+    }
+
   }
 
   ngOnInit() {
-    this.checkIsLoggedIn();
   }
 
   login() {
     this.authService.login('google');
-    this.checkIsLoggedIn();
   }
 
   showPrivacyPolicyModal() {

@@ -10,11 +10,11 @@ import { User } from 'firebase';
 })
 export class NavbarComponent implements OnInit {
 
-  public user: User;
+  public currentUser: User;
 
   constructor(private authService: AuthService) {
-    authService.afAuth.user.subscribe(data => {
-      this.user = data;
+    authService.user$.subscribe(user => {
+      this.currentUser = user;
     });
   }
 

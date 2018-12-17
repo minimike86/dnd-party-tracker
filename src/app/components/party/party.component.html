@@ -1,8 +1,7 @@
-<app-navbar></app-navbar>
 <div class="container mt-3">
   <div class="row">
     <h2 class="" style="font-family: 'Fredericka the Great', cursive;">Adventuring Parties:</h2>
-    <div class="ml-auto" *ngIf="authService.authenticated">
+    <div class="ml-auto" *ngIf="currentUser">
       <button class="btn btn-sm btn-primary"
               (click)="openNewPartyModal()">
         <i class="fab fa-d-and-d"></i> Start an Adventuring Party!
@@ -78,7 +77,7 @@
                   </div>
                   <div class="card-footer p-1">
                     <div class="d-flex flex-row-reverse">
-                      <div class="h-50" *ngIf="authService.currentUser === getCharacter(memberReference).owner">
+                      <div class="h-50" *ngIf="currentUser.uid === getCharacter(memberReference).owner">
                         <button class="btn btn-outline-warning btn-sm ml-1 py-0" style="font-size: small;"
                                 title="Edit {{ getCharacter(memberReference).characterName }}"
                                 (click)="editCharacter(memberReference)">
@@ -106,10 +105,10 @@
         </div>
         <div class="card-footer p-2">
           <div class="d-flex h-50">
-            <div *ngIf="authService.currentUser.uid === party.partyLeader">
+            <div *ngIf="currentUser.uid === party.partyLeader">
               <small class="text-warning ml-2" title="This party is owned by you!"><i class="fas fa-crown"></i></small>
             </div>
-            <div class="ml-auto" *ngIf="authService.currentUser; else showLogin">
+            <div class="ml-auto" *ngIf="currentUser; else showLogin">
               <button class="btn btn-success btn-sm ml-1 py-0"
                       title="Join this party"
                       (click)="openCharacterJoinPartyModal(party)"> <!-- !partiesUserHasPlayerCharacter.includes(party.id) -->
@@ -117,7 +116,7 @@
               </button>
               <button class="btn btn-outline-danger btn-sm ml-1 py-0"
                       title="Delete &apos;{{ party.name }}&apos;"
-                      (click)="openDeletePartyModal(party)" *ngIf="authService.currentUser.uid === party.partyLeader">
+                      (click)="openDeletePartyModal(party)" *ngIf="currentUser.uid === party.partyLeader">
                 <i class="far fa-trash-alt"></i>
               </button>
             </div>

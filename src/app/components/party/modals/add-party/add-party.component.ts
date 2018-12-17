@@ -3,6 +3,7 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from '../../../../services/firebase/auth/auth.service';
 import { Party } from '../../../../models/party/party';
 import { PartyService } from '../../../../services/firebase/party/party.service';
+import { User } from 'firebase';
 
 
 @Component({
@@ -13,6 +14,7 @@ import { PartyService } from '../../../../services/firebase/party/party.service'
 export class AddPartyComponent {
 
   public party: Party;
+  public currentUser: User;
   public nameIsValid: boolean;
 
   constructor(public authService: AuthService,
@@ -28,8 +30,9 @@ export class AddPartyComponent {
       dateCreated: new Date()
     };
 
-    this.authService.afAuth.user.subscribe(data => {
-      this.party.partyLeader = data.uid;
+    this.authService.user$.subscribe(data => {
+      this.currentUser = data;
+      this.party.partyLeader = this.currentUser.uid;
     });
 
   }
@@ -48,10 +51,6 @@ export class AddPartyComponent {
       this.partyService.addParty(this.party);
       this.activeModal.close('Party Added');
     }
-  }
-
-  getPartyLeaderEmail(): string {
-    return this.authService.currentUser.email;
   }
 
 }

@@ -26,7 +26,10 @@
     </div>
   </div>
   <div class="modal-footer bg-light p-2">
-    <small class="text-muted mr-auto" title="This party will be owned by the account &quot;{{ getPartyLeaderEmail() }}&quot;"><i class="fas fa-crown"></i> {{ getPartyLeaderEmail() }}</small>
+    <small class="text-muted mr-auto"
+           title="This party will be owned by your account &quot;{{ currentUser !== undefined ? currentUser.email : 'fetching account...' }}&quot;">
+      <i class="fas fa-crown"></i> {{ currentUser !== undefined ? currentUser.email : 'fetching account...' }}
+    </small>
     <button type="button" class="btn btn-sm btn-success" (click)="addParty()">
       <i class="fas fa-users"></i>&nbsp;<i class="fas fa-plus-circle"></i> Add
     </button>

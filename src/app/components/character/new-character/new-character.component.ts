@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { NgbPopover, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/firebase/auth/auth.service';
@@ -9,6 +9,7 @@ import { RaceService } from '../../../services/firebase/race/race.service';
 import { merge, Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
 import { AbilityScoresNewComponent } from '../ability-scores-new/ability-scores-new.component';
+import { User } from 'firebase';
 
 
 @Component({
@@ -38,11 +39,19 @@ export class NewCharacterComponent implements OnInit, AfterViewInit {
   @ViewChild(AbilityScoresNewComponent)
   private abilityScoresNewComponent: AbilityScoresNewComponent;
 
+  private currentUser: User;
 
   constructor(private router: Router,
               private authService: AuthService,
               private characterService: CharacterService,
               private raceService: RaceService) {
+
+    authService.user$.subscribe(user => {
+      this.currentUser = user;
+      this.playerName = this.currentUser.displayName;
+      console.log('NewCharacterComponent - user loaded: ', this.currentUser);
+    });
+
     raceService.getRaces().subscribe(
       value => {
         // Set races from firebase db
@@ -59,11 +68,12 @@ export class NewCharacterComponent implements OnInit, AfterViewInit {
       },
       err => console.log('Error :: ' + err)
     );
+
   }
 
   ngOnInit() {
     if (this.authService.authenticated) {
-      this.playerName = this.authService.currentUser.displayName;
+      this.playerName = '';
       this.characterName = '';
       this.gender = 'Male';
       this.readyToPickClass = false;
@@ -286,7 +296,7 @@ export class NewCharacterComponent implements OnInit, AfterViewInit {
   selectCharacterClass() {
     if (this.readyToPickClass) {
       this.characterService.newCharacter();
-      this.characterService.tempCharacter.owner = this.authService.currentUser.email;
+      this.characterService.tempCharacter.owner = this.currentUser.uid;
       this.characterService.tempCharacter.playerName = this.playerName;
       this.characterService.tempCharacter.characterName = this.characterName;
       this.characterService.tempCharacter.gender = this.gender;
