@@ -5,6 +5,7 @@ import {CharacterService} from '../../../../services/firebase/character/characte
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {CharacterId} from '../../../../models/character/character';
 import {PartyId} from '../../../../models/party/party';
+import { User } from 'firebase';
 
 
 @Component({
@@ -16,11 +17,15 @@ export class CharacterJoinPartyComponent implements OnInit {
 
   @Input() party: PartyId;
   public characters: CharacterId[];
+  public currentUser: User;
 
   constructor(public authService: AuthService,
               public partyService: PartyService,
               public characterService: CharacterService,
               public activeModal: NgbActiveModal) {
+    authService.user$.subscribe(user => {
+      this.currentUser = user;
+    });
   }
 
   ngOnInit() {
@@ -29,11 +34,13 @@ export class CharacterJoinPartyComponent implements OnInit {
 
   // Character Functions
   getCharacters(): void {
-    this.characterService.getCharacters()
-      .subscribe(
-        characters => this.characters = characters.filter(characterId => characterId.owner === this.authService.currentUser()),
-        err => console.log('Error :: ' + err)
-      );
+    if (this.currentUser !== undefined && this.currentUser !== null) {
+      this.characterService.getCharacters()
+        .subscribe(
+          characters => this.characters = characters.filter(characterId => characterId.owner === this.currentUser.uid),
+          err => console.log('Error :: ' + err)
+        );
+    }
   }
 
   getCharacter(characterReference: string): CharacterId {

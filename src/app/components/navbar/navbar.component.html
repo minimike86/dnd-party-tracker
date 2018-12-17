@@ -26,13 +26,16 @@
     </ul>
   </div>
 
-  <div class="d-flex align-items-stretch" *ngIf="user; else showLogin">
+  <div class="d-flex align-items-stretch" *ngIf="currentUser !== undefined && currentUser !== null; else showLogin">
     <div class="d-flex align-self-center mr-2">
       <a class="text-white" [routerLink]="['/profile']" [routerLinkActive]="['active']">
-        <img class="rounded-circle" style="border: 2px solid #ccc; height: 2em; width: 2em;" src="{{ user.photoURL }}" title="{{ user.email }}">
+        <img class="rounded-circle"
+             style="border: 2px solid #ccc; height: 2em; width: 2em;"
+             src="{{ currentUser.photoURL }}"
+             title="{{ currentUser.email }}">
       </a>
     </div>
-    <button (click)="logout()" class="btn btn-sm btn-secondary">Logout</button>
+    <button (click)="this.logout()" class="btn btn-sm btn-secondary">Logout</button>
   </div>
   <ng-template #showLogin>
     <div>
@@ -41,7 +44,7 @@
         <input type="text" class="form-control form-control-sm" placeholder="Email" aria-label="Email Address">
         <input type="password" class="form-control form-control-sm" placeholder="Password" aria-label="Password">
         -->
-        <button (click)="login()" class="btn btn-sm btn-secondary my-2 my-sm-0" type="submit" title="Login with your Google Account">Login with <i class="fab fa-google"></i></button>
+        <button (click)="this.login()" class="btn btn-sm btn-secondary my-2 my-sm-0" type="submit" title="Login with your Google Account">Login with <i class="fab fa-google"></i></button>
       </div>
     </div>
   </ng-template>

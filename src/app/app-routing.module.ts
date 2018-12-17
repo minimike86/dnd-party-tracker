@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuardService as AuthGuard } from './services/firebase/auth/auth-guard.service';
+import { AuthGuardService as AuthGuard } from './router/guards/auth-guard.service';
 
 // Components
 import { AdminComponent } from './components/admin/admin.component';

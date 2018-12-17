@@ -1,6 +1,6 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import {NgbModal, NgbPopover} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { CharacterService } from '../../../services/firebase/character/character.service';
 import { RaceService } from '../../../services/firebase/race/race.service';
 import { CharacterClassService } from '../../../services/firebase/character-class/character-class.service';
@@ -8,6 +8,7 @@ import { SkillService } from '../../../services/firebase/skill/skill.service';
 import { RaceId } from '../../../models/character/race';
 import { CharacterClassId } from '../../../models/character/character-class';
 import { SkillId } from '../../../models/character/skill';
+
 
 @Component({
   selector: 'app-new-character-skill',
