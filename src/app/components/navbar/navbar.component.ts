@@ -11,6 +11,7 @@ import { User } from 'firebase';
 export class NavbarComponent implements OnInit {
 
   public currentUser: User;
+  public isCollapsed = true;
 
   constructor(private authService: AuthService) {
     authService.user$.subscribe(user => {

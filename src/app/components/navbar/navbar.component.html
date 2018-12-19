@@ -7,12 +7,15 @@
     <img class="brand-img" src="assets/img/DnD_Logo.png" alt="dnd logo" />
   </a>
 
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01"
-          aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+  <button class="navbar-toggler" type="button"
+          data-toggle="collapse" data-target="#navbarColor01"
+          aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation"
+          (click)="isCollapsed = !isCollapsed">
     <span class="navbar-toggler-icon"></span>
   </button>
 
-  <div class="collapse navbar-collapse" id="navbarColor01">
+  <div class="collapse navbar-collapse" id="navbarColor01"
+       [ngbCollapse]="isCollapsed">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
         <a class="nav-link" [routerLink]="['/']">Home</a>
@@ -24,29 +27,29 @@
         <a class="nav-link" [routerLink]="['/parties']">Parties</a>
       </li>
     </ul>
-  </div>
 
-  <div class="d-flex align-items-stretch" *ngIf="currentUser !== undefined && currentUser !== null; else showLogin">
-    <div class="d-flex align-self-center mr-2">
-      <a class="text-white" [routerLink]="['/profile']" [routerLinkActive]="['active']">
-        <img class="rounded-circle"
-             style="border: 2px solid #ccc; height: 2em; width: 2em;"
-             src="{{ currentUser.photoURL }}"
-             title="{{ currentUser.email }}">
-      </a>
-    </div>
-    <button (click)="this.logout()" class="btn btn-sm btn-secondary">Logout</button>
-  </div>
-  <ng-template #showLogin>
-    <div>
-      <div class="input-group my-2 my-lg-0">
-        <!--
-        <input type="text" class="form-control form-control-sm" placeholder="Email" aria-label="Email Address">
-        <input type="password" class="form-control form-control-sm" placeholder="Password" aria-label="Password">
-        -->
-        <button (click)="this.login()" class="btn btn-sm btn-secondary my-2 my-sm-0" type="submit" title="Login with your Google Account">Login with <i class="fab fa-google"></i></button>
+    <div class="d-flex align-items-stretch" *ngIf="currentUser !== undefined && currentUser !== null; else showLogin">
+      <div class="d-flex align-self-center ml-auto mr-2">
+        <a class="text-white" [routerLink]="['/profile']" [routerLinkActive]="['active']">
+          <img class="rounded-circle"
+               style="border: 2px solid #ccc; height: 2em; width: 2em;"
+               src="{{ currentUser.photoURL }}"
+               title="{{ currentUser.email }}">
+          <span class="mx-1">{{ currentUser.displayName }}</span>
+        </a>
       </div>
+      <button (click)="this.logout()" class="btn btn-sm btn-secondary">Logout</button>
     </div>
-  </ng-template>
+    <ng-template #showLogin>
+        <div class="input-group">
+          <!--
+          <input type="text" class="form-control form-control-sm" placeholder="Email" aria-label="Email Address">
+          <input type="password" class="form-control form-control-sm" placeholder="Password" aria-label="Password">
+          -->
+          <button (click)="this.login()" class="btn btn-sm btn-secondary ml-auto" type="submit" title="Login with your Google Account"><i class="fab fa-google"></i> Login</button>
+        </div>
+    </ng-template>
+
+  </div>
 
 </nav>
