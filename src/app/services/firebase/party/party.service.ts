@@ -3,8 +3,8 @@ import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/fire
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Party, PartyId } from '../../../models/party/party';
-import {CharacterService} from '../character/character.service';
-import {CharacterId} from '../../../models/character/character';
+import { CharacterService } from '../character/character.service';
+import { CharacterId } from '../../../models/character/character';
 
 @Injectable({
   providedIn: 'root'
@@ -13,12 +13,12 @@ export class PartyService {
 
   private partyCollection: AngularFirestoreCollection<Party>;
   private parties: PartyId[];
-  private characters: CharacterId[]; // TODO: Used to sort party members by character name - remove the need to use...
+  private characters: CharacterId[];
 
   constructor(public characterService: CharacterService,
               public db: AngularFirestore) {
     this.partyCollection = db.collection<Party>('/parties');
-    this.getCharacters(); // TODO: Used to sort party members by character name - remove the need to use...
+    this.getCharacters();
     this.getParties().subscribe(data => {
       this.parties = data;
     });
@@ -38,7 +38,6 @@ export class PartyService {
     );
   }
 
-  // TODO: Used to sort party members by character name - remove the need to use...
   private getCharacters(): void {
     this.characterService.getCharacters()
       .subscribe(
@@ -47,7 +46,6 @@ export class PartyService {
       );
   }
 
-  // TODO: Used to sort party members by character name - remove the need to use...
   private getCharacter(characterReference: string): CharacterId {
     if (this.characters !== undefined) {
       return this.characters.filter(characterId => characterId.id === characterReference)[0];
