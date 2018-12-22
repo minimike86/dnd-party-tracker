@@ -17,6 +17,7 @@ import { NewCharacterClassComponent } from './components/character/new-character
 import { NewCharacterSkillComponent } from './components/character/new-character-skill/new-character-skill.component';
 import { NewCharacterFeatComponent } from './components/character/new-character-feat/new-character-feat.component';
 import { AddSkillComponent } from './components/admin/add-skill/add-skill.component';
+import { AddFeatComponent } from './components/admin/add-feat/add-feat.component';
 
 const appRoutes: Routes = [
   { path: '',                     component: HomeComponent },
@@ -26,6 +27,7 @@ const appRoutes: Routes = [
   { path: 'admin/add-deity',      component: AddDeityComponent,               canActivate: [AuthGuard] },
   { path: 'admin/add-skill',      component: AddSkillComponent,               canActivate: [AuthGuard] },
   { path: 'admin/add-class',      component: AddClassComponent,               canActivate: [AuthGuard] },
+  { path: 'admin/add-feat',       component: AddFeatComponent,                canActivate: [AuthGuard] },
   { path: 'login',                component: LoginComponent },
   { path: 'parties',              component: PartyComponent,                  canActivate: [AuthGuard] },
   { path: 'parties/:id',          component: PartyComponent,                  canActivate: [AuthGuard] },

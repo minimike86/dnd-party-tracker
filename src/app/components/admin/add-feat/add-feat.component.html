@@ -1,0 +1,100 @@
+<div class="container pb-3" style="font-family: 'Patua One', cursive;">
+  <div>
+    <h2 class="mt-3" style="font-family: 'Fredericka the Great', cursive;">Add Feat</h2>
+  </div>
+  <div class="row p-0">
+
+    <div class="form-group col-12">
+      <label for="featName">Feat Name</label>
+      <input type="text" class="form-control" id="featName" [(ngModel)]="feat.name" placeholder="Feat Name">
+    </div>
+
+    <div class="form-group col-12">
+      <label for="featDescription">Feat Description</label>
+      <input type="text" class="form-control" id="featDescription" [(ngModel)]="feat.description" placeholder="Feat Description">
+    </div>
+
+    <div class="form-group col-12">
+      <label for="featType">Feat Type</label>
+      <select class="form-control" id="featType" [(ngModel)]="feat.featType">
+        <option [value]="null" disabled>Select Feat Type(s)</option>
+        <option [value]="'General'">General</option>
+        <option [value]="'Item Creation'">Item Creation</option>
+        <option [value]="'Metamagic'">Metamagic</option>
+      </select>
+    </div>
+
+    <div class="form-group col-12">
+      <label for="featPrerequisite">Prerequisite</label>
+      <div class="d-flex">
+        <div class="w-75 pr-2">
+          <select class="form-control" id="featPrerequisite" [(ngModel)]="prerequisite">
+            <option [value]="null" disabled>Select Prerequisite Feat(s)</option>
+            <option *ngFor="let feat of feats" [value]="feat.id">{{ feat.name }}</option>
+          </select>
+        </div>
+        <div class="w-25 d-inline-flex">
+          <div class="w-75 mr-1">
+            <button class="btn btn-block btn-primary" (click)="addPrerequisite()">Add Prerequisite</button>
+          </div>
+          <div class="w-25">
+            <button class="btn btn-block btn-danger" (click)="clearPrerequisite()">Clear</button>
+          </div>
+        </div>
+      </div>
+      <pre class="d-inline-flex">
+        <span class="badge badge-pill badge-secondary mr-1"
+              *ngFor="let prereq of feat.prerequisites">
+          {{ prereq }}
+        </span>
+      </pre>
+    </div>
+
+    <div class="form-group col-12">
+      <label for="featNormal">Normal</label>
+      <input type="text" class="form-control" id="featNormal" [(ngModel)]="feat.normal" placeholder="Normal">
+    </div>
+
+    <div class="form-group col-12">
+      <label for="featSpecial">Special</label>
+      <input type="text" class="form-control" id="featSpecial" [(ngModel)]="feat.special" placeholder="Special">
+    </div>
+
+    <div class="form-group col-12">
+      <h4 style="font-family: 'Fredericka the Great', cursive;">Benefits</h4>
+      <label for="featBenefitSkill">Benefit (Skills)</label>
+      <div class="d-flex">
+        <div class="w-50 pr-2">
+          <select class="form-control" id="featBenefitSkill" [(ngModel)]="skillBenefit.skillId" placeholder="Skill">
+            <option [value]="null" disabled>Select Skill</option>
+            <option *ngFor="let skill of skills" [value]="skill.id">{{ skill.name }}</option>
+          </select>
+        </div>
+        <div class="w-25 pr-2">
+          <input class="form-control" type="number" [(ngModel)]="skillBenefit.skillBonus">
+        </div>
+        <div class="w-25 d-inline-flex">
+          <div class="w-75 mr-1">
+            <button class="btn btn-block btn-primary" (click)="addSkillBenefit()">Add Skill Benefit</button>
+          </div>
+          <div class="w-25">
+            <button class="btn btn-block btn-danger" (click)="clearSkillBenefit()">Clear</button>
+          </div>
+        </div>
+      </div>
+      <pre class="d-inline-flex">
+        <span class="badge badge-pill badge-secondary mr-1"
+              *ngFor="let skillBenefit of feat.benefit.skills | keyvalue">
+          {{skillBenefit.key}}: {{skillBenefit.value}}
+        </span>
+      </pre>
+    </div>
+
+    <button class="btn btn-primary btn-block m-3" (click)="addFeat()">Add Feat</button>
+  </div>
+
+  <div class="d-flex w-25 mr-auto">
+    <button class="btn btn-lg btn-block btn-secondary" [routerLink]="['/admin']" [routerLinkActive]="['active']">Back</button>
+  </div>
+
+</div>
