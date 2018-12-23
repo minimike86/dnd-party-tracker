@@ -1,3 +1,5 @@
+import {AbilityScore} from '../character/ability-scores';
+
 export interface FeatId extends Feat {
 
   id: string;
@@ -7,19 +9,34 @@ export interface FeatId extends Feat {
 export interface Feat {
   name: string;
   description: string;
-  featType: string;
-  categories?: FeatCategory[];
+  featType: string[];
   rulebook?: string;
   benefit: {
+    combat?: {
+      initiative?: number;
+      attack?: number;
+      damage?: number;
+      armorClass?: number;
+    }
     skills?: Map<string, number>;
-    proficiencies?: string;
+    savingThrow?: {
+      fortitude?: number,
+      reflex?: number,
+      will?: number
+    }
   };                         // What the feat enables the character ("you" in the feat description) to do. If a character has the same feat
                               // more than once, its benefits do not stack unless indicated otherwise in the description.In general, having
                               // a feat twice is the same as having it once.
   special?: string;          // Additional facts about the feat that may be helpful when you decide whether to acquire the feat.
   normal?: string;           // What a character who does not have this feat is limited to or restricted from doing.
                               // If not having the feat causes no particular drawback, this entry is absent.
-  prerequisites?: string[];  // What the feat enables the character ("you" in the feat description) to do. If a character has the same feat
+  prerequisites?: {
+    abilityScore?: AbilityScore;
+    classLevel?: Map<string, number>;
+    baseAttackBonus?: number;
+    skillRank?: Map<string, number>;
+    feats?: string[];
+  };  // What the feat enables the character ("you" in the feat description) to do. If a character has the same feat
                               // more than once, its benefits do not stack unless indicated otherwise in the description.
                               // In general, having a feat twice is the same as having it once.
 }
@@ -28,6 +45,19 @@ export interface Feat {
 export interface SkillBenefit {
   skillId: string;
   skillBonus: number;
+}
+
+export interface CombatBenefit {
+  initiative: number;
+  attack: number;
+  damage: number;
+  armorClass: number;
+}
+
+export interface SavingThrowBenefit {
+  fortitude: number;
+  reflex: number;
+  will: number;
 }
 
 export enum FeatType {

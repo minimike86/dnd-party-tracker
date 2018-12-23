@@ -16,38 +16,17 @@
 
     <div class="form-group col-12">
       <label for="featType">Feat Type</label>
-      <select class="form-control" id="featType" [(ngModel)]="feat.featType">
+      <select multiple class="form-control" id="featType" [(ngModel)]="feat.featType">
         <option [value]="null" disabled>Select Feat Type(s)</option>
         <option [value]="'General'">General</option>
+        <option [value]="'Divine'">Divine</option>
+        <option [value]="'Epic'">Epic</option>
+        <option [value]="'Wild'">Wild</option>
+        <option [value]="'Fighter Bonus Feat'">Fighter Bonus Feat</option>
+        <option [value]="'Psionic'">Psionic</option>
         <option [value]="'Item Creation'">Item Creation</option>
         <option [value]="'Metamagic'">Metamagic</option>
       </select>
-    </div>
-
-    <div class="form-group col-12">
-      <label for="featPrerequisite">Prerequisite</label>
-      <div class="d-flex">
-        <div class="w-75 pr-2">
-          <select class="form-control" id="featPrerequisite" [(ngModel)]="prerequisite">
-            <option [value]="null" disabled>Select Prerequisite Feat(s)</option>
-            <option *ngFor="let feat of feats" [value]="feat.id">{{ feat.name }}</option>
-          </select>
-        </div>
-        <div class="w-25 d-inline-flex">
-          <div class="w-75 mr-1">
-            <button class="btn btn-block btn-primary" (click)="addPrerequisite()">Add Prerequisite</button>
-          </div>
-          <div class="w-25">
-            <button class="btn btn-block btn-danger" (click)="clearPrerequisite()">Clear</button>
-          </div>
-        </div>
-      </div>
-      <pre class="d-inline-flex">
-        <span class="badge badge-pill badge-secondary mr-1"
-              *ngFor="let prereq of feat.prerequisites">
-          {{ prereq }}
-        </span>
-      </pre>
     </div>
 
     <div class="form-group col-12">
@@ -61,19 +40,134 @@
     </div>
 
     <div class="form-group col-12">
-      <h4 style="font-family: 'Fredericka the Great', cursive;">Benefits</h4>
-      <label for="featBenefitSkill">Benefit (Skills)</label>
+      <h4 style="font-family: 'Fredericka the Great', cursive;">Prerequisite(s)</h4>
+
+      <label for="abilityScorePrerequisite">Prerequisite Ability Score(s)</label>
+      <div id="abilityScorePrerequisite" class="mb-3">
+        <div class="d-flex">
+          <div class="d-inline-flex">
+            <span class="align-self-center mr-1">STR:</span><input type="number" class="form-control mr-1" id="abilityPrerequisiteStr" [(ngModel)]=abilityScoreInput.strength>
+            <span class="align-self-center mr-1">DEX:</span><input type="number" class="form-control mr-1" id="abilityPrerequisiteDex" [(ngModel)]=abilityScoreInput.dexterity>
+            <span class="align-self-center mr-1">CON:</span><input type="number" class="form-control mr-1" id="abilityPrerequisiteCon" [(ngModel)]=abilityScoreInput.constitution>
+            <span class="align-self-center mr-1">INT:</span><input type="number" class="form-control mr-1" id="abilityPrerequisiteInt" [(ngModel)]=abilityScoreInput.intelligence>
+            <span class="align-self-center mr-1">WIS:</span><input type="number" class="form-control mr-1" id="abilityPrerequisiteWis" [(ngModel)]=abilityScoreInput.wisdom>
+            <span class="align-self-center">CHA:</span><input type="number" class="form-control" id="abilityPrerequisiteCha" [(ngModel)]=abilityScoreInput.charisma>
+          </div>
+        </div>
+      </div>
+
+      <label for="baseAttackBonusPrerequisite">Prerequisite Base Attack Bonus:</label>
+      <div class="form-group">
+        <input type="number" class="form-control" id="baseAttackBonusPrerequisite" [(ngModel)]="baseAttackInput">
+      </div>
+
+      <label for="charClassPrerequisite">Prerequisite Character Class / Level:</label>
+      <div class="d-flex">
+        <div class="w-50 pr-2 d-inline-flex">
+          <div class="w-75 pr-2">
+            <select class="form-control" id="charClassPrerequisite" [(ngModel)]="charClassNameInput">
+              <option [value]="null" disabled>Select Prerequisite Character Class</option>
+              <option *ngFor="let charClass of characterClasses" [value]="charClass.id">{{ charClass.name }}</option>
+            </select>
+          </div>
+          <div class="w-25">
+            <input type="number" class="form-control" [(ngModel)]="charClassLevelInput">
+          </div>
+        </div>
+        <div class="w-50 d-inline-flex">
+          <div class="w-75 mr-1">
+            <button class="btn btn-block btn-primary" (click)="addPrerequisiteCharClass()">Add Prerequisite Character Class / Level</button>
+          </div>
+          <div class="w-25">
+            <button class="btn btn-block btn-danger" (click)="clearPrerequisiteCharClass()">Clear</button>
+          </div>
+        </div>
+      </div>
+      <div class="d-block">
+        <pre class="d-inline-flex">
+          <span class="badge badge-pill badge-secondary mr-1"
+                *ngFor="let prereqCharClass of feat.prerequisites.classLevel | keyvalue">
+            {{prereqCharClass.key}}: {{prereqCharClass.value}}
+          </span>
+        </pre>
+      </div>
+
+      <label for="skillPrerequisite">Prerequisite Skill(s):</label>
+      <div class="d-flex">
+        <div class="w-50 pr-2 d-inline-flex">
+          <div class="w-75 pr-2">
+            <select class="form-control" id="skillPrerequisite" [(ngModel)]="skillNameInput">
+              <option [value]="null" disabled>Select Prerequisite Skill(s)</option>
+              <option *ngFor="let skill of skills" [value]="skill.id">{{ skill.name }}</option>
+            </select>
+          </div>
+          <div class="w-25">
+            <input type="number" class="form-control" [(ngModel)]="skillRankInput">
+          </div>
+        </div>
+        <div class="w-50 d-inline-flex">
+          <div class="w-75 mr-1">
+            <button class="btn btn-block btn-primary" (click)="addPrerequisiteSkill()">Add Prerequisite Skill</button>
+          </div>
+          <div class="w-25">
+            <button class="btn btn-block btn-danger" (click)="clearPrerequisiteSkill()">Clear</button>
+          </div>
+        </div>
+      </div>
+      <div class="d-block">
+        <pre class="d-inline-flex">
+          <span class="badge badge-pill badge-secondary mr-1"
+                *ngFor="let prereqSkill of feat.prerequisites.skillRank | keyvalue">
+            {{prereqSkill.key}}: {{prereqSkill.value}}
+          </span>
+        </pre>
+      </div>
+
+      <label for="featPrerequisite">Prerequisite Feat(s):</label>
       <div class="d-flex">
         <div class="w-50 pr-2">
-          <select class="form-control" id="featBenefitSkill" [(ngModel)]="skillBenefit.skillId" placeholder="Skill">
-            <option [value]="null" disabled>Select Skill</option>
-            <option *ngFor="let skill of skills" [value]="skill.id">{{ skill.name }}</option>
+          <select class="form-control" id="featPrerequisite" [(ngModel)]="featInput">
+            <option [value]="null" disabled>Select Prerequisite Feat(s)</option>
+            <option *ngFor="let feat of feats" [value]="feat.id">{{ feat.name }}</option>
           </select>
         </div>
-        <div class="w-25 pr-2">
-          <input class="form-control" type="number" [(ngModel)]="skillBenefit.skillBonus">
+        <div class="w-50 d-inline-flex">
+          <div class="w-75 mr-1">
+            <button class="btn btn-block btn-primary" (click)="addPrerequisiteFeat()">Add Prerequisite Feat</button>
+          </div>
+          <div class="w-25">
+            <button class="btn btn-block btn-danger" (click)="clearPrerequisiteFeat()">Clear</button>
+          </div>
         </div>
-        <div class="w-25 d-inline-flex">
+      </div>
+      <div class="d-block">
+          <pre class="d-inline-flex">
+            <span class="badge badge-pill badge-secondary mr-1"
+                  *ngFor="let prereqFeat of feat.prerequisites.feats">
+              {{ prereqFeat }}
+            </span>
+          </pre>
+      </div>
+
+    </div>
+
+    <div class="form-group col-12">
+      <h4 style="font-family: 'Fredericka the Great', cursive;">Benefits</h4>
+
+      <label for="featBenefitSkill">Skill Benefits</label>
+      <div class="d-flex">
+        <div class="w-50 pr-2 d-inline-flex">
+          <div class="w-75 pr-2">
+            <select class="form-control" id="featBenefitSkill" [(ngModel)]="skillBenefit.skillId">
+              <option [value]="null" disabled>Select Skill</option>
+              <option *ngFor="let skill of skills" [value]="skill.id">{{ skill.name }}</option>
+            </select>
+          </div>
+          <div class="w-25 pr-2">
+            <input class="form-control" type="number" [(ngModel)]="skillBenefit.skillBonus">
+          </div>
+        </div>
+        <div class="w-50 d-inline-flex">
           <div class="w-75 mr-1">
             <button class="btn btn-block btn-primary" (click)="addSkillBenefit()">Add Skill Benefit</button>
           </div>
@@ -82,18 +176,68 @@
           </div>
         </div>
       </div>
-      <pre class="d-inline-flex">
-        <span class="badge badge-pill badge-secondary mr-1"
-              *ngFor="let skillBenefit of feat.benefit.skills | keyvalue">
-          {{skillBenefit.key}}: {{skillBenefit.value}}
-        </span>
-      </pre>
+      <div class="d-block">
+        <pre class="d-inline-flex">
+          <span class="badge badge-pill badge-secondary mr-1"
+                *ngFor="let skillBenefit of feat.benefit.skills | keyvalue">
+            {{skillBenefit.key}}: {{skillBenefit.value}}
+          </span>
+        </pre>
+      </div>
+
+      <label for="featBenefitCombat">Combat Benefits</label>
+      <div class="d-flex" id="featBenefitCombat">
+        <div class="d-inline-flex flex-fill">
+          <div class="w-25 pr-2">
+            <span class="mr-1">Init: </span><input type="number" class="form-control" [(ngModel)]="combatBenefit.initiative">
+          </div>
+          <div class="w-25 pr-2">
+            <span class="mr-1">Attack: </span><input type="number" class="form-control" [(ngModel)]="combatBenefit.attack">
+          </div>
+          <div class="w-25 pr-2">
+            <span class="mr-1">Damage: </span><input type="number" class="form-control" [(ngModel)]="combatBenefit.damage">
+          </div>
+          <div class="w-25">
+            <span class="mr-1">AC: </span><input type="number" class="form-control" [(ngModel)]="combatBenefit.armorClass">
+          </div>
+        </div>
+      </div>
+      <div class="d-block">
+        <pre>
+          {{ feat.benefit.combat | json }}
+        </pre>
+      </div>
+
+      <label for="featBenefitSavingThrow">Saving Throw Benefits</label>
+      <div class="" id="featBenefitSavingThrow">
+        <div class="d-flex">
+          <div class="flex-fill pr-2">
+            <span class="mr-1">Fort: </span><input type="number" class="form-control" [(ngModel)]="savingThrowBenefit.fortitude">
+          </div>
+          <div class="flex-fill pr-2">
+            <span class="mr-1">Reflex: </span><input type="number" class="form-control" [(ngModel)]="savingThrowBenefit.reflex">
+          </div>
+          <div class="flex-fill">
+            <span class="mr-1">Will: </span><input type="number" class="form-control" [(ngModel)]="savingThrowBenefit.will">
+          </div>
+        </div>
+
+      </div>
+      <div class="d-block">
+        <pre>
+          {{ feat.benefit.savingThrow | json }}
+        </pre>
+      </div>
+
     </div>
 
-    <button class="btn btn-primary btn-block m-3" (click)="addFeat()">Add Feat</button>
   </div>
 
-  <div class="d-flex w-25 mr-auto">
+  <div class="d-flex w-100 my-3">
+    <button class="btn btn-primary btn-block" (click)="addFeat()">Add Feat</button>
+  </div>
+
+  <div class="d-flex w-25 mr-auto my-2">
     <button class="btn btn-lg btn-block btn-secondary" [routerLink]="['/admin']" [routerLinkActive]="['active']">Back</button>
   </div>
 
