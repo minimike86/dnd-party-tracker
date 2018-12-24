@@ -49,9 +49,9 @@ export class AddFeatComponent implements OnInit {
 
   ngOnInit() {
     this.feat = {
-      name: '',
-      description: '',
-      featType: [],
+      name: null,
+      description: null,
+      featType: ['General'],
       rulebook: 'Player\'s Handbook 3.5e',
       benefit: {
         skills: new Map<string, number>(),
@@ -78,6 +78,7 @@ export class AddFeatComponent implements OnInit {
       }
     };
 
+    this.abilityScoreInput = { strength: 0, dexterity: 0, constitution: 0, intelligence: 0, wisdom: 0, charisma: 0 };
     this.charClassNameInput = null;
     this.charClassLevelInput = 0;
     this.skillNameInput = null;
@@ -87,7 +88,7 @@ export class AddFeatComponent implements OnInit {
 
     this.skillBenefit = {
       skillId: null,
-      skillBonus: 2
+      skillBonus: 3
     };
     this.combatBenefit = {
       initiative: 0,
