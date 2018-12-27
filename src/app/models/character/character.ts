@@ -1,4 +1,5 @@
 import { AbilityScore } from './ability-scores';
+import {Feat} from '../feat/feat';
 
 export interface CharacterId extends Character {
 
@@ -49,6 +50,9 @@ export interface Character {
     ranks: number,
     misc: number
   }[];
+
+  // Feats
+  feats: Array<Feat>;
 
   // Inventory
   weaponsId: string;
