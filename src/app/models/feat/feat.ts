@@ -41,7 +41,6 @@ export interface Feat {
                               // In general, having a feat twice is the same as having it once.
 }
 
-
 export interface SkillBenefit {
   skillId: string;
   skillBonus: number;

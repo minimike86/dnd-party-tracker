@@ -40,6 +40,7 @@ export class CharacterComponent implements OnInit {
     baseAttackBonus: 20,
     saves: { fort: 2, ref: 4, will: 6 },
     skillRanks: [],
+    feats: [],
     inventoryId: '',
     weaponsId: ''
   };

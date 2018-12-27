@@ -51,6 +51,7 @@ export class CharacterService {
       baseAttackBonus: null,
       saves: { fort: null, ref: null, will: null },
       skillRanks: [],
+      feats: [],
       weaponsId: null,
       inventoryId: null,
     };

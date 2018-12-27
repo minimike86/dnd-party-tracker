@@ -9,8 +9,60 @@
 
   <!-- Feats -->
   <div class="">
+    <div class="" id="firstLevelFeatSelection">
+      <label>Select your 1st level feat.</label>
+      <select class="form-control" ([ngModel])="firstLevelFeat">
+        <option [value]="null" disabled>Select a feat</option>
+        <optgroup label="Skill Feats">
+        <ng-template ngFor let-feat [ngForOf]="skillFeats">
+          <option [value]="feat.id"
+                  [ngClass]="feat.prerequisites.feats.length >= 1 ? 'text-danger' : ''"
+                  [title]="feat.prerequisites.feats.length >= 1 ? 'Missing prerequisite feat(s): ' + feat.prerequisites.feats.toString() : feat.description"
+                  [disabled]="feat.prerequisites.feats.length >= 1">
+            {{ feat.name }}
+          </option>
+        </ng-template>
+        </optgroup>
+        <optgroup label="Skill Focus Feats">
+          <ng-template ngFor let-feat [ngForOf]="skillFocusFeats">
+            <option [value]="feat.id"
+                    [ngClass]="feat.prerequisites.feats.length >= 1 ? 'text-danger' : ''"
+                    [title]="feat.prerequisites.feats.length >= 1 ? 'Missing prerequisite feat(s): ' + feat.prerequisites.feats.toString() : feat.description"
+                    [disabled]="feat.prerequisites.feats.length >= 1">
+              {{ feat.name }}
+            </option>
+          </ng-template>
+        </optgroup>
+        <optgroup label="Metamagic Feats">
+          <ng-template ngFor let-feat [ngForOf]="metamagicFeats">
+            <option [value]="feat.id"
+                    [ngClass]="feat.prerequisites.feats.length >= 1 ? 'text-danger' : ''"
+                    [title]="feat.prerequisites.feats.length >= 1 ? 'Missing prerequisite feat(s): ' + feat.prerequisites.feats.toString() : feat.description"
+                    [disabled]="feat.prerequisites.feats.length >= 1">
+              {{ feat.name }}
+            </option>
+          </ng-template>
+        </optgroup>
+        <optgroup label="Item Creation Feats">
+          <ng-template ngFor let-feat [ngForOf]="itemCreationFeats">
+            <option [value]="feat.id"
+                    [ngClass]="feat.prerequisites.feats.length >= 1 ? 'text-danger' : ''"
+                    [title]="feat.prerequisites.feats.length >= 1 ? 'Missing prerequisite feat(s): ' + feat.prerequisites.feats.toString() : feat.description"
+                    [disabled]="feat.prerequisites.feats.length >= 1">
+              {{ feat.name }}
+            </option>
+          </ng-template>
+        </optgroup>
+      </select>
+    </div>
+    <pre>{{ firstLevelFeat | json }}</pre>
+    <pre>{{ skillFeats | json }}</pre>
+    <div class="" id="humanBonusFeatSelection">
+      <label>Select your bonus feat for being a human.</label>
+    </div>
+    <div class="" id="fighterBonusFeatSelection">
+      <label>Select your bonus feat for being a fighter.</label>
+    </div>
   </div>
 
 </div>
-
-<pre>{{ characterService.tempCharacter | json }}</pre>
