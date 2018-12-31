@@ -9,60 +9,388 @@
 
   <!-- Feats -->
   <div class="">
+
     <div class="" id="firstLevelFeatSelection">
       <label>Select your 1st level feat.</label>
-      <select class="form-control" ([ngModel])="firstLevelFeat">
+      <select class="form-control" [(ngModel)]="firstLevelFeat" (change)="onFirstLevelFeatChange($event.target.value)">
         <option [value]="null" disabled>Select a feat</option>
+
+        <optgroup label="Feats">
+          <ng-template ngFor let-feat [ngForOf]="otherFeats">
+            <option *ngIf="meetsPrerequisites(feat).overall"
+                    [value]="feat.id"
+                    [ngClass]="tempCharacter.feats.includes(feat.id) ? 'text-success'
+                       : !meetsPrerequisites(feat).overall ? 'text-danger'
+                       : ''"
+                    [title]="tempCharacter.feats.includes(feat.id) ? 'You have this feat'
+                      : !meetsPrerequisites(feat).feats ? 'Missing prerequisite feat(s): ' + getPrerequisiteFeats(feat.prerequisites.feats)
+                      : !meetsPrerequisites(feat).classLevel ? 'Missing class / level(s): ' + getPrerequisiteClassLevel(feat.prerequisites.classLevel)
+                      : !meetsPrerequisites(feat).abilityScores ? 'Inadequate Ability Score(s): ' + getPrerequisiteAbilityScores(feat.prerequisites.abilityScore)
+                      : !meetsPrerequisites(feat).baseAttackBonus ? 'Inadequate Base Attack Bonus: ' + getPrerequisiteBaseAttackBonus(feat.prerequisites.baseAttackBonus)
+                      : !meetsPrerequisites(feat).skillRank ? 'Inadequate Skill Rank(s): ' + getPrerequisiteSkillRanks(feat.prerequisites.skillRank)
+                      : feat.description"
+                    [disabled]="tempCharacter.feats.includes(feat.id) || !meetsPrerequisites(feat).overall">
+              {{ feat.name }}
+            </option>
+          </ng-template>
+        </optgroup>
+
+        <optgroup label="Mounted Combat Feats">
+          <ng-template ngFor let-feat [ngForOf]="mountedCombatFeats">
+            <option *ngIf="meetsPrerequisites(feat).overall"
+                    [value]="feat.id"
+                    [ngClass]="tempCharacter.feats.includes(feat.id) ? 'text-success'
+                       : !meetsPrerequisites(feat).overall ? 'text-danger'
+                       : ''"
+                    [title]="tempCharacter.feats.includes(feat.id) ? 'You have this feat'
+                      : !meetsPrerequisites(feat).feats ? 'Missing prerequisite feat(s): ' + getPrerequisiteFeats(feat.prerequisites.feats)
+                      : !meetsPrerequisites(feat).classLevel ? 'Missing class / level(s): ' + getPrerequisiteClassLevel(feat.prerequisites.classLevel)
+                      : !meetsPrerequisites(feat).abilityScores ? 'Inadequate Ability Score(s): ' + getPrerequisiteAbilityScores(feat.prerequisites.abilityScore)
+                      : !meetsPrerequisites(feat).baseAttackBonus ? 'Inadequate Base Attack Bonus: ' + getPrerequisiteBaseAttackBonus(feat.prerequisites.baseAttackBonus)
+                      : !meetsPrerequisites(feat).skillRank ? 'Inadequate Skill Rank(s): ' + getPrerequisiteSkillRanks(feat.prerequisites.skillRank)
+                      : feat.description"
+                    [disabled]="tempCharacter.feats.includes(feat.id) || !meetsPrerequisites(feat).overall">
+              {{ feat.name }}
+            </option>
+          </ng-template>
+        </optgroup>
+
+        <optgroup label="Saving Throw Feats">
+          <ng-template ngFor let-feat [ngForOf]="savingThrowFeats">
+            <option *ngIf="meetsPrerequisites(feat).overall"
+                    [value]="feat.id"
+                    [ngClass]="tempCharacter.feats.includes(feat.id) ? 'text-success'
+                       : !meetsPrerequisites(feat).overall ? 'text-danger'
+                       : ''"
+                    [title]="tempCharacter.feats.includes(feat.id) ? 'You have this feat'
+                      : !meetsPrerequisites(feat).feats ? 'Missing prerequisite feat(s): ' + getPrerequisiteFeats(feat.prerequisites.feats)
+                      : !meetsPrerequisites(feat).classLevel ? 'Missing class / level(s): ' + getPrerequisiteClassLevel(feat.prerequisites.classLevel)
+                      : !meetsPrerequisites(feat).abilityScores ? 'Inadequate Ability Score(s): ' + getPrerequisiteAbilityScores(feat.prerequisites.abilityScore)
+                      : !meetsPrerequisites(feat).baseAttackBonus ? 'Inadequate Base Attack Bonus: ' + getPrerequisiteBaseAttackBonus(feat.prerequisites.baseAttackBonus)
+                      : !meetsPrerequisites(feat).skillRank ? 'Inadequate Skill Rank(s): ' + getPrerequisiteSkillRanks(feat.prerequisites.skillRank)
+                      : feat.description"
+                    [disabled]="tempCharacter.feats.includes(feat.id) || !meetsPrerequisites(feat).overall">
+              {{ feat.name }}
+            </option>
+          </ng-template>
+        </optgroup>
+
         <optgroup label="Skill Feats">
         <ng-template ngFor let-feat [ngForOf]="skillFeats">
-          <option [value]="feat.id"
-                  [ngClass]="feat.prerequisites.feats.length >= 1 ? 'text-danger' : ''"
-                  [title]="feat.prerequisites.feats.length >= 1 ? 'Missing prerequisite feat(s): ' + feat.prerequisites.feats.toString() : feat.description"
-                  [disabled]="feat.prerequisites.feats.length >= 1">
+          <option *ngIf="meetsPrerequisites(feat).overall"
+                  [value]="feat.id"
+                  [ngClass]="tempCharacter.feats.includes(feat.id) ? 'text-success'
+                       : !meetsPrerequisites(feat).overall ? 'text-danger'
+                       : ''"
+                  [title]="tempCharacter.feats.includes(feat.id) ? 'You have this feat'
+                      : !meetsPrerequisites(feat).feats ? 'Missing prerequisite feat(s): ' + getPrerequisiteFeats(feat.prerequisites.feats)
+                      : !meetsPrerequisites(feat).classLevel ? 'Missing class / level(s): ' + getPrerequisiteClassLevel(feat.prerequisites.classLevel)
+                      : !meetsPrerequisites(feat).abilityScores ? 'Inadequate Ability Score(s): ' + getPrerequisiteAbilityScores(feat.prerequisites.abilityScore)
+                      : !meetsPrerequisites(feat).baseAttackBonus ? 'Inadequate Base Attack Bonus: ' + getPrerequisiteBaseAttackBonus(feat.prerequisites.baseAttackBonus)
+                      : !meetsPrerequisites(feat).skillRank ? 'Inadequate Skill Rank(s): ' + getPrerequisiteSkillRanks(feat.prerequisites.skillRank)
+                      : feat.description"
+                  [disabled]="tempCharacter.feats.includes(feat.id) || !meetsPrerequisites(feat).overall">
             {{ feat.name }}
           </option>
         </ng-template>
         </optgroup>
+
         <optgroup label="Skill Focus Feats">
           <ng-template ngFor let-feat [ngForOf]="skillFocusFeats">
-            <option [value]="feat.id"
-                    [ngClass]="feat.prerequisites.feats.length >= 1 ? 'text-danger' : ''"
-                    [title]="feat.prerequisites.feats.length >= 1 ? 'Missing prerequisite feat(s): ' + feat.prerequisites.feats.toString() : feat.description"
-                    [disabled]="feat.prerequisites.feats.length >= 1">
+            <option *ngIf="meetsPrerequisites(feat).overall"
+                    [value]="feat.id"
+                    [ngClass]="tempCharacter.feats.includes(feat.id) ? 'text-success'
+                       : !meetsPrerequisites(feat).overall ? 'text-danger'
+                       : ''"
+                    [title]="tempCharacter.feats.includes(feat.id) ? 'You have this feat'
+                      : !meetsPrerequisites(feat).feats ? 'Missing prerequisite feat(s): ' + getPrerequisiteFeats(feat.prerequisites.feats)
+                      : !meetsPrerequisites(feat).classLevel ? 'Missing class / level(s): ' + getPrerequisiteClassLevel(feat.prerequisites.classLevel)
+                      : !meetsPrerequisites(feat).abilityScores ? 'Inadequate Ability Score(s): ' + getPrerequisiteAbilityScores(feat.prerequisites.abilityScore)
+                      : !meetsPrerequisites(feat).baseAttackBonus ? 'Inadequate Base Attack Bonus: ' + getPrerequisiteBaseAttackBonus(feat.prerequisites.baseAttackBonus)
+                      : !meetsPrerequisites(feat).skillRank ? 'Inadequate Skill Rank(s): ' + getPrerequisiteSkillRanks(feat.prerequisites.skillRank)
+                      : feat.description"
+                    [disabled]="tempCharacter.feats.includes(feat.id) || !meetsPrerequisites(feat).overall">
               {{ feat.name }}
             </option>
           </ng-template>
         </optgroup>
+
+        <optgroup label="Spell Focus Feats">
+          <ng-template ngFor let-feat [ngForOf]="spellFocusFeats">
+            <option *ngIf="meetsPrerequisites(feat).overall"
+                    [value]="feat.id"
+                    [ngClass]="tempCharacter.feats.includes(feat.id) ? 'text-success'
+                       : !meetsPrerequisites(feat).overall ? 'text-danger'
+                       : ''"
+                    [title]="tempCharacter.feats.includes(feat.id) ? 'You have this feat'
+                      : !meetsPrerequisites(feat).feats ? 'Missing prerequisite feat(s): ' + getPrerequisiteFeats(feat.prerequisites.feats)
+                      : !meetsPrerequisites(feat).classLevel ? 'Missing class / level(s): ' + getPrerequisiteClassLevel(feat.prerequisites.classLevel)
+                      : !meetsPrerequisites(feat).abilityScores ? 'Inadequate Ability Score(s): ' + getPrerequisiteAbilityScores(feat.prerequisites.abilityScore)
+                      : !meetsPrerequisites(feat).baseAttackBonus ? 'Inadequate Base Attack Bonus: ' + getPrerequisiteBaseAttackBonus(feat.prerequisites.baseAttackBonus)
+                      : !meetsPrerequisites(feat).skillRank ? 'Inadequate Skill Rank(s): ' + getPrerequisiteSkillRanks(feat.prerequisites.skillRank)
+                      : feat.description"
+                    [disabled]="tempCharacter.feats.includes(feat.id) || !meetsPrerequisites(feat).overall">
+              {{ feat.name }}
+            </option>
+          </ng-template>
+        </optgroup>
+
         <optgroup label="Metamagic Feats">
           <ng-template ngFor let-feat [ngForOf]="metamagicFeats">
-            <option [value]="feat.id"
-                    [ngClass]="feat.prerequisites.feats.length >= 1 ? 'text-danger' : ''"
-                    [title]="feat.prerequisites.feats.length >= 1 ? 'Missing prerequisite feat(s): ' + feat.prerequisites.feats.toString() : feat.description"
-                    [disabled]="feat.prerequisites.feats.length >= 1">
+            <option *ngIf="meetsPrerequisites(feat).overall"
+                    [value]="feat.id"
+                    [ngClass]="tempCharacter.feats.includes(feat.id) ? 'text-success'
+                       : !meetsPrerequisites(feat).overall ? 'text-danger'
+                       : ''"
+                    [title]="tempCharacter.feats.includes(feat.id) ? 'You have this feat'
+                      : !meetsPrerequisites(feat).feats ? 'Missing prerequisite feat(s): ' + getPrerequisiteFeats(feat.prerequisites.feats)
+                      : !meetsPrerequisites(feat).classLevel ? 'Missing class / level(s): ' + getPrerequisiteClassLevel(feat.prerequisites.classLevel)
+                      : !meetsPrerequisites(feat).abilityScores ? 'Inadequate Ability Score(s): ' + getPrerequisiteAbilityScores(feat.prerequisites.abilityScore)
+                      : !meetsPrerequisites(feat).baseAttackBonus ? 'Inadequate Base Attack Bonus: ' + getPrerequisiteBaseAttackBonus(feat.prerequisites.baseAttackBonus)
+                      : !meetsPrerequisites(feat).skillRank ? 'Inadequate Skill Rank(s): ' + getPrerequisiteSkillRanks(feat.prerequisites.skillRank)
+                      : feat.description"
+                    [disabled]="tempCharacter.feats.includes(feat.id) || !meetsPrerequisites(feat).overall">
               {{ feat.name }}
             </option>
           </ng-template>
         </optgroup>
+
         <optgroup label="Item Creation Feats">
           <ng-template ngFor let-feat [ngForOf]="itemCreationFeats">
-            <option [value]="feat.id"
-                    [ngClass]="feat.prerequisites.feats.length >= 1 ? 'text-danger' : ''"
-                    [title]="feat.prerequisites.feats.length >= 1 ? 'Missing prerequisite feat(s): ' + feat.prerequisites.feats.toString() : feat.description"
-                    [disabled]="feat.prerequisites.feats.length >= 1">
+            <option *ngIf="meetsPrerequisites(feat).overall"
+                    [value]="feat.id"
+                    [ngClass]="tempCharacter.feats.includes(feat.id) ? 'text-success'
+                       : !meetsPrerequisites(feat).overall ? 'text-danger'
+                       : ''"
+                    [title]="tempCharacter.feats.includes(feat.id) ? 'You have this feat'
+                      : !meetsPrerequisites(feat).feats ? 'Missing prerequisite feat(s): ' + getPrerequisiteFeats(feat.prerequisites.feats)
+                      : !meetsPrerequisites(feat).classLevel ? 'Missing class / level(s): ' + getPrerequisiteClassLevel(feat.prerequisites.classLevel)
+                      : !meetsPrerequisites(feat).abilityScores ? 'Inadequate Ability Score(s): ' + getPrerequisiteAbilityScores(feat.prerequisites.abilityScore)
+                      : !meetsPrerequisites(feat).baseAttackBonus ? 'Inadequate Base Attack Bonus: ' + getPrerequisiteBaseAttackBonus(feat.prerequisites.baseAttackBonus)
+                      : !meetsPrerequisites(feat).skillRank ? 'Inadequate Skill Rank(s): ' + getPrerequisiteSkillRanks(feat.prerequisites.skillRank)
+                      : feat.description"
+                    [disabled]="tempCharacter.feats.includes(feat.id) || !meetsPrerequisites(feat).overall">
+              {{ feat.name }}
+            </option>
+          </ng-template>
+        </optgroup>
+
+      </select>
+    </div>
+
+    <div class="my-3" id="humanBonusFeatSelection" *ngIf="tempCharacter !== undefined && tempCharacter.raceId.includes('HUMAN')">
+      <label>Select your bonus feat for being a human.</label>
+
+      <select class="form-control" [(ngModel)]="humanBonusFeat" (change)="onHumanBonusFeatChange($event.target.value)">
+        <option [value]="null" disabled>Select a feat</option>
+
+        <optgroup label="Feats">
+          <ng-template ngFor let-feat [ngForOf]="otherFeats">
+            <option *ngIf="meetsPrerequisites(feat).overall"
+                    [value]="feat.id"
+                    [ngClass]="tempCharacter.feats.includes(feat.id) ? 'text-success'
+                       : !meetsPrerequisites(feat).overall ? 'text-danger'
+                       : ''"
+                    [title]="tempCharacter.feats.includes(feat.id) ? 'You have this feat'
+                      : !meetsPrerequisites(feat).feats ? 'Missing prerequisite feat(s): ' + getPrerequisiteFeats(feat.prerequisites.feats)
+                      : !meetsPrerequisites(feat).classLevel ? 'Missing class / level(s): ' + getPrerequisiteClassLevel(feat.prerequisites.classLevel)
+                      : !meetsPrerequisites(feat).abilityScores ? 'Inadequate Ability Score(s): ' + getPrerequisiteAbilityScores(feat.prerequisites.abilityScore)
+                      : !meetsPrerequisites(feat).baseAttackBonus ? 'Inadequate Base Attack Bonus: ' + getPrerequisiteBaseAttackBonus(feat.prerequisites.baseAttackBonus)
+                      : !meetsPrerequisites(feat).skillRank ? 'Inadequate Skill Rank(s): ' + getPrerequisiteSkillRanks(feat.prerequisites.skillRank)
+                      : feat.description"
+                    [disabled]="tempCharacter.feats.includes(feat.id) || !meetsPrerequisites(feat).overall">
+              {{ feat.name }}
+            </option>
+          </ng-template>
+        </optgroup>
+
+        <optgroup label="Mounted Combat Feats">
+          <ng-template ngFor let-feat [ngForOf]="mountedCombatFeats">
+            <option *ngIf="meetsPrerequisites(feat).overall"
+                    [value]="feat.id"
+                    [ngClass]="tempCharacter.feats.includes(feat.id) ? 'text-success'
+                       : !meetsPrerequisites(feat).overall ? 'text-danger'
+                       : ''"
+                    [title]="tempCharacter.feats.includes(feat.id) ? 'You have this feat'
+                      : !meetsPrerequisites(feat).feats ? 'Missing prerequisite feat(s): ' + getPrerequisiteFeats(feat.prerequisites.feats)
+                      : !meetsPrerequisites(feat).classLevel ? 'Missing class / level(s): ' + getPrerequisiteClassLevel(feat.prerequisites.classLevel)
+                      : !meetsPrerequisites(feat).abilityScores ? 'Inadequate Ability Score(s): ' + getPrerequisiteAbilityScores(feat.prerequisites.abilityScore)
+                      : !meetsPrerequisites(feat).baseAttackBonus ? 'Inadequate Base Attack Bonus: ' + getPrerequisiteBaseAttackBonus(feat.prerequisites.baseAttackBonus)
+                      : !meetsPrerequisites(feat).skillRank ? 'Inadequate Skill Rank(s): ' + getPrerequisiteSkillRanks(feat.prerequisites.skillRank)
+                      : feat.description"
+                    [disabled]="tempCharacter.feats.includes(feat.id) || !meetsPrerequisites(feat).overall">
+              {{ feat.name }}
+            </option>
+          </ng-template>
+        </optgroup>
+
+        <optgroup label="Saving Throw Feats">
+          <ng-template ngFor let-feat [ngForOf]="savingThrowFeats">
+            <option *ngIf="meetsPrerequisites(feat).overall"
+                    [value]="feat.id"
+                    [ngClass]="tempCharacter.feats.includes(feat.id) ? 'text-success'
+                       : !meetsPrerequisites(feat).overall ? 'text-danger'
+                       : ''"
+                    [title]="tempCharacter.feats.includes(feat.id) ? 'You have this feat'
+                      : !meetsPrerequisites(feat).feats ? 'Missing prerequisite feat(s): ' + getPrerequisiteFeats(feat.prerequisites.feats)
+                      : !meetsPrerequisites(feat).classLevel ? 'Missing class / level(s): ' + getPrerequisiteClassLevel(feat.prerequisites.classLevel)
+                      : !meetsPrerequisites(feat).abilityScores ? 'Inadequate Ability Score(s): ' + getPrerequisiteAbilityScores(feat.prerequisites.abilityScore)
+                      : !meetsPrerequisites(feat).baseAttackBonus ? 'Inadequate Base Attack Bonus: ' + getPrerequisiteBaseAttackBonus(feat.prerequisites.baseAttackBonus)
+                      : !meetsPrerequisites(feat).skillRank ? 'Inadequate Skill Rank(s): ' + getPrerequisiteSkillRanks(feat.prerequisites.skillRank)
+                      : feat.description"
+                    [disabled]="tempCharacter.feats.includes(feat.id) || !meetsPrerequisites(feat).overall">
+              {{ feat.name }}
+            </option>
+          </ng-template>
+        </optgroup>
+
+        <optgroup label="Skill Feats">
+          <ng-template ngFor let-feat [ngForOf]="skillFeats">
+            <option *ngIf="meetsPrerequisites(feat).overall"
+                    [value]="feat.id"
+                    [ngClass]="tempCharacter.feats.includes(feat.id) ? 'text-success'
+                       : !meetsPrerequisites(feat).overall ? 'text-danger'
+                       : ''"
+                    [title]="tempCharacter.feats.includes(feat.id) ? 'You have this feat'
+                      : !meetsPrerequisites(feat).feats ? 'Missing prerequisite feat(s): ' + getPrerequisiteFeats(feat.prerequisites.feats)
+                      : !meetsPrerequisites(feat).classLevel ? 'Missing class / level(s): ' + getPrerequisiteClassLevel(feat.prerequisites.classLevel)
+                      : !meetsPrerequisites(feat).abilityScores ? 'Inadequate Ability Score(s): ' + getPrerequisiteAbilityScores(feat.prerequisites.abilityScore)
+                      : !meetsPrerequisites(feat).baseAttackBonus ? 'Inadequate Base Attack Bonus: ' + getPrerequisiteBaseAttackBonus(feat.prerequisites.baseAttackBonus)
+                      : !meetsPrerequisites(feat).skillRank ? 'Inadequate Skill Rank(s): ' + getPrerequisiteSkillRanks(feat.prerequisites.skillRank)
+                      : feat.description"
+                    [disabled]="tempCharacter.feats.includes(feat.id) || !meetsPrerequisites(feat).overall">
+              {{ feat.name }}
+            </option>
+          </ng-template>
+        </optgroup>
+
+        <optgroup label="Skill Focus Feats">
+          <ng-template ngFor let-feat [ngForOf]="skillFocusFeats">
+            <option *ngIf="meetsPrerequisites(feat).overall"
+                    [value]="feat.id"
+                    [ngClass]="tempCharacter.feats.includes(feat.id) ? 'text-success'
+                       : !meetsPrerequisites(feat).overall ? 'text-danger'
+                       : ''"
+                    [title]="tempCharacter.feats.includes(feat.id) ? 'You have this feat'
+                      : !meetsPrerequisites(feat).feats ? 'Missing prerequisite feat(s): ' + getPrerequisiteFeats(feat.prerequisites.feats)
+                      : !meetsPrerequisites(feat).classLevel ? 'Missing class / level(s): ' + getPrerequisiteClassLevel(feat.prerequisites.classLevel)
+                      : !meetsPrerequisites(feat).abilityScores ? 'Inadequate Ability Score(s): ' + getPrerequisiteAbilityScores(feat.prerequisites.abilityScore)
+                      : !meetsPrerequisites(feat).baseAttackBonus ? 'Inadequate Base Attack Bonus: ' + getPrerequisiteBaseAttackBonus(feat.prerequisites.baseAttackBonus)
+                      : !meetsPrerequisites(feat).skillRank ? 'Inadequate Skill Rank(s): ' + getPrerequisiteSkillRanks(feat.prerequisites.skillRank)
+                      : feat.description"
+                    [disabled]="tempCharacter.feats.includes(feat.id) || !meetsPrerequisites(feat).overall">
+              {{ feat.name }}
+            </option>
+          </ng-template>
+        </optgroup>
+
+        <optgroup label="Spell Focus Feats">
+          <ng-template ngFor let-feat [ngForOf]="spellFocusFeats">
+            <option *ngIf="meetsPrerequisites(feat).overall"
+                    [value]="feat.id"
+                    [ngClass]="tempCharacter.feats.includes(feat.id) ? 'text-success'
+                       : !meetsPrerequisites(feat).overall ? 'text-danger'
+                       : ''"
+                    [title]="tempCharacter.feats.includes(feat.id) ? 'You have this feat'
+                      : !meetsPrerequisites(feat).feats ? 'Missing prerequisite feat(s): ' + getPrerequisiteFeats(feat.prerequisites.feats)
+                      : !meetsPrerequisites(feat).classLevel ? 'Missing class / level(s): ' + getPrerequisiteClassLevel(feat.prerequisites.classLevel)
+                      : !meetsPrerequisites(feat).abilityScores ? 'Inadequate Ability Score(s): ' + getPrerequisiteAbilityScores(feat.prerequisites.abilityScore)
+                      : !meetsPrerequisites(feat).baseAttackBonus ? 'Inadequate Base Attack Bonus: ' + getPrerequisiteBaseAttackBonus(feat.prerequisites.baseAttackBonus)
+                      : !meetsPrerequisites(feat).skillRank ? 'Inadequate Skill Rank(s): ' + getPrerequisiteSkillRanks(feat.prerequisites.skillRank)
+                      : feat.description"
+                    [disabled]="tempCharacter.feats.includes(feat.id) || !meetsPrerequisites(feat).overall">
+              {{ feat.name }}
+            </option>
+          </ng-template>
+        </optgroup>
+
+        <optgroup label="Metamagic Feats">
+          <ng-template ngFor let-feat [ngForOf]="metamagicFeats">
+            <option *ngIf="meetsPrerequisites(feat).overall"
+                    [value]="feat.id"
+                    [ngClass]="tempCharacter.feats.includes(feat.id) ? 'text-success'
+                       : !meetsPrerequisites(feat).overall ? 'text-danger'
+                       : ''"
+                    [title]="tempCharacter.feats.includes(feat.id) ? 'You have this feat'
+                      : !meetsPrerequisites(feat).feats ? 'Missing prerequisite feat(s): ' + getPrerequisiteFeats(feat.prerequisites.feats)
+                      : !meetsPrerequisites(feat).classLevel ? 'Missing class / level(s): ' + getPrerequisiteClassLevel(feat.prerequisites.classLevel)
+                      : !meetsPrerequisites(feat).abilityScores ? 'Inadequate Ability Score(s): ' + getPrerequisiteAbilityScores(feat.prerequisites.abilityScore)
+                      : !meetsPrerequisites(feat).baseAttackBonus ? 'Inadequate Base Attack Bonus: ' + getPrerequisiteBaseAttackBonus(feat.prerequisites.baseAttackBonus)
+                      : !meetsPrerequisites(feat).skillRank ? 'Inadequate Skill Rank(s): ' + getPrerequisiteSkillRanks(feat.prerequisites.skillRank)
+                      : feat.description"
+                    [disabled]="tempCharacter.feats.includes(feat.id) || !meetsPrerequisites(feat).overall">
+              {{ feat.name }}
+            </option>
+          </ng-template>
+        </optgroup>
+
+        <optgroup label="Item Creation Feats">
+          <ng-template ngFor let-feat [ngForOf]="itemCreationFeats">
+            <option *ngIf="meetsPrerequisites(feat).overall"
+                    [value]="feat.id"
+                    [ngClass]="tempCharacter.feats.includes(feat.id) ? 'text-success'
+                       : !meetsPrerequisites(feat).overall ? 'text-danger'
+                       : ''"
+                    [title]="tempCharacter.feats.includes(feat.id) ? 'You have this feat'
+                      : !meetsPrerequisites(feat).feats ? 'Missing prerequisite feat(s): ' + getPrerequisiteFeats(feat.prerequisites.feats)
+                      : !meetsPrerequisites(feat).classLevel ? 'Missing class / level(s): ' + getPrerequisiteClassLevel(feat.prerequisites.classLevel)
+                      : !meetsPrerequisites(feat).abilityScores ? 'Inadequate Ability Score(s): ' + getPrerequisiteAbilityScores(feat.prerequisites.abilityScore)
+                      : !meetsPrerequisites(feat).baseAttackBonus ? 'Inadequate Base Attack Bonus: ' + getPrerequisiteBaseAttackBonus(feat.prerequisites.baseAttackBonus)
+                      : !meetsPrerequisites(feat).skillRank ? 'Inadequate Skill Rank(s): ' + getPrerequisiteSkillRanks(feat.prerequisites.skillRank)
+                      : feat.description"
+                    [disabled]="tempCharacter.feats.includes(feat.id) || !meetsPrerequisites(feat).overall">
+              {{ feat.name }}
+            </option>
+          </ng-template>
+        </optgroup>
+
+      </select>
+    </div>
+
+    <div class="my-3" id="fighterBonusFeatSelection"
+         *ngIf="tempCharacter !== undefined && hasRequiredClass(tempCharacter.classes, 'FIGHTER')">
+      <label>Select your bonus feat for being a fighter.</label>
+
+      <select class="form-control" [(ngModel)]="fighterBonusFeat" (change)="onFighterBonusFeatChange($event.target.value)">
+        <option [value]="null" disabled>Select a feat</option>
+        <optgroup label="Fighter Bonus Feats">
+          <ng-template ngFor let-feat [ngForOf]="fighterBonusFeats">
+            <option *ngIf="meetsPrerequisites(feat).overall"
+                    [value]="feat.id"
+                    [ngClass]="tempCharacter.feats.includes(feat.id) ? 'text-success'
+                       : !meetsPrerequisites(feat).overall ? 'text-danger'
+                       : ''"
+                    [title]="tempCharacter.feats.includes(feat.id) ? 'You have this feat'
+                      : !meetsPrerequisites(feat).feats ? 'Missing prerequisite feat(s): ' + getPrerequisiteFeats(feat.prerequisites.feats)
+                      : !meetsPrerequisites(feat).classLevel ? 'Missing class / level(s): ' + getPrerequisiteClassLevel(feat.prerequisites.classLevel)
+                      : !meetsPrerequisites(feat).abilityScores ? 'Inadequate Ability Score(s): ' + getPrerequisiteAbilityScores(feat.prerequisites.abilityScore)
+                      : !meetsPrerequisites(feat).baseAttackBonus ? 'Inadequate Base Attack Bonus: ' + getPrerequisiteBaseAttackBonus(feat.prerequisites.baseAttackBonus)
+                      : !meetsPrerequisites(feat).skillRank ? 'Inadequate Skill Rank(s): ' + getPrerequisiteSkillRanks(feat.prerequisites.skillRank)
+                      : feat.description"
+                    [disabled]="tempCharacter.feats.includes(feat.id) || !meetsPrerequisites(feat).overall">
               {{ feat.name }}
             </option>
           </ng-template>
         </optgroup>
       </select>
+
     </div>
-    <pre>{{ firstLevelFeat | json }}</pre>
-    <pre>{{ skillFeats | json }}</pre>
-    <div class="" id="humanBonusFeatSelection">
-      <label>Select your bonus feat for being a human.</label>
-    </div>
-    <div class="" id="fighterBonusFeatSelection">
-      <label>Select your bonus feat for being a fighter.</label>
-    </div>
+  </div>
+
+  <div class="d-flex flex-row-reverse mt-3">
+    <button class="btn" [ngClass]="featsToAdd.count === 3
+                                && (featsToAdd.firstLevelFeat === true && firstLevelFeat !== null)
+                                && (featsToAdd.humanBonusFeat === true && humanBonusFeat !== null)
+                                && (featsToAdd.fighterBonusFeat === true && fighterBonusFeat !== null) ? 'btn-primary'
+                                 : featsToAdd.count === 2
+                                && (featsToAdd.firstLevelFeat === true && firstLevelFeat !== null)
+                                && ((featsToAdd.humanBonusFeat === true && humanBonusFeat !== null)
+                                || (featsToAdd.fighterBonusFeat === true && fighterBonusFeat !== null)) ? 'btn-primary'
+                                 : featsToAdd.count === 1
+                                && (featsToAdd.firstLevelFeat === true && firstLevelFeat !== null) ? 'btn-primary' : 'btn-dark disabled'"
+            (click)="completeCharacter(tempCharacter)">
+      Step 4 (of 4): Complete Character <i class="fas fa-users-cog"></i>
+    </button>
   </div>
 
 </div>

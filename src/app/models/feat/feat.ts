@@ -32,9 +32,10 @@ export interface Feat {
                               // If not having the feat causes no particular drawback, this entry is absent.
   prerequisites?: {
     abilityScore?: AbilityScore;
-    classLevel?: Map<string, number>;
+    classLevel?: Array<{classId: string, level: number}>;
+    classCheckLogic?: string,
     baseAttackBonus?: number;
-    skillRank?: Map<string, number>;
+    skillRank?: Array<{skillId: string, ranks: number}>;
     feats?: string[];
   };  // What the feat enables the character ("you" in the feat description) to do. If a character has the same feat
                               // more than once, its benefits do not stack unless indicated otherwise in the description.

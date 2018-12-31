@@ -2,6 +2,7 @@
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
@@ -86,15 +87,16 @@ import { AddFeatComponent } from './components/admin/add-feat/add-feat.component
     AddFeatComponent
   ],
   imports: [
+    NgbModule,
+    BrowserModule,
+    HttpClientModule,
+    FormsModule,
+    MaterialModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
     AngularFireModule.initializeApp(environment.firebase, 'dnd-party-tracker'),
     AngularFireAuthModule,
     AngularFirestoreModule,
-    NgbModule,
-    BrowserModule,
-    FormsModule,
-    AppRoutingModule,
-    MaterialModule,
-    BrowserAnimationsModule
   ],
   entryComponents: [
     AddPartyComponent,

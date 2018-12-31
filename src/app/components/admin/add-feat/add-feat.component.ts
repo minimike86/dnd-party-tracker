@@ -71,9 +71,9 @@ export class AddFeatComponent implements OnInit {
       normal: null,
       prerequisites: {
         abilityScore: { strength: 0, dexterity: 0, constitution: 0, intelligence: 0, wisdom: 0, charisma: 0 }, // from character abilities
-        classLevel: new Map<string, number>(),  // from char class
+        classLevel: [],                         // from char class
         baseAttackBonus: null,                  // from character combat stats
-        skillRank: new Map<string, number>(),   // from char skills
+        skillRank: [],   // from char skills
         feats: []                               // from char feats
       }
     };
@@ -108,24 +108,24 @@ export class AddFeatComponent implements OnInit {
     console.log('addPrerequisiteSkill: ', this.charClassNameInput, this.charClassLevelInput);
     if (this.charClassNameInput !== undefined && this.charClassNameInput !== null
       && this.charClassLevelInput !== undefined && this.charClassLevelInput !== null) {
-      this.feat.prerequisites.classLevel.set(this.charClassNameInput, this.charClassLevelInput);
+      this.feat.prerequisites.classLevel.push( {classId: this.charClassNameInput, level: this.charClassLevelInput} );
     }
   }
 
   clearPrerequisiteCharClass() {
-    this.feat.prerequisites.classLevel = new Map<string, number>();
+    this.feat.prerequisites.classLevel = [];
   }
 
   addPrerequisiteSkill() {
     console.log('addPrerequisiteSkill: ', this.skillNameInput, this.skillRankInput);
     if (this.skillNameInput !== undefined && this.skillNameInput !== null
       && this.skillRankInput !== undefined && this.skillRankInput !== null) {
-      this.feat.prerequisites.skillRank.set(this.skillNameInput, this.skillRankInput);
+      this.feat.prerequisites.skillRank.push( {skillId: this.skillNameInput, ranks: this.skillRankInput} );
     }
   }
 
   clearPrerequisiteSkill() {
-    this.feat.prerequisites.skillRank = new Map<string, number>();
+    this.feat.prerequisites.skillRank = [];
   }
 
   addPrerequisiteFeat() {
