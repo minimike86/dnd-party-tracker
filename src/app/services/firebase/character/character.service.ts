@@ -6,6 +6,8 @@ import {Character, CharacterId} from '../../../models/character/character';
 import {Alignment} from '../../../enums/enum-alignment';
 import {Size} from '../../../enums/enum-size';
 import {AbilityScore} from '../../../models/character/ability-scores';
+import {HttpClient} from '@angular/common/http';
+import {FeatId} from '../../../models/feat/feat';
 
 
 @Injectable({
@@ -15,14 +17,20 @@ export class CharacterService {
 
   private characterCollection: AngularFirestoreCollection<Character>;
   private characters: CharacterId[];
+  public tempCharacter$: Observable<Character>;
   public tempCharacter: Character;
 
+  /*
   constructor(public db: AngularFirestore) {
     this.characterCollection = db.collection<Character>('/characters');
     this.getCharacters().subscribe(data => {
       this.characters = data;
     });
     this.newCharacter();
+  }
+  */
+  constructor(private http: HttpClient) {
+    this.tempCharacter$ = this.http.get<Character>('assets/json/character.json');
   }
 
   newCharacter(): void {
@@ -65,6 +73,10 @@ export class CharacterService {
         return { id, ...data };
       }))
     );
+  }
+
+  addCharacter(character: Character): void {
+    this.characterCollection.doc(character.characterName.toUpperCase().replace(new RegExp(' ', 'gi'), '')).set(character);
   }
 
 }

@@ -130,11 +130,15 @@
           </div>
 
           <div class="d-flex align-items-start flex-shrink-0 ml-1">
-            <input class="btn btn-outline-dark" style="width: 2.5em;" (click)="lowerAbilityScore(abbr)" title="Click to decrease {{ abilityScoreAbbr.abbreviation.get(abbr) }} by 1." value="-">
+            <button class="btn btn-outline-dark" style="width: 2.5em;" (click)="lowerAbilityScore(abbr)" title="Click to decrease {{ abilityScoreAbbr.abbreviation.get(abbr) }} by 1.">
+              -
+            </button>
           </div>
 
           <div class="d-flex align-items-start flex-shrink-0 ml-1">
-            <input class="btn btn-outline-dark" style="width: 2.5em;" (click)="raiseAbilityScore(abbr)" title="Click to increase {{ abilityScoreAbbr.abbreviation.get(abbr) }} by 1." value="+">
+            <button class="btn btn-outline-dark" style="width: 2.5em;" (click)="raiseAbilityScore(abbr)" title="Click to increase {{ abilityScoreAbbr.abbreviation.get(abbr) }} by 1.">
+              +
+            </button>
           </div>
 
         </div>

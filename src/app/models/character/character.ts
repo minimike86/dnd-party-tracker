@@ -52,7 +52,7 @@ export interface Character {
   }[];
 
   // Feats
-  feats: Array<Feat>;
+  feats: Array<string>;
 
   // Inventory
   weaponsId: string;
