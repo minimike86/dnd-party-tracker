@@ -55,7 +55,7 @@
                           <div class="col-4 d-flex align-items-center">
                             <img class="rounded-circle"
                                  style="border: 2px solid #ccc; height: 4em; width: 4em;"
-                                 src="{{ getCharacter(memberReference).imageUrl }}" >
+                                 src="{{ getCharacter(memberReference).imageUrl !== null ? getCharacter(memberReference).imageUrl : '/assets/img/class-icons/dm.png' }}" >
                           </div>
                           <div class="col-4 d-flex align-items-center pl-0" style="line-height: 0.7em;">
                             <span class="" style="font-size: x-small;" >

@@ -112,12 +112,6 @@ export class NewCharacterSkillComponent implements OnInit {
 
   getMaxSkillPoints(cls: CharacterClassId, intelligence: number, race: RaceId): number {
     if (cls !== undefined) {
-
-      console.log('Max Ranks: ', ((cls.skillPointsPerLevel + this.getAbilityModifier(intelligence)) * 4) + race.extraSkillPointsFirstLevel);
-      console.log('Class Skill Points: ', cls.skillPointsPerLevel);
-      console.log('Intelligence Modifier: ', this.getAbilityModifier(intelligence));
-      console.log('Racial Bonus Skill Points: ', race.extraSkillPointsFirstLevel);
-
       if ( ((cls.skillPointsPerLevel + this.getAbilityModifier(intelligence)) * 4) + race.extraSkillPointsFirstLevel < 4 ) {
         return 4;
       } else {
