@@ -25,6 +25,7 @@ export class CharacterJoinPartyComponent implements OnInit {
               public activeModal: NgbActiveModal) {
     authService.user$.subscribe(user => {
       this.currentUser = user;
+      this.getCharacters();
     });
   }
 
@@ -35,8 +36,7 @@ export class CharacterJoinPartyComponent implements OnInit {
   // Character Functions
   getCharacters(): void {
     if (this.currentUser !== undefined && this.currentUser !== null) {
-      this.characterService.getCharacters()
-        .subscribe(
+      this.characterService.getCharacters().subscribe(
           characters => this.characters = characters.filter(characterId => characterId.owner === this.currentUser.uid),
           err => console.log('Error :: ' + err)
         );

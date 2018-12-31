@@ -8,6 +8,7 @@ import {Size} from '../../../enums/enum-size';
 import {AbilityScore} from '../../../models/character/ability-scores';
 import {HttpClient} from '@angular/common/http';
 import {FeatId} from '../../../models/feat/feat';
+import {Skill} from '../../../models/character/skill';
 
 
 @Injectable({
@@ -20,7 +21,6 @@ export class CharacterService {
   public tempCharacter$: Observable<Character>;
   public tempCharacter: Character;
 
-  /*
   constructor(public db: AngularFirestore) {
     this.characterCollection = db.collection<Character>('/characters');
     this.getCharacters().subscribe(data => {
@@ -28,10 +28,11 @@ export class CharacterService {
     });
     this.newCharacter();
   }
-  */
+  /*
   constructor(private http: HttpClient) {
     this.tempCharacter$ = this.http.get<Character>('assets/json/character.json');
   }
+  */
 
   newCharacter(): void {
     this.tempCharacter = {
@@ -52,8 +53,8 @@ export class CharacterService {
       looks: null,
       personality: null,
       background: null,
-      tempAbilityScores: new AbilityScore(0, 0, 0, 0,  0, 0),
-      totalAbilityScores: new AbilityScore(0, 0, 0, 0,  0, 0),
+      tempAbilityScores: { strength: 0, dexterity: 0, constitution: 0, intelligence: 0,  wisdom: 0, charisma: 0 },
+      totalAbilityScores: { strength: 0, dexterity: 0, constitution: 0, intelligence: 0,  wisdom: 0, charisma: 0 },
       hitPoints: null,
       hitDie: [],
       baseAttackBonus: null,
@@ -76,6 +77,7 @@ export class CharacterService {
   }
 
   addCharacter(character: Character): void {
+    console.log(character);
     this.characterCollection.doc(character.characterName.toUpperCase().replace(new RegExp(' ', 'gi'), '')).set(character);
   }
 

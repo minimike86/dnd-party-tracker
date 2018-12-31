@@ -113,7 +113,7 @@ export class PartyComponent implements OnInit {
   }
 
   viewCharacter(characterReference: string) {
-    //
+    this.router.navigate( ['/character/id/' + characterReference] );
   }
 
   editCharacter(characterReference: string) {

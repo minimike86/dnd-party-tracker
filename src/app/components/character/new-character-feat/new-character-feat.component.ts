@@ -48,23 +48,21 @@ export class NewCharacterFeatComponent implements OnInit {
       this.characterClasses = data;
     });
 
-    this.characterService.tempCharacter$.subscribe(data => {
-      this.tempCharacter = data;
-      if (this.tempCharacter.owner === null) {
-        console.log('tempCharacter owner is null, returning to character creation step 1.');
-        // router.navigate( ['/character/new/'] );
-      } else {
-        this.tempCharacterFeatSnapshot = this.tempCharacter.feats;
-        if ( this.tempCharacter.raceId.includes('HUMAN') ) {
-          this.featsToAdd.humanBonusFeat = true;
-          this.featsToAdd.count += 1;
-        }
-        if ( this.hasRequiredClass(this.tempCharacter.classes, 'FIGHTER') ) {
-          this.featsToAdd.fighterBonusFeat = true;
-          this.featsToAdd.count += 1;
-        }
+    this.featsToAdd = { firstLevelFeat: true, humanBonusFeat: false, fighterBonusFeat: false, count: 1 };
+    if (this.characterService.tempCharacter.owner === null) {
+      console.log('tempCharacter owner is null, returning to character creation step 1.');
+      router.navigate( ['/character/new/'] );
+    } else {
+      this.tempCharacterFeatSnapshot = this.characterService.tempCharacter.feats;
+      if ( this.characterService.tempCharacter.raceId.includes('HUMAN') ) {
+        this.featsToAdd.humanBonusFeat = true;
+        this.featsToAdd.count += 1;
       }
-    });
+      if ( this.hasRequiredClass(this.characterService.tempCharacter.classes, 'FIGHTER') ) {
+        this.featsToAdd.fighterBonusFeat = true;
+        this.featsToAdd.count += 1;
+      }
+    }
 
     this.featService.getFeats().subscribe(featData => {
       this.feats = featData.sort(this.compareFeatNames);
@@ -95,8 +93,6 @@ export class NewCharacterFeatComponent implements OnInit {
     this.firstLevelFeat = null;
     this.humanBonusFeat = null;
     this.fighterBonusFeat = null;
-
-    this.featsToAdd = { firstLevelFeat: true, humanBonusFeat: false, fighterBonusFeat: false, count: 1 };
   }
 
   onFirstLevelFeatChange(featId: string): void {
@@ -112,16 +108,16 @@ export class NewCharacterFeatComponent implements OnInit {
   }
 
   setSelectedFeats(featId: string): void {
-    if (this.tempCharacter !== undefined) {
-      this.tempCharacter.feats = [].concat(this.tempCharacterFeatSnapshot);
+    if (this.characterService.tempCharacter !== undefined) {
+      this.characterService.tempCharacter.feats = [].concat(this.tempCharacterFeatSnapshot);
       if (this.firstLevelFeat !== null) {
-        this.tempCharacter.feats.push(this.firstLevelFeat.toString());
+        this.characterService.tempCharacter.feats.push(this.firstLevelFeat.toString());
       }
       if (this.humanBonusFeat !== null) {
-        this.tempCharacter.feats.push(this.humanBonusFeat.toString());
+        this.characterService.tempCharacter.feats.push(this.humanBonusFeat.toString());
       }
       if (this.fighterBonusFeat !== null) {
-        this.tempCharacter.feats.push(this.fighterBonusFeat.toString());
+        this.characterService.tempCharacter.feats.push(this.fighterBonusFeat.toString());
       }
     }
   }
@@ -129,7 +125,7 @@ export class NewCharacterFeatComponent implements OnInit {
   getPrerequisiteFeats(prerequisiteFeats: string): string {
     let tempString = '';
     for (const prereq of prerequisiteFeats) {
-      if ( !this.tempCharacter.feats.includes(prereq) ) {
+      if ( !this.characterService.tempCharacter.feats.includes(prereq) ) {
         tempString === '' ? tempString = this.feats.find(data => data.id === prereq).name
                           : tempString = tempString + ', ' + this.feats.find(data => data.id === prereq).name;
       }
@@ -139,7 +135,7 @@ export class NewCharacterFeatComponent implements OnInit {
 
   meetsPrerequisiteClassLevel(characterClassId: string, level: number): { class: boolean, level: boolean, overall: boolean } {
     const test = { class: false, level: false, overall: false };
-    for (const tempCharacterClassLevel of this.tempCharacter.classes) {
+    for (const tempCharacterClassLevel of this.characterService.tempCharacter.classes) {
       if (characterClassId === 'CASTER'
         && ((tempCharacterClassLevel.classId === 'BARD' && tempCharacterClassLevel.level >= level)
         || (tempCharacterClassLevel.classId === 'CLERIC' && tempCharacterClassLevel.level >= level)
@@ -151,12 +147,12 @@ export class NewCharacterFeatComponent implements OnInit {
         test.class = true;
         test.level = true;
       } else {
-        if (this.tempCharacter.classes.find(data => data.classId === characterClassId) !== undefined
-          && this.tempCharacter.classes.find(data => data.classId === characterClassId).classId === characterClassId) {
+        if (this.characterService.tempCharacter.classes.find(data => data.classId === characterClassId) !== undefined
+          && this.characterService.tempCharacter.classes.find(data => data.classId === characterClassId).classId === characterClassId) {
           test.class = true;
         }
-        if (this.tempCharacter.classes.find(data => data.classId === characterClassId) !== undefined
-          && this.tempCharacter.classes.find(data => data.classId === characterClassId).level >= level) {
+        if (this.characterService.tempCharacter.classes.find(data => data.classId === characterClassId) !== undefined
+          && this.characterService.tempCharacter.classes.find(data => data.classId === characterClassId).level >= level) {
           test.level = true;
         }
       }
@@ -192,27 +188,27 @@ export class NewCharacterFeatComponent implements OnInit {
 
   getPrerequisiteAbilityScores(abilityScore: AbilityScore): string {
     let tempString = '';
-    if (this.tempCharacter.totalAbilityScores.strength < abilityScore.strength) {
+    if (this.characterService.tempCharacter.totalAbilityScores.strength < abilityScore.strength) {
       tempString === '' ? tempString = tempString + 'Strength (' + abilityScore.strength + ')'
         : tempString = tempString + ', Strength (' + abilityScore.strength + ')';
     }
-    if (this.tempCharacter.totalAbilityScores.dexterity < abilityScore.dexterity) {
+    if (this.characterService.tempCharacter.totalAbilityScores.dexterity < abilityScore.dexterity) {
       tempString === '' ? tempString = tempString + 'Dexterity (' + abilityScore.dexterity + ')'
         : tempString = tempString + ', Dexterity (' + abilityScore.dexterity + ')';
     }
-    if (this.tempCharacter.totalAbilityScores.constitution < abilityScore.constitution) {
+    if (this.characterService.tempCharacter.totalAbilityScores.constitution < abilityScore.constitution) {
       tempString === '' ? tempString = tempString + 'Constitution (' + abilityScore.constitution + ')'
         : tempString = tempString + ', Constitution (' + abilityScore.constitution + ')';
     }
-    if (this.tempCharacter.totalAbilityScores.intelligence < abilityScore.intelligence) {
+    if (this.characterService.tempCharacter.totalAbilityScores.intelligence < abilityScore.intelligence) {
       tempString === '' ? tempString = tempString + 'Intelligence (' + abilityScore.intelligence + ')'
         : tempString = tempString + ', Intelligence (' + abilityScore.intelligence + ')';
     }
-    if (this.tempCharacter.totalAbilityScores.wisdom < abilityScore.wisdom) {
+    if (this.characterService.tempCharacter.totalAbilityScores.wisdom < abilityScore.wisdom) {
       tempString === '' ? tempString = tempString + 'Wisdom (' + abilityScore.wisdom + ')'
         : tempString = tempString + ', Wisdom (' + abilityScore.wisdom + ')';
     }
-    if (this.tempCharacter.totalAbilityScores.charisma < abilityScore.charisma) {
+    if (this.characterService.tempCharacter.totalAbilityScores.charisma < abilityScore.charisma) {
       tempString === '' ? tempString = tempString + 'Charisma (' + abilityScore.charisma + ')'
         : tempString = tempString + ', Charisma (' + abilityScore.charisma + ')';
     }
@@ -220,13 +216,13 @@ export class NewCharacterFeatComponent implements OnInit {
   }
 
   getPrerequisiteBaseAttackBonus(baseAttackBonus: number): string {
-    if (this.tempCharacter.baseAttackBonus < baseAttackBonus) {
-      return 'Your BAB: (+' + this.tempCharacter.baseAttackBonus + '), Required BAB: (+' + baseAttackBonus + ')';
+    if (this.characterService.tempCharacter.baseAttackBonus < baseAttackBonus) {
+      return 'Your BAB: (+' + this.characterService.tempCharacter.baseAttackBonus + '), Required BAB: (+' + baseAttackBonus + ')';
     }
   }
 
   meetsPrerequisiteSkillRanks(skillId: string, ranks: number): boolean {
-    for (const skillRanks of this.tempCharacter.skillRanks) {
+    for (const skillRanks of this.characterService.tempCharacter.skillRanks) {
       if (skillRanks.skillId === skillId
         && skillRanks.ranks >= ranks) {
         return true;
@@ -257,7 +253,7 @@ export class NewCharacterFeatComponent implements OnInit {
     // has all feats
     if ( feat.prerequisites.feats.length === 0 ) {
       test.feats = true;
-    } else if ( this.arrayContainsArray(this.tempCharacter.feats, feat.prerequisites.feats) ) {
+    } else if ( this.arrayContainsArray(this.characterService.tempCharacter.feats, feat.prerequisites.feats) ) {
       test.feats = true;
     }
     // has class / level
@@ -265,16 +261,16 @@ export class NewCharacterFeatComponent implements OnInit {
       test.classLevel = true;
     }
     // has ability score
-    if ( this.tempCharacter.totalAbilityScores.strength >= feat.prerequisites.abilityScore.strength &&
-      this.tempCharacter.totalAbilityScores.dexterity >= feat.prerequisites.abilityScore.dexterity &&
-      this.tempCharacter.totalAbilityScores.constitution >= feat.prerequisites.abilityScore.constitution &&
-      this.tempCharacter.totalAbilityScores.intelligence >= feat.prerequisites.abilityScore.intelligence &&
-      this.tempCharacter.totalAbilityScores.wisdom >= feat.prerequisites.abilityScore.wisdom &&
-      this.tempCharacter.totalAbilityScores.charisma >= feat.prerequisites.abilityScore.charisma ) {
+    if ( this.characterService.tempCharacter.totalAbilityScores.strength >= feat.prerequisites.abilityScore.strength &&
+      this.characterService.tempCharacter.totalAbilityScores.dexterity >= feat.prerequisites.abilityScore.dexterity &&
+      this.characterService.tempCharacter.totalAbilityScores.constitution >= feat.prerequisites.abilityScore.constitution &&
+      this.characterService.tempCharacter.totalAbilityScores.intelligence >= feat.prerequisites.abilityScore.intelligence &&
+      this.characterService.tempCharacter.totalAbilityScores.wisdom >= feat.prerequisites.abilityScore.wisdom &&
+      this.characterService.tempCharacter.totalAbilityScores.charisma >= feat.prerequisites.abilityScore.charisma ) {
       test.abilityScores = true;
     }
     // has base attack bonus
-    if ( this.tempCharacter.baseAttackBonus >= feat.prerequisites.baseAttackBonus ) {
+    if ( this.characterService.tempCharacter.baseAttackBonus >= feat.prerequisites.baseAttackBonus ) {
       test.baseAttackBonus = true;
     }
     // has skill ranks
@@ -435,7 +431,10 @@ export class NewCharacterFeatComponent implements OnInit {
   }
 
   completeCharacter(character: Character): void {
+    this.characterService.tempCharacter.tempAbilityScores = Object.assign({}, this.characterService.tempCharacter.tempAbilityScores);
+    this.characterService.tempCharacter.totalAbilityScores = Object.assign({}, this.characterService.tempCharacter.totalAbilityScores);
     this.characterService.addCharacter(character);
+    this.router.navigate( ['/character/' + character.characterName.toUpperCase().replace(new RegExp(' ', 'gi'), '')] );
   }
 
 }
