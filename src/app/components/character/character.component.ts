@@ -1,10 +1,10 @@
-import {Component, OnInit} from '@angular/core';
-import {Character} from '../../models/character/character';
-import {Size} from '../../enums/enum-size';
-import {Gender} from '../../enums/enum-gender';
-import {Alignment} from '../../enums/enum-alignment';
-import {AbilityScore} from '../../models/character/ability-scores';
-import {CombatStyle, DamageType, Weapon, WeaponCategory, WeaponType} from '../../models/item/weapon';
+import { Component, OnInit } from '@angular/core';
+import {Character, CharacterId} from '../../models/character/character';
+import { CharacterService } from '../../services/firebase/character/character.service';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Observable } from 'rxjs';
+import {map} from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-character',
@@ -13,51 +13,47 @@ import {CombatStyle, DamageType, Weapon, WeaponCategory, WeaponType} from '../..
 })
 export class CharacterComponent implements OnInit {
 
-  mockCharacter: Character = {
-    characterName: 'Floon Blagmaar',
-    playerName: 'Mike Warner',
-    classes: Array(
-            {classId: 'FIGHTER', level: 1},
-                  {classId: 'SORCERER', level: 1},
-                  {classId: 'ROGUE', level: 1}
-            ),
-    ecl: 3,
-    raceId: 'V9qgAWIxvCDpaRDv4YaF',
-    size: Size.MEDIUM,
-    gender: Gender.MALE,
-    age: 50,
-    alignment: Alignment.CN,
-    religion: ['BOCCOB'],
-    height: { feet: 5, inches: 10 }, // feet, inches
-    weight: 220, // lbs.
-    tempAbilityScores: new AbilityScore(0, 0, 0, 0, 0, 0),
-    totalAbilityScores: new AbilityScore(8, 16, 12, 18, 6, 17),
-    hitPoints: Math.floor(((Math.random() * 6) + 1) * 3 + (1 * 3)),
-    hitDie: Array({hitDie: 6, dieValue: 6},
-                        {hitDie: 6, dieValue: 4},
-                        {hitDie: 4, dieValue: 2}
-            ),
-    baseAttackBonus: 20,
-    saves: { fort: 2, ref: 4, will: 6 },
-    skillRanks: [],
-    feats: [],
-    inventoryId: '',
-    weaponsId: ''
-  };
+  public uuid: string;
+  public character: CharacterId;
+  public validCharacter: boolean;
 
-  constructor() {}
+  constructor(private router: Router,
+              private route: ActivatedRoute,
+              private characterSevice: CharacterService) {
+
+    this.route.params.subscribe(params => {
+      console.log('params: ', params);
+      if (params['id'] !== undefined && params['id'] !== null) {
+        this.uuid = params['id'];
+        this.characterSevice.getCharacter(this.uuid).subscribe(data => {
+          this.character = data;
+          console.log('this.character: ', this.character);
+          if (this.character.characterName !== undefined) {
+            this.validCharacter = true;
+          } else {
+            this.validCharacter = false;
+          }
+        });
+      } else {
+        return null;
+      }
+    });
+
+  }
 
   ngOnInit() {
   }
 
   // TODO: Get character class name from db for given classId field
-  getCharClassAndLevelString(): string {
+  getCharClassAndLevelString(character: CharacterId): string {
     let tempStr = '';
-    for (const charClass of this.mockCharacter.classes) {
-      if (tempStr === '') {
-        tempStr += charClass.classId + charClass.level;
-      } else {
-        tempStr += ' / ' + charClass.classId + charClass.level;
+    if (character.classes !== undefined) {
+      for (const charClass of character.classes) {
+        if (tempStr === '') {
+          tempStr += charClass.classId + charClass.level;
+        } else {
+          tempStr += ' / ' + charClass.classId + charClass.level;
+        }
       }
     }
     return tempStr;

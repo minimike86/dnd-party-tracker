@@ -51,6 +51,7 @@ import { AlignmentPickerComponent } from './components/character/modals/alignmen
 import { ReligionPickerComponent } from './components/character/modals/religion-picker/religion-picker.component';
 import { NewCharacterFeatComponent } from './components/character/new-character-feat/new-character-feat.component';
 import { AddFeatComponent } from './components/admin/add-feat/add-feat.component';
+import { CharacterListComponent } from './components/character/character-list/character-list.component';
 
 @NgModule({
   declarations: [
@@ -84,7 +85,8 @@ import { AddFeatComponent } from './components/admin/add-feat/add-feat.component
     LoginComponent,
     AlignmentPickerComponent,
     ReligionPickerComponent,
-    AddFeatComponent
+    AddFeatComponent,
+    CharacterListComponent
   ],
   imports: [
     NgbModule,

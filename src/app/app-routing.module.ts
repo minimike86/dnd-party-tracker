@@ -9,6 +9,7 @@ import { AddClassComponent } from './components/admin/add-class/add-class.compon
 import { AddDeityComponent } from './components/admin/add-deity/add-deity.component';
 import { LoginComponent } from './components/login/login.component';
 import { CharacterComponent } from './components/character/character.component';
+import { CharacterListComponent } from './components/character/character-list/character-list.component';
 import { PartyComponent } from './components/party/party.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { HomeComponent } from './components/home/home.component';
@@ -32,7 +33,7 @@ const appRoutes: Routes = [
   { path: 'parties',              component: PartyComponent,                  canActivate: [AuthGuard] },
   { path: 'parties/id/:id',       component: PartyComponent,                  canActivate: [AuthGuard] },
   { path: 'parties/owned/',       component: PartyComponent,                  canActivate: [AuthGuard] },
-  { path: 'character',            component: CharacterComponent,              canActivate: [AuthGuard] },
+  { path: 'characters',           component: CharacterListComponent,          canActivate: [AuthGuard] },
   { path: 'character/id/:id',     component: CharacterComponent,              canActivate: [AuthGuard] },
   { path: 'character/new',        component: NewCharacterComponent,           canActivate: [AuthGuard] },
   { path: 'character/new/class',  component: NewCharacterClassComponent,      canActivate: [AuthGuard] },

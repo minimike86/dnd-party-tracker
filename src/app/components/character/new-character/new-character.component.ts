@@ -49,7 +49,7 @@ export class NewCharacterComponent implements OnInit, AfterViewInit {
     authService.user$.subscribe(user => {
       this.currentUser = user;
       this.playerName = this.currentUser.displayName;
-      console.log('NewCharacterComponent - user loaded: ', this.currentUser);
+      // console.log('NewCharacterComponent - user loaded: ', this.currentUser);
     });
 
     raceService.getRaces().subscribe(
