@@ -28,11 +28,6 @@ export class CharacterService {
     });
     this.newCharacter();
   }
-  /*
-  constructor(private http: HttpClient) {
-    this.tempCharacter$ = this.http.get<Character>('assets/json/character.json');
-  }
-  */
 
   newCharacter(): void {
     this.tempCharacter = {
@@ -76,9 +71,23 @@ export class CharacterService {
     );
   }
 
+  getCharacter(characterId: string): Observable<CharacterId> {
+    return this.characterCollection.doc(characterId).snapshotChanges().pipe(
+      map(actions => {
+        const id = actions.payload.id;
+        const data = actions.payload.data() as Character;
+        return { id, ...data };
+      })
+    );
+  }
+
   addCharacter(character: Character): void {
     console.log(character);
-    this.characterCollection.doc(character.characterName.toUpperCase().replace(new RegExp(' ', 'gi'), '')).set(character);
+    this.characterCollection.add(character);
+  }
+
+  deleteCharacter(characterId: string): void {
+    this.characterCollection.doc(characterId).ref.delete();
   }
 
 }

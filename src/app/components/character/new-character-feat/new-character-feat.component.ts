@@ -434,7 +434,7 @@ export class NewCharacterFeatComponent implements OnInit {
     this.characterService.tempCharacter.tempAbilityScores = Object.assign({}, this.characterService.tempCharacter.tempAbilityScores);
     this.characterService.tempCharacter.totalAbilityScores = Object.assign({}, this.characterService.tempCharacter.totalAbilityScores);
     this.characterService.addCharacter(character);
-    this.router.navigate( ['/character/' + character.characterName.toUpperCase().replace(new RegExp(' ', 'gi'), '')] );
+    this.router.navigate( ['/character/id/' + character.characterName.toUpperCase().replace(new RegExp(' ', 'gi'), '')] );
   }
 
 }
